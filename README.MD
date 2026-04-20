@@ -1,4 +1,4 @@
-# 🤠 RoundUp
+# 🤠 FoodsUp
 
 > **Collect group orders in seconds — no internet required.**
 
