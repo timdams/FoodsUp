@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Groepsbestelling</title>
+<style>
+  /* Fonts via system stack — works fully offline */
+
+  :root {
+    --bg: #1a1410; --card: #252018; --card2: #2e2820;
+    --accent: #e8a23a; --accent2: #c4622d;
+    --text: #f0e8d8; --muted: #8a7d68;
+    --success: #6aaa64; --danger: #c0392b; --border: #3d3528;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  body.lang-ne { font-family: 'Noto Sans Devanagari', 'Mangal', Arial Unicode MS, sans-serif; }
+
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  .header { background: linear-gradient(135deg,#2e1f0a,#1a1410); border-bottom: 2px solid var(--accent); padding: 14px 20px 10px; position: sticky; top: 0; z-index: 10; }
+  .header-title { font-family: Georgia, serif; font-size: 20px; font-weight: 900; color: var(--accent); }
+  .header-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .header-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+
+  /* LANG SWITCHER */
+  .lang-switcher { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-left: auto; }
+  .lang-btn { padding: 5px 10px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .lang-btn.active { background: var(--accent); color: #1a1410; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; transition: all 0.15s; user-select: none; }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary { background: var(--accent); color: #1a1410; }
+  .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-success { background: var(--success); color: white; }
+  .btn-warn { background: #7a5c10; color: var(--accent); border: 1px solid #a07820; }
+  .btn-sm { padding: 6px 11px; font-size: 13px; border-radius: 8px; }
+  .btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 8px; font-size: 15px; }
+  .btn-full { width: 100%; }
+
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+
+  /* HOME */
+  #home .content { padding: 20px; flex: 1; }
+  .welcome-text { font-family: Georgia, serif; font-size: 26px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+  .welcome-text span { color: var(--accent); }
+  .welcome-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .theme-card { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 12px 32px; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+  .theme-card:active { transform: scale(0.97); }
+  .theme-card.selected { border-color: var(--accent); background: #2e2515; }
+  .theme-card.selected::after { content: '✓'; position: absolute; top: 8px; right: 10px; color: var(--accent); font-size: 14px; font-weight: 700; }
+  .theme-emoji { font-size: 26px; margin-bottom: 5px; }
+  .theme-name { font-weight: 600; font-size: 14px; }
+  .theme-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .theme-edit-btn { position: absolute; bottom: 8px; right: 8px; background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; font-size: 12px; color: var(--muted); cursor: pointer; }
+  .theme-card.selected .theme-edit-btn { background: #3a2e18; border-color: #6a5020; color: var(--accent); }
+  .theme-actions { display: flex; gap: 8px; margin-bottom: 28px; }
+
+  .history-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .history-item:active { border-color: var(--accent); }
+  .history-left { flex: 1; min-width: 0; }
+  .history-title { font-weight: 600; font-size: 14px; }
+  .history-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .history-summary { font-size: 12px; color: var(--muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .history-arrow { color: var(--muted); font-size: 18px; }
+
+  /* ORDER / THEME EDIT */
+  #order .content, #themeedit .content { padding: 16px; flex: 1; }
+  .round-info { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .round-theme { font-family: Georgia, serif; font-size: 18px; font-weight: 700; color: var(--accent); }
+  .round-badge { background: var(--accent2); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .options-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .option-item { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .option-item.editing { border-color: var(--accent); }
+  .option-name { flex: 1; font-size: 15px; font-weight: 500; background: transparent; border: none; color: var(--text); font-family: inherit; outline: none; }
+  .option-name::placeholder { color: var(--muted); }
+  .add-option-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .add-option-input { flex: 1; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
+  .add-option-input:focus { border-color: var(--accent); }
+  .add-option-input::placeholder { color: var(--muted); }
+  .save-to-theme-bar { background: #2a2010; border: 1px solid #5a4010; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .save-to-theme-label { font-size: 13px; color: var(--accent); }
+  .te-name-row { display: flex; gap: 8px; margin-bottom: 20px; }
+
+  /* VOTE */
+  #vote .content { padding: 16px; flex: 1; }
+  .voter-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+  .progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .voter-name-display { font-family: Georgia, serif; font-size: 26px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+  .voter-prompt { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+  .vote-options { display: flex; flex-direction: column; gap: 10px; }
+  .vote-option { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 20px; cursor: pointer; font-size: 17px; font-weight: 600; transition: all 0.15s; text-align: left; color: var(--text); width: 100%; font-family: inherit; }
+  .vote-option:active { transform: scale(0.98); }
+  .vote-option.selected { border-color: var(--accent); background: #2e2515; color: var(--accent); }
+  .vote-option.selected::after { content: ' ✓'; }
+  .vote-nav { display: flex; gap: 10px; margin-top: 20px; padding-bottom: 20px; }
+  .custom-option-row { margin-top: 14px; background: var(--card2); border: 1.5px dashed var(--border); border-radius: 14px; padding: 14px; transition: border-color 0.2s; }
+  .custom-option-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+
+  /* SUB-OPTIONS */
+  .sub-options-block {
+    margin-top: 10px; margin-left: 8px;
+    border-left: 3px solid var(--accent); padding-left: 12px;
+    display: flex; flex-direction: column; gap: 8px;
+    animation: slideDown 0.18s ease;
+  }
+  @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  .sub-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+  .sub-group { margin-bottom: 6px; }
+  .sub-group-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+  .sub-group-btns { display: flex; flex-wrap: wrap; gap: 7px; }
+  .sub-btn { background: var(--card2); border: 2px solid var(--border); border-radius: 10px;
+    padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer;
+    color: var(--text); font-family: inherit; transition: all 0.12s; }
+  .sub-btn:active { transform: scale(0.96); }
+  .sub-btn.selected { border-color: var(--accent); background: #2e2515; color: var(--accent); }
+  .sub-btn.selected::after { content: ' ✓'; }
+  /* option editor sub-rows */
+  .opt-subs { margin-left: 12px; border-left: 2px solid var(--border); padding-left: 10px; margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
+  .sub-item { display: flex; align-items: center; gap: 6px; }
+  .sub-group-header { display: flex; align-items: center; gap: 6px; margin-top: 8px; margin-bottom: 4px; }
+  .sub-group-name-input { flex:1; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; color: var(--accent); font-family: inherit; font-size: 13px; font-weight: 600; outline: none; }
+  .sub-val-input { flex:1; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 14px; outline: none; border-bottom: 1px solid var(--border); padding: 3px 6px; }
+  .sub-val-input::placeholder { color: var(--muted); }
+
+  /* VOTER PICKER */
+  #votepicker .content { padding: 16px; flex: 1; }
+  .picker-intro { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .voter-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .voter-tile {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 14px; padding: 14px 8px 12px;
+    cursor: pointer; text-align: center; position: relative;
+    transition: all 0.15s; min-height: 80px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  }
+  .voter-tile:active { transform: scale(0.96); }
+  .voter-tile.done { border-color: var(--success); background: #1a2e1a; }
+  .voter-tile.done::after { content: '✓'; position: absolute; top: 5px; right: 8px; color: var(--success); font-size: 13px; font-weight: 900; }
+  .voter-tile.guest { border-style: dashed; border-color: var(--accent2); background: #2a1a10; }
+  .voter-tile-name { font-size: 13px; font-weight: 700; line-height: 1.2; word-break: break-word; }
+  .voter-tile-choice { font-size: 11px; color: var(--accent); margin-top: 2px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .voter-tile-badge { font-size: 10px; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .picker-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .picker-actions { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; }
+  .guest-add-row { display: flex; gap: 8px; margin-bottom: 20px; }
+
+  /* RESULTS */
+  #results .content { padding: 16px; flex: 1; }
+  .results-theme { font-family: Georgia, serif; font-size: 24px; font-weight: 900; color: var(--accent); margin-bottom: 4px; }
+  .results-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .result-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .result-item { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .result-count { font-family: Georgia, serif; font-size: 32px; font-weight: 900; color: var(--accent); min-width: 44px; text-align: center; }
+  .result-count.zero { color: var(--muted); }
+  .result-info { flex: 1; }
+  .result-name { font-size: 16px; font-weight: 600; }
+  .result-voters { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .result-bar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+  .result-bar { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s; }
+  .result-bar.empty { background: var(--border); }
+  .pending-section { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px; }
+  .pending-title { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .pending-names { font-size: 14px; color: var(--text); line-height: 1.8; }
+  .results-actions { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; }
+
+  /* NAMES */
+  #names .content { padding: 16px; flex: 1; }
+  .names-intro { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .names-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .name-item { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 12px; }
+  .name-num { color: var(--muted); font-size: 12px; min-width: 20px; }
+  .name-input { flex: 1; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
+  .name-input::placeholder { color: var(--muted); }
+
+  /* HISTORY DETAIL */
+  #histdetail .content { padding: 16px; flex: 1; }
+  .hd-header-block { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
+  .hd-theme { font-family: Georgia, serif; font-size: 22px; font-weight: 900; color: var(--accent); }
+  .hd-date { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .hd-totals { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .hd-total-item { display: flex; align-items: flex-start; gap: 10px; }
+  .hd-count { font-family: Georgia, serif; font-size: 28px; font-weight: 900; color: var(--accent); min-width: 42px; text-align: center; line-height: 1; padding-top: 2px; }
+  .hd-count.zero { color: var(--muted); }
+  .hd-opt-info { flex: 1; }
+  .hd-opt-name { font-size: 15px; font-weight: 600; }
+  .hd-opt-names { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.6; }
+  .hd-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+  .hd-bar { height: 100%; background: var(--accent); border-radius: 2px; }
+  .hd-per-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .hd-per-item:last-child { border-bottom: none; }
+  .hd-per-name { font-weight: 500; }
+  .hd-per-choice { color: var(--accent); font-weight: 600; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card2); border: 1px solid var(--border); border-radius: 18px; padding: 24px; width: 100%; max-width: 400px; }
+  .modal-title { font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .modal-body { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .modal-input { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text); font-family: inherit; font-size: 15px; outline: none; margin-bottom: 16px; }
+  .modal-input:focus { border-color: var(--accent); }
+  .modal-actions { display: flex; gap: 8px; }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 200; transition: transform 0.3s; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="header">
+    <div class="header-title">🍵 <span data-t="appTitle"></span></div>
+    <div class="header-sub" data-t="appSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('names')" data-t="btnNames"></button>
+      <button class="btn btn-secondary btn-sm" onclick="showAddThemeModal()" data-t="btnAddTheme"></button>
+      <button class="btn btn-secondary btn-sm" onclick="confirmReset()" style="color:var(--muted)">↺</button>
+      <div class="lang-switcher">
+        <button class="lang-btn" onclick="setLang('nl')">NL</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('ne')">नेपाली</button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="welcome-text"><span data-t="homeWelcome1"></span> <span><span data-t="homeWelcome2"></span></span></div>
+    <div class="welcome-sub" data-t="homeWelcomeSub"></div>
+    <div class="section-label" data-t="labelThemes"></div>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="theme-actions">
+      <button class="btn btn-primary btn-full" onclick="startOrder()" data-t="btnStartOrder"></button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="section-label" style="margin:0" data-t="labelHistory"></div>
+      <button class="btn btn-secondary btn-sm" id="clearHistBtn" onclick="confirmClearHistory()" style="display:none" data-t="btnClearAll"></button>
+    </div>
+    <div id="historyList"></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- NAMES -->
+<div id="names" class="screen">
+  <div class="header">
+    <div class="header-title" data-t="namesTitle"></div>
+    <div class="header-sub" data-t="namesSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-primary btn-sm" onclick="saveNames()" data-t="btnSave"></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="names-intro" data-t="namesIntro"></div>
+    <div class="names-list" id="namesList"></div>
+    <button class="btn btn-secondary btn-sm" onclick="addNameField()" data-t="btnAddName"></button>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- THEME EDIT -->
+<div id="themeedit" class="screen">
+  <div class="header">
+    <div class="header-title" id="teTitle"></div>
+    <div class="header-sub" data-t="teHeaderSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-primary btn-sm" onclick="saveThemeEdit()" data-t="btnSave"></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="names-intro" data-t="teIntro"></div>
+    <div class="section-label" data-t="teNameLabel"></div>
+    <div class="te-name-row">
+      <input class="add-option-input" id="teEmoji" placeholder="🍵" maxlength="5" style="max-width:66px;flex:none">
+      <input class="add-option-input" id="teName" data-placeholder-t="tePlaceholderName" style="flex:1">
+    </div>
+    <div class="section-label" data-t="teOptionsLabel"></div>
+    <div class="option-list" id="teOptionList"></div>
+    <div class="add-option-row">
+      <input class="add-option-input" id="teNewOption" data-placeholder-t="placeholderNewOption" onkeydown="if(event.key==='Enter')addTeOption()">
+      <button class="btn btn-primary btn-sm" onclick="addTeOption()">+</button>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <button class="btn btn-danger btn-sm" onclick="confirmDeleteTheme()" data-t="btnDeleteTheme"></button>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- ORDER -->
+<div id="order" class="screen">
+  <div class="header">
+    <div class="header-title" data-t="orderTitle"></div>
+    <div class="header-sub" data-t="orderSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-primary btn-sm" onclick="startVoting()" data-t="btnVote"></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="round-info">
+      <div>
+        <div class="round-theme" id="orderThemeName"></div>
+        <div style="font-size:12px;color:var(--muted)" data-t="orderRoundSub"></div>
+      </div>
+      <div class="round-badge" id="orderOptionCount"></div>
+    </div>
+    <div class="save-to-theme-bar">
+      <div class="save-to-theme-label" data-t="savePermanentLabel"></div>
+      <button class="btn btn-warn btn-sm" onclick="saveCurrentToTheme()" data-t="btnSaveDefault"></button>
+    </div>
+    <div class="options-header">
+      <div class="section-label" style="margin:0" data-t="labelOptions"></div>
+      <button class="btn btn-secondary btn-sm" onclick="resetToThemeDefaults()" data-t="btnReset"></button>
+    </div>
+    <div class="option-list" id="optionList"></div>
+    <div class="add-option-row">
+      <input class="add-option-input" id="newOptionInput" data-placeholder-t="placeholderNewOption" onkeydown="if(event.key==='Enter')addOption()">
+      <button class="btn btn-primary btn-sm" onclick="addOption()">+</button>
+    </div>
+    <button class="btn btn-success btn-full" onclick="startVoting()" data-t="btnStartVoting"></button>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- VOTER PICKER -->
+<div id="votepicker" class="screen">
+  <div class="header">
+    <div class="header-title" id="pickerThemeName"></div>
+    <div class="header-sub" id="pickerHeaderSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-primary btn-sm" onclick="showScreen('results')" data-t="resultsTitle"></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="picker-intro" data-t="pickerIntro"></div>
+    <div class="voter-grid" id="voterGrid"></div>
+    <div class="section-label" data-t="labelGuests"></div>
+    <div class="guest-add-row">
+      <input class="add-option-input" id="guestNameInput" data-placeholder-t="guestPlaceholder" onkeydown="if(event.key==='Enter')addGuest()">
+      <button class="btn btn-warn btn-sm" onclick="addGuest()" data-t="btnAddGuest"></button>
+    </div>
+    <div class="picker-actions">
+      <button class="btn btn-success btn-full" onclick="showScreen('results')" data-t="btnFinalize"></button>
+      <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnNewRound"></button>
+    </div>
+  </div>
+</div>
+
+<!-- VOTE (single person) -->
+<div id="vote" class="screen">
+  <div class="header">
+    <div class="header-title" id="voteThemeName"></div>
+    <div class="header-sub" id="voteHeaderSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="backToPicker()">← <span data-t="pickerTitle"></span></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="voter-name-display" id="voterName">—</div>
+    <div class="voter-prompt" data-t="votePrompt"></div>
+    <div class="vote-options" id="voteOptions"></div>
+    <div class="custom-option-row" id="customRow">
+      <div class="custom-option-label" data-t="customLabel"></div>
+      <div style="display:flex;gap:8px">
+        <input class="add-option-input" id="customVoteInput" data-placeholder-t="customPlaceholder" oninput="onCustomInput(this.value)">
+      </div>
+    </div>
+    <div class="vote-nav">
+      <button class="btn btn-secondary" onclick="backToPicker()" data-t="btnBack"></button>
+      <button class="btn btn-primary" style="flex:1" onclick="confirmVote()" data-t="btnConfirmVote"></button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="header">
+    <div class="header-title" data-t="resultsTitle"></div>
+    <div class="header-sub" id="resultSub"></div>
+  </div>
+  <div class="content">
+    <div class="results-theme" id="resultsThemeName"></div>
+    <div class="results-sub" id="resultsSub2"></div>
+    <div class="result-list" id="resultList"></div>
+    <div id="pendingSection" style="display:none" class="pending-section">
+      <div class="pending-title" data-t="pendingTitle"></div>
+      <div class="pending-names" id="pendingNames"></div>
+    </div>
+    <div class="results-actions">
+      <button class="btn btn-primary btn-full" onclick="showScreen('votepicker')" id="continueVoteBtn" style="display:none" data-t="btnContinueVote"></button>
+      <button class="btn btn-success btn-full" onclick="finalizeRound()" data-t="btnFinalize"></button>
+      <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnNewRound"></button>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- HISTORY DETAIL -->
+<div id="histdetail" class="screen">
+  <div class="header">
+    <div class="header-title" id="hdTitle"></div>
+    <div class="header-sub" id="hdSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-danger btn-sm" onclick="deleteHistoryItem()" data-t="btnDelete"></button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="hd-header-block">
+      <div class="hd-theme" id="hdTheme"></div>
+      <div class="hd-date" id="hdDate"></div>
+      <div class="hd-totals" id="hdTotals"></div>
+    </div>
+    <div class="section-label" data-t="hdWhoWhat"></div>
+    <div id="hdPerList"></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- MODAL: new theme -->
+<div class="modal-overlay" id="addThemeModal">
+  <div class="modal">
+    <div class="modal-title" data-t="modalNewThemeTitle"></div>
+    <div class="modal-body" data-t="modalNewThemeBody"></div>
+    <input class="modal-input" id="newThemeName" data-placeholder-t="modalNamePlaceholder" maxlength="30">
+    <input class="modal-input" id="newThemeEmoji" data-placeholder-t="modalEmojiPlaceholder" maxlength="5">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('addThemeModal')" data-t="btnCancel"></button>
+      <button class="btn btn-primary" style="flex:1" onclick="addTheme()" data-t="btnAdd"></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: confirm -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-title" id="confirmTitle"></div>
+    <div class="modal-body" id="confirmBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('confirmModal')" data-t="btnCancel"></button>
+      <button class="btn btn-danger" style="flex:1" id="confirmOkBtn" data-t="btnOk"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+//  I18N
+// ═══════════════════════════════════════
+const LANGS = {
+  nl: {
+    appTitle: 'Groepsbestelling', appSub: '4 families · 18 reizigers · Nepal 2026',
+    btnNames: '👥 Namen', btnAddTheme: '+ Thema', btnBack: '← Terug', btnSave: 'Opslaan ✓',
+    btnStartOrder: 'Bestelling starten →', btnStartVoting: 'Stemmen starten →',
+    btnVote: 'Stemmen →', btnReset: '⟳ Reset', btnDelete: '🗑 Verwijder',
+    btnDeleteTheme: '🗑 Thema verwijderen', btnClearAll: 'Alles wissen',
+    btnAdd: 'Toevoegen', btnCancel: 'Annuleer', btnOk: 'OK',
+    btnPrev: '← Vorige', btnContinueVote: '▶ Verder stemmen',
+    btnFinalize: '✓ Ronde afsluiten & opslaan', btnNewRound: '← Nieuwe ronde (niet opslaan)',
+    btnSaveDefault: 'Als standaard', btnAddName: '+ Naam toevoegen',
+    homeWelcome1: 'Kies een', homeWelcome2: 'thema',
+    homeWelcomeSub: 'Tik ✎ op een thema om het permanent aan te passen',
+    labelThemes: "Thema's", labelHistory: 'Geschiedenis', labelOptions: 'Opties',
+    namesTitle: '👥 Deelnemers', namesSub: 'Namen van de groep',
+    namesIntro: 'Namen worden gebruikt bij het stemmen.',
+    teHeaderSub: 'Permanente standaard opties', teIntro: 'Deze opties worden de standaard voor toekomstige rondes.',
+    teNameLabel: 'Naam & Emoji', teOptionsLabel: 'Standaard opties',
+    tePlaceholderName: 'Thema naam', placeholderNewOption: 'Nieuwe optie...',
+    orderTitle: '✏️ Opties instellen', orderSub: 'Enkel voor deze ronde', orderRoundSub: 'Ronde-specifiek',
+    savePermanentLabel: '💾 Ook permanent opslaan in thema?',
+    votePrompt: 'Kies jouw keuze:', customLabel: '✍️ Ander gerecht?',
+    customPlaceholder: 'Typ hier je eigen keuze...',
+    resultsTitle: '📊 Resultaat', pendingTitle: '⏳ Nog niet gestemd',
+    hdWhoWhat: 'Wie bestelde wat',
+    modalNewThemeTitle: 'Nieuw thema', modalNewThemeBody: 'Naam en emoji voor het nieuwe thema.',
+    modalNamePlaceholder: 'Naam (bijv. Avondeten)', modalEmojiPlaceholder: 'Emoji (bijv. 🍽️)',
+    btnEditShort: '✎ Bewerk',
+    btnAddSubGroup: '+ Subgroep', btnAddSubVal: '+ Waarde',
+    subGroupPlaceholder: 'Groepsnaam (bijv. Drank)', subValPlaceholder: 'Waarde (bijv. Koffie)',
+    subLabel: 'Verfijn je keuze:',
+    pickerTitle: 'Deelnemers', pickerIntro: 'Tik een naam om te bestellen. Vinkje = al gedaan.',
+    labelGuests: 'Tijdelijke gasten (dragers, gidsen...)',
+    guestPlaceholder: 'Naam tijdelijke gast...', btnAddGuest: '+ Gast',
+    btnConfirmVote: 'Bevestigen ✓', btnBack2Picker: '← Overzicht',
+    optionsCount: (n) => `${n} opties`,
+    votedCount: (d,t) => `${d} van ${t} gestemd`,
+    noHistory: 'Nog geen rondes gespeeld.',
+    toastNeedTheme: 'Kies eerst een thema!', toastNeedOption: 'Voeg minstens 1 optie toe!',
+    toastNeedChoice: 'Maak eerst een keuze!', toastAllVoted: 'Iedereen heeft gestemd!',
+    toastNamesSaved: 'Namen opgeslagen ✓', toastThemeSaved: 'Thema opgeslagen ✓',
+    toastThemeAdded: 'Thema toegevoegd ✓', toastThemeDeleted: 'Thema verwijderd',
+    toastRoundSaved: 'Ronde opgeslagen ✓', toastDeleted: 'Verwijderd',
+    toastHistCleared: 'Geschiedenis gewist', toastNeedName: 'Geef een naam!',
+    toastCustomAdded: (v) => `"${v}" toegevoegd als keuze voor iedereen`,
+    toastSavedDefault: (n) => `Opgeslagen als standaard voor "${n}" ✓`,
+    confirmDeleteOrder: 'Bestelling verwijderen?', confirmDeleteOrderBody: 'Dit verwijdert deze ronde uit de geschiedenis.',
+    confirmClearHist: 'Volledige geschiedenis wissen?', confirmClearHistBody: 'Alle opgeslagen bestellingen worden verwijderd.',
+    confirmDeleteTheme: (n) => `"${n}" verwijderen?`, confirmDeleteThemeBody: 'Dit verwijdert het thema permanent.',
+    confirmReset: 'Alles wissen?', confirmResetBody: 'Dit verwijdert alle namen, thema-aanpassingen en geschiedenis. De app start opnieuw.',
+    datePrefix: '📅 ',
+  },
+  en: {
+    appTitle: 'Group Order', appSub: '4 families · 18 travellers · Nepal 2026',
+    btnNames: '👥 Names', btnAddTheme: '+ Theme', btnBack: '← Back', btnSave: 'Save ✓',
+    btnStartOrder: 'Start order →', btnStartVoting: 'Start voting →',
+    btnVote: 'Vote →', btnReset: '⟳ Reset', btnDelete: '🗑 Delete',
+    btnDeleteTheme: '🗑 Delete theme', btnClearAll: 'Clear all',
+    btnAdd: 'Add', btnCancel: 'Cancel', btnOk: 'OK',
+    btnPrev: '← Previous', btnContinueVote: '▶ Continue voting',
+    btnFinalize: '✓ Close round & save', btnNewRound: '← New round (don\'t save)',
+    btnSaveDefault: 'Set as default', btnAddName: '+ Add name',
+    homeWelcome1: 'Choose a', homeWelcome2: 'theme',
+    homeWelcomeSub: 'Tap ✎ on a theme to edit it permanently',
+    labelThemes: 'Themes', labelHistory: 'History', labelOptions: 'Options',
+    namesTitle: '👥 Participants', namesSub: 'Group members',
+    namesIntro: 'Names are used during voting.',
+    teHeaderSub: 'Permanent default options', teIntro: 'These options become the default for future rounds.',
+    teNameLabel: 'Name & Emoji', teOptionsLabel: 'Default options',
+    tePlaceholderName: 'Theme name', placeholderNewOption: 'New option...',
+    orderTitle: '✏️ Set options', orderSub: 'This round only', orderRoundSub: 'Round-specific',
+    savePermanentLabel: '💾 Also save permanently to theme?',
+    votePrompt: 'Make your choice:', customLabel: '✍️ Other dish?',
+    customPlaceholder: 'Type your own choice here...',
+    resultsTitle: '📊 Results', pendingTitle: '⏳ Not yet voted',
+    hdWhoWhat: 'Who ordered what',
+    modalNewThemeTitle: 'New theme', modalNewThemeBody: 'Name and emoji for the new theme.',
+    modalNamePlaceholder: 'Name (e.g. Dinner)', modalEmojiPlaceholder: 'Emoji (e.g. 🍽️)',
+    btnEditShort: '✎ Edit',
+    btnAddSubGroup: '+ Sub-group', btnAddSubVal: '+ Value',
+    subGroupPlaceholder: 'Group name (e.g. Drink)', subValPlaceholder: 'Value (e.g. Coffee)',
+    subLabel: 'Refine your choice:',
+    pickerTitle: 'Participants', pickerIntro: 'Tap a name to order. Checkmark = done.',
+    labelGuests: 'Temporary guests (porters, guides...)',
+    guestPlaceholder: 'Temporary guest name...', btnAddGuest: '+ Guest',
+    btnConfirmVote: 'Confirm ✓', btnBack2Picker: '← Overview',
+    optionsCount: (n) => `${n} options`,
+    votedCount: (d,t) => `${d} of ${t} voted`,
+    noHistory: 'No rounds played yet.',
+    toastNeedTheme: 'Choose a theme first!', toastNeedOption: 'Add at least 1 option!',
+    toastNeedChoice: 'Make a choice first!', toastAllVoted: 'Everyone has voted!',
+    toastNamesSaved: 'Names saved ✓', toastThemeSaved: 'Theme saved ✓',
+    toastThemeAdded: 'Theme added ✓', toastThemeDeleted: 'Theme deleted',
+    toastRoundSaved: 'Round saved ✓', toastDeleted: 'Deleted',
+    toastHistCleared: 'History cleared', toastNeedName: 'Enter a name!',
+    toastCustomAdded: (v) => `"${v}" added as option for everyone`,
+    toastSavedDefault: (n) => `Saved as default for "${n}" ✓`,
+    confirmDeleteOrder: 'Delete order?', confirmDeleteOrderBody: 'This removes this round from history.',
+    confirmClearHist: 'Clear full history?', confirmClearHistBody: 'All saved orders will be deleted.',
+    confirmDeleteTheme: (n) => `Delete "${n}"?`, confirmDeleteThemeBody: 'This permanently deletes the theme.',
+    confirmReset: 'Clear everything?', confirmResetBody: 'This deletes all names, theme edits and history. The app will restart.',
+    datePrefix: '📅 ',
+  },
+  ne: {
+    appTitle: 'समूह अर्डर', appSub: '४ परिवार · १८ यात्री · नेपाल २०२६',
+    btnNames: '👥 नाम', btnAddTheme: '+ विषय', btnBack: '← फिर्ता', btnSave: 'सुरक्षित ✓',
+    btnStartOrder: 'अर्डर सुरु →', btnStartVoting: 'मतदान सुरु →',
+    btnVote: 'मतदान →', btnReset: '⟳ रिसेट', btnDelete: '🗑 मेट्नुस्',
+    btnDeleteTheme: '🗑 विषय हटाउनुस्', btnClearAll: 'सबै मेट्नुस्',
+    btnAdd: 'थप्नुस्', btnCancel: 'रद्द', btnOk: 'ठिक छ',
+    btnPrev: '← अघिल्लो', btnContinueVote: '▶ मतदान जारी',
+    btnFinalize: '✓ राउन्ड समाप्त गरी सुरक्षित', btnNewRound: '← नयाँ राउन्ड (नसुरक्षित)',
+    btnSaveDefault: 'मानक बनाउनुस्', btnAddName: '+ नाम थप्नुस्',
+    homeWelcome1: 'एउटा', homeWelcome2: 'विषय छान्नुहोस्',
+    homeWelcomeSub: '✎ थिचेर विषय स्थायी रूपमा परिवर्तन गर्नुस्',
+    labelThemes: 'विषयहरू', labelHistory: 'इतिहास', labelOptions: 'विकल्पहरू',
+    namesTitle: '👥 सहभागीहरू', namesSub: 'समूहका नामहरू',
+    namesIntro: 'मतदान गर्दा नामहरू प्रयोग गरिन्छ।',
+    teHeaderSub: 'स्थायी मानक विकल्पहरू', teIntro: 'यी विकल्पहरू भविष्यका राउन्डको मानक बन्नेछन्।',
+    teNameLabel: 'नाम र Emoji', teOptionsLabel: 'मानक विकल्पहरू',
+    tePlaceholderName: 'विषयको नाम', placeholderNewOption: 'नयाँ विकल्प...',
+    orderTitle: '✏️ विकल्पहरू सेट', orderSub: 'केवल यस राउन्डका लागि', orderRoundSub: 'राउन्ड-विशिष्ट',
+    savePermanentLabel: '💾 विषयमा स्थायी रूपमा सुरक्षित?',
+    votePrompt: 'आफ्नो छनोट गर्नुस्:', customLabel: '✍️ अर्को परिकार?',
+    customPlaceholder: 'आफ्नो छनोट यहाँ टाइप गर्नुस्...',
+    resultsTitle: '📊 नतिजा', pendingTitle: '⏳ अझै मतदान गरिएको छैन',
+    hdWhoWhat: 'कसले के अर्डर गर्यो',
+    modalNewThemeTitle: 'नयाँ विषय', modalNewThemeBody: 'नयाँ विषयको नाम र emoji।',
+    modalNamePlaceholder: 'नाम (जस्तै: बेलुकीको खाना)', modalEmojiPlaceholder: 'Emoji (जस्तै: 🍽️)',
+    btnEditShort: '✎',
+    btnAddSubGroup: '+ उपसमूह', btnAddSubVal: '+ मूल्य',
+    subGroupPlaceholder: 'समूहको नाम (जस्तै: पेय)', subValPlaceholder: 'मूल्य (जस्तै: कफी)',
+    subLabel: 'आफ्नो छनोट थप गर्नुस्:',
+    pickerTitle: 'सहभागीहरू', pickerIntro: 'अर्डर गर्न नाम थिच्नुस्। ✓ = भइसक्यो।',
+    labelGuests: 'अस्थायी पाहुनाहरू (भरिया, गाइड...)',
+    guestPlaceholder: 'अस्थायी पाहुनाको नाम...', btnAddGuest: '+ पाहुना',
+    btnConfirmVote: 'पुष्टि गर्नुस् ✓', btnBack2Picker: '← अवलोकन',
+    optionsCount: (n) => `${n} विकल्प`,
+    votedCount: (d,t) => `${d} मध्ये ${t} ले मतदान गरे`,
+    noHistory: 'अहिलेसम्म कुनै राउन्ड खेलिएको छैन।',
+    toastNeedTheme: 'पहिले विषय छान्नुस्!', toastNeedOption: 'कम्तिमा १ विकल्प थप्नुस्!',
+    toastNeedChoice: 'पहिले छनोट गर्नुस्!', toastAllVoted: 'सबैले मतदान गरिसके!',
+    toastNamesSaved: 'नामहरू सुरक्षित ✓', toastThemeSaved: 'विषय सुरक्षित ✓',
+    toastThemeAdded: 'विषय थपियो ✓', toastThemeDeleted: 'विषय हटाइयो',
+    toastRoundSaved: 'राउन्ड सुरक्षित ✓', toastDeleted: 'मेटियो',
+    toastHistCleared: 'इतिहास मेटियो', toastNeedName: 'नाम दिनुहोस्!',
+    toastCustomAdded: (v) => `"${v}" सबैका लागि विकल्प थपियो`,
+    toastSavedDefault: (n) => `"${n}" को मानक रूपमा सुरक्षित ✓`,
+    confirmDeleteOrder: 'अर्डर हटाउने?', confirmDeleteOrderBody: 'यसले यो राउन्ड इतिहासबाट हटाउँछ।',
+    confirmClearHist: 'सम्पूर्ण इतिहास मेट्ने?', confirmClearHistBody: 'सबै सुरक्षित अर्डरहरू हटाइनेछन्।',
+    confirmDeleteTheme: (n) => `"${n}" हटाउने?`, confirmDeleteThemeBody: 'यसले विषय स्थायी रूपमा हटाउँछ।',
+    confirmReset: 'सबै मेट्ने?', confirmResetBody: 'यसले सबै नाम, विषय र इतिहास हटाउँछ। एप पुनः सुरु हुनेछ।',
+    datePrefix: '📅 ',
+  }
+};
+
+let currentLang = 'nl';
+function t(key, ...args) {
+  const val = LANGS[currentLang][key];
+  return typeof val === 'function' ? val(...args) : (val ?? LANGS.nl[key] ?? key);
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  state.lang = lang;
+  save();
+  // Update body font class
+  document.body.className = lang === 'ne' ? 'lang-ne' : '';
+  // Update all static data-t elements
+  document.querySelectorAll('[data-t]').forEach(el => {
+    el.textContent = t(el.dataset.t);
+  });
+  document.querySelectorAll('[data-placeholder-t]').forEach(el => {
+    el.placeholder = t(el.dataset.placeholderT);
+  });
+  // Update lang button active state
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim() === (lang === 'nl' ? 'NL' : lang === 'en' ? 'EN' : 'नेपाली'));
+  });
+  // Re-render current screen
+  const active = document.querySelector('.screen.active');
+  if (active) {
+    const id = active.id;
+    const renders = { home: renderHome, names: renderNames, order: renderOrder,
+      vote: renderVote, votepicker: renderVotePicker, results: renderResults, histdetail: renderHistDetail, themeedit: renderThemeEdit };
+    if (renders[id]) renders[id]();
+  }
+}
+
+// ═══════════════════════════════════════
+//  DEFAULT THEMES  (trilingual options)
+// ═══════════════════════════════════════
+const DEFAULT_THEMES = [
+  { id:'teatime', name:{nl:'Teatime',     en:'Tea time',          ne:'चियाको समय'},  emoji:'🍵',
+    options:['Thee / Tea / चिया','Koffie / Coffee / कफी','Chai / Chai / मसला चिया','Water / Water / पानी','Frisdrank / Soda / सफ्ट ड्रिंक'] },
+  { id:'lunch',   name:{nl:'Lunch',       en:'Lunch',             ne:'दिउँसोको खाना'}, emoji:'🥪',
+    options:['Sandwich','Soep / Soup / सूप','Salade / Salad / सलाद','Noodles / Noodles / म्यागी','Niets / Nothing / केही चाहिँदैन'] },
+  { id:'dinner',  name:{nl:'Avondeten',   en:'Dinner',            ne:'बेलुकीको खाना'}, emoji:'🍽️',
+    options:['Dal Bhat / Dal Bhat / दाल भात','Momo\'s / Momos / मोमो','Thukpa / Thukpa / थुकपा','Vegetarisch / Vegetarian / शाकाहारी','Niets / Nothing / केही चाहिँदैन'] },
+  { id:'drinks',  name:{nl:'Drankjes',    en:'Drinks',            ne:'पेयपदार्थ'},    emoji:'🥤',
+    options:['Bier / Beer / बियर','Wijn / Wine / रक्सी','Frisdrank / Soda / सफ्ट ड्रिंक','Water / Water / पानी','Sap / Juice / जुस'] },
+  { id:'snacks',  name:{nl:'Snacks',      en:'Snacks',            ne:'खाजा'},         emoji:'🍿',
+    options:['Chips','Noten / Nuts / बदाम','Fruit / Fruit / फलफूल','Koekjes / Biscuits / बिस्कुट','Niets / Nothing / केही चाहिँदैन'] },
+];
+
+function themeName(t) {
+  if (typeof t.name === 'object') return t.name[currentLang] || t.name.nl || t.name.en || '';
+  return t.name;
+}
+
+// ═══════════════════════════════════════
+//  OPTION HELPERS
+// ═══════════════════════════════════════
+// An option is either a plain string OR {label, subs:[{group, values:[]}]}
+function optLabel(o)   { return typeof o === 'string' ? o : o.label; }
+function optSubs(o)    { return (typeof o === 'object' && o.subs) ? o.subs : []; }
+function hasSubs(o)    { return optSubs(o).length > 0; }
+// Build the composite vote string: "Label · GroupA:Val · GroupB:Val"
+function buildChoice(label, subSelections) {
+  const parts = [label];
+  for (const [group, val] of Object.entries(subSelections)) {
+    if (val) parts.push(val);
+  }
+  return parts.join(' · ');
+}
+
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
+let state = { themes:[], names:[], selectedThemeId:null, currentOptions:[], votes:{}, voterIndex:0, history:[], lang:'nl', guests:[], currentVoterKey:null, currentVoterName:null };
+let editingThemeId = null;
+let viewingHistIdx = null;
+
+function save() {
+  try { localStorage.setItem('gb6', JSON.stringify(state)); } catch(e){
+    // localStorage not available (file://) — keep in memory only
+    window._gbMemory = JSON.stringify(state);
+  }
+}
+function load() {
+  try {
+    const raw = (()=>{ try { return localStorage.getItem('gb6'); } catch(e){ return window._gbMemory||null; } })();
+    if (raw) state = {...state, ...JSON.parse(raw)};
+  } catch(e) { try { localStorage.removeItem('gb6'); } catch(_){} }
+  if (!Array.isArray(state.themes) || !state.themes.length) state.themes = JSON.parse(JSON.stringify(DEFAULT_THEMES));
+  if (!Array.isArray(state.names)  || !state.names.length)  state.names = [
+    'Saskia','Hendrik','Noor','Dries',
+    'Sara','Tim','Juno','Mira','Sten',
+    'Tom','Winny','Myhra','Elyn','Yanti',
+    'Lieve','Maarten','Sara De Jonge','Tess'
+  ];
+  if (!Array.isArray(state.history)) state.history = [];
+  if (!state.votes || typeof state.votes !== 'object') state.votes = {};
+  if (!Array.isArray(state.currentOptions)) state.currentOptions = [];
+  if (typeof state.voterIndex !== 'number') state.voterIndex = 0;
+  if (!Array.isArray(state.guests)) state.guests = [];
+  if (state.lang) currentLang = state.lang;
+}
+
+// ═══════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const renders = { home:renderHome, names:renderNames, order:renderOrder, vote:renderVote,
+    votepicker:renderVotePicker, results:renderResults, histdetail:renderHistDetail, themeedit:renderThemeEdit };
+  if (renders[id]) renders[id]();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════
+function renderHome() {
+  document.getElementById('themeGrid').innerHTML = state.themes.map(th => `
+    <div class="theme-card ${state.selectedThemeId===th.id?'selected':''}" onclick="selectTheme('${th.id}')">
+      <div class="theme-emoji">${th.emoji}</div>
+      <div class="theme-name">${esc(themeName(th))}</div>
+      <div class="theme-count">${t('optionsCount', th.options.length)}</div>
+      <div class="theme-edit-btn" onclick="event.stopPropagation();openThemeEdit('${th.id}')">${t('btnEditShort')}</div>
+    </div>`).join('');
+
+  const hist = document.getElementById('historyList');
+  const clearBtn = document.getElementById('clearHistBtn');
+  if (!state.history.length) {
+    hist.innerHTML = `<span style="color:var(--muted);font-size:14px">${t('noHistory')}</span>`;
+    clearBtn.style.display = 'none';
+  } else {
+    clearBtn.style.display = '';
+    hist.innerHTML = state.history.slice().reverse().map((h, ri) => {
+      const realIdx = state.history.length - 1 - ri;
+      const top = summarize(h.votes, h.options).filter(([,c])=>c>0).slice(0,3).map(([o,c])=>`${c}× ${o}`).join(', ');
+      return `<div class="history-item" onclick="openHistDetail(${realIdx})">
+        <div class="history-left">
+          <div class="history-title">${h.emoji} ${esc(h.theme)}</div>
+          <div class="history-meta">${t('datePrefix')}${h.datetime}</div>
+          <div class="history-summary">${esc(top||'—')}</div>
+        </div>
+        <div class="history-arrow">›</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function selectTheme(id) { state.selectedThemeId = id; save(); renderHome(); }
+
+function startOrder() {
+  if (!state.selectedThemeId) { toast(t('toastNeedTheme')); return; }
+  const th = state.themes.find(x => x.id === state.selectedThemeId);
+  state.currentOptions = JSON.parse(JSON.stringify(th.options)); state.votes = {}; state.guests = []; state.voterIndex = 0;
+  console.log('[GB] currentOptions after startOrder:', JSON.stringify(state.currentOptions, null, 2));
+  showScreen('order');
+}
+
+// ═══════════════════════════════════════
+//  NAMES
+// ═══════════════════════════════════════
+function renderNames() {
+  document.getElementById('namesList').innerHTML = state.names.map((n,i) => `
+    <div class="name-item">
+      <div class="name-num">${i+1}</div>
+      <input class="name-input" value="${esc(n)}" placeholder="${t('btnAddName')} ${i+1}" onchange="updateName(${i},this.value)">
+      <button class="btn btn-icon btn-secondary" onclick="removeName(${i})">×</button>
+    </div>`).join('');
+}
+function updateName(i,v){ state.names[i]=v.trim()||`${i+1}`; save(); }
+function removeName(i){ if(state.names.length>1){state.names.splice(i,1);save();renderNames();} }
+function addNameField(){ state.names.push(`${state.names.length+1}`);save();renderNames(); }
+function saveNames(){ save(); toast(t('toastNamesSaved')); showScreen('home'); }
+
+// ═══════════════════════════════════════
+//  THEME EDIT
+// ═══════════════════════════════════════
+function openThemeEdit(id) { editingThemeId = id; showScreen('themeedit'); }
+function renderThemeEdit() {
+  const th = state.themes.find(x => x.id === editingThemeId); if (!th) return;
+  document.getElementById('teTitle').textContent = th.emoji + ' ' + themeName(th);
+  document.getElementById('teEmoji').value = th.emoji;
+  document.getElementById('teName').value = themeName(th);
+  renderTeOptions();
+}
+function renderTeOptions() {
+  const th = state.themes.find(x => x.id === editingThemeId);
+  document.getElementById('teOptionList').innerHTML = th.options.map((o,i) => {
+    const lbl = optLabel(o);
+    const subs = optSubs(o);
+    const subsHtml = subs.map((sg, gi) => `
+      <div class="sub-group-header">
+        <input class="sub-group-name-input" value="${esc(sg.group)}" placeholder="${t('subGroupPlaceholder')}"
+          oninput="updateTeSubGroup(${i},${gi},this.value)">
+        <button class="btn btn-icon btn-danger btn-sm" onclick="removeTeSubGroup(${i},${gi})">×</button>
+      </div>
+      ${sg.values.map((v,vi)=>`
+        <div class="sub-item">
+          <input class="sub-val-input" value="${esc(v)}" placeholder="${t('subValPlaceholder')}"
+            oninput="updateTeSubVal(${i},${gi},${vi},this.value)">
+          <button class="btn btn-icon btn-secondary btn-sm" onclick="removeTeSubVal(${i},${gi},${vi})">×</button>
+        </div>`).join('')}
+      <button class="btn btn-secondary btn-sm" style="margin-top:4px;font-size:12px" onclick="addTeSubVal(${i},${gi})">${t('btnAddSubVal')}</button>
+    `).join('');
+    return `<div class="option-item" style="flex-direction:column;align-items:stretch;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <input class="option-name" value="${esc(lbl)}" oninput="updateTeOptLabel(${i},this.value)"
+          onfocus="this.parentElement.parentElement.classList.add('editing')" onblur="this.parentElement.parentElement.classList.remove('editing')">
+        <button class="btn btn-secondary btn-sm" onclick="addTeSubGroup(${i})" title="${t('btnAddSubGroup')}" style="white-space:nowrap;font-size:12px">${t('btnAddSubGroup')}</button>
+        <button class="btn btn-icon btn-danger btn-sm" onclick="removeTeOpt(${i})">×</button>
+      </div>
+      ${subs.length>0?`<div class="opt-subs">${subsHtml}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function updateTeOptLabel(i,v){
+  const th=state.themes.find(x=>x.id===editingThemeId);
+  const o=th.options[i];
+  if(typeof o==='string') th.options[i]=v.trim()||o;
+  else { o.label=v.trim()||o.label; }
+}
+function updateTeOpt(i,v){ updateTeOptLabel(i,v); }
+function removeTeOpt(i){ state.themes.find(x=>x.id===editingThemeId).options.splice(i,1); renderTeOptions(); }
+function addTeOption(){
+  const inp=document.getElementById('teNewOption'), v=inp.value.trim(); if(!v) return;
+  state.themes.find(x=>x.id===editingThemeId).options.push(v); inp.value=''; renderTeOptions();
+}
+function addTeSubGroup(i){
+  const th=state.themes.find(x=>x.id===editingThemeId);
+  let o=th.options[i];
+  if(typeof o==='string') { o={label:o,subs:[]}; th.options[i]=o; }
+  o.subs.push({group:'',values:['']});
+  renderTeOptions();
+}
+function removeTeSubGroup(i,gi){
+  const th=state.themes.find(x=>x.id===editingThemeId);
+  const o=th.options[i]; o.subs.splice(gi,1);
+  if(o.subs.length===0) th.options[i]=o.label; // back to string
+  renderTeOptions();
+}
+function updateTeSubGroup(i,gi,v){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].group=v; }
+function addTeSubVal(i,gi){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].values.push(''); renderTeOptions(); }
+function removeTeSubVal(i,gi,vi){ const sg=state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi]; sg.values.splice(vi,1); renderTeOptions(); }
+function updateTeSubVal(i,gi,vi,v){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].values[vi]=v; }
+function saveThemeEdit(){
+  const th=state.themes.find(x=>x.id===editingThemeId);
+  // Rebuild options entirely from DOM to capture any unsaved input state
+  const optionItems = document.querySelectorAll('#teOptionList > div');
+  optionItems.forEach((item, i) => {
+    if(i >= th.options.length) return;
+    // Read main label
+    const labelInp = item.querySelector('.option-name');
+    if(labelInp) updateTeOptLabel(i, labelInp.value);
+    // Read sub group names and values
+    const subGroups = item.querySelectorAll('.opt-subs .sub-group-header');
+    const subValsBlocks = item.querySelectorAll('.opt-subs > div');
+    // Simpler: just read all sub-group-name-inputs and sub-val-inputs in order
+    if(typeof th.options[i] === 'object') {
+      const groupInputs = item.querySelectorAll('.sub-group-name-input');
+      groupInputs.forEach((inp, gi) => {
+        if(th.options[i].subs[gi]) th.options[i].subs[gi].group = inp.value;
+      });
+      const valInputs = item.querySelectorAll('.sub-val-input');
+      // Map val inputs back: they're sequential across all groups
+      let vi_global = 0;
+      th.options[i].subs.forEach((sg, gi) => {
+        sg.values.forEach((_, vi) => {
+          const inp = valInputs[vi_global++];
+          if(inp) sg.values[vi] = inp.value;
+        });
+      });
+    }
+  });
+  th.emoji = document.getElementById('teEmoji').value.trim()||th.emoji;
+  const newName = document.getElementById('teName').value.trim();
+  if (newName) { if (typeof th.name === 'object') th.name[currentLang] = newName; else th.name = newName; }
+  save(); toast(t('toastThemeSaved')); showScreen('home');
+}
+function confirmDeleteTheme(){
+  const th=state.themes.find(x=>x.id===editingThemeId);
+  confirm2(t('confirmDeleteTheme', themeName(th)), t('confirmDeleteThemeBody'), ()=>{
+    state.themes=state.themes.filter(x=>x.id!==editingThemeId);
+    if(state.selectedThemeId===editingThemeId) state.selectedThemeId=null;
+    save(); toast(t('toastThemeDeleted')); showScreen('home');
+  });
+}
+
+// ═══════════════════════════════════════
+//  ORDER
+// ═══════════════════════════════════════
+function renderOrder(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  document.getElementById('orderThemeName').textContent=th.emoji+' '+themeName(th);
+  document.getElementById('orderOptionCount').textContent=t('optionsCount', state.currentOptions.length);
+  document.getElementById('optionList').innerHTML=state.currentOptions.map((o,i)=>`
+    <div class="option-item">
+      <input class="option-name" value="${esc(optLabel(o))}" onchange="updateOpt(${i},this.value)"
+        onfocus="this.parentElement.classList.add('editing')" onblur="this.parentElement.classList.remove('editing')">
+      ${hasSubs(o)?`<span style="font-size:11px;color:var(--accent);font-weight:700">⊕ subs</span>`:''}
+      <button class="btn btn-icon btn-danger btn-sm" onclick="removeOpt(${i})">×</button>
+    </div>`).join('');
+}
+function updateOpt(i,v){
+  const o=state.currentOptions[i];
+  if(typeof o==='string') state.currentOptions[i]=v.trim()||o;
+  else o.label=v.trim()||o.label;
+  document.getElementById('orderOptionCount').textContent=t('optionsCount',state.currentOptions.length);
+}
+function removeOpt(i){ state.currentOptions.splice(i,1); renderOrder(); }
+function addOption(){
+  const inp=document.getElementById('newOptionInput'), v=inp.value.trim(); if(!v) return;
+  state.currentOptions.push(v); inp.value=''; renderOrder();
+}
+function resetToThemeDefaults(){ state.currentOptions=JSON.parse(JSON.stringify(state.themes.find(x=>x.id===state.selectedThemeId).options)); renderOrder(); }
+function saveCurrentToTheme(){
+  // re-sync labels from DOM but keep sub structure
+  document.querySelectorAll('#optionList .option-name').forEach((inp,i)=>{
+    if(i<state.currentOptions.length) updateOpt(i, inp.value);
+  });
+  const th=state.themes.find(x=>x.id===state.selectedThemeId); th.options=JSON.parse(JSON.stringify(state.currentOptions));
+  save(); toast(t('toastSavedDefault', themeName(th)));
+}
+
+// ═══════════════════════════════════════
+//  VOTER PICKER
+// ═══════════════════════════════════════
+// state.guests = [{id, name, temp:true}] added at round start
+// state.currentVoterKey = name string (from names or guest id)
+
+function startVoting(){
+  if(!state.currentOptions.length){toast(t('toastNeedOption'));return;}
+  state.votes={};
+  state.guests=[];
+  showScreen('votepicker');
+}
+
+function allVoters(){
+  // permanent names sorted alphabetically + temp guests at end
+  const perms = state.names.map(n=>({key:n, name:n, temp:false}))
+    .sort((a,b)=>a.name.localeCompare(b.name, undefined, {sensitivity:'base'}));
+  const guests = (state.guests||[]).map(g=>({key:g.id, name:g.name, temp:true}));
+  return [...perms, ...guests];
+}
+
+function renderVotePicker(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const voters=allVoters();
+  const doneCount=Object.keys(state.votes).length;
+  document.getElementById('pickerThemeName').textContent=th.emoji+' '+themeName(th);
+  const doneCount2=voters.filter(v=>state.votes[v.key]&&state.votes[v.key].length).length;
+  document.getElementById('pickerHeaderSub').textContent=t('votedCount',doneCount2,voters.length);
+
+  document.getElementById('voterGrid').innerHTML=voters.map(v=>{
+    const sels=state.votes[v.key]||[];
+    const done=sels.length>0;
+    const choiceStr=sels.join(' + ');
+    const shortChoice=choiceStr.length>16?choiceStr.slice(0,15)+'…':choiceStr;
+    return `<div class="voter-tile ${done?'done':''} ${v.temp?'guest':''}" onclick="openVoterVote('${escA(v.key)}','${escA(v.name)}',${v.temp})">
+      ${v.temp?`<div class="voter-tile-badge">gast</div>`:''}
+      <div class="voter-tile-name">${esc(v.name)}</div>
+      ${done?`<div class="voter-tile-choice">${esc(shortChoice)}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function addGuest(){
+  const inp=document.getElementById('guestNameInput');
+  const name=inp.value.trim(); if(!name) return;
+  if(!state.guests) state.guests=[];
+  state.guests.push({id:'guest_'+Date.now(), name});
+  inp.value='';
+  renderVotePicker();
+  toast('+ '+name);
+}
+
+function openVoterVote(key, name, isTemp){
+  state.currentVoterKey=key;
+  state.currentVoterName=name;
+  expandedOption=null;
+  activeSubSels={};
+  showScreen('vote');
+}
+
+function backToPicker(){
+  showScreen('votepicker');
+}
+
+// ═══════════════════════════════════════
+//  VOTE (single person)
+// ═══════════════════════════════════════
+// Track sub-selections per active option: { groupName: chosenValue }
+// votes[key] = array of choice-strings, e.g. ["Thee","Koekje"] or ["Set·Koffie·Jam"]
+// activeSubSels: for the option currently being sub-configured: {group: val}
+let activeSubSels = {};     // sub-selections for the option being expanded
+let expandedOption = null;  // which main option label is currently expanded for sub-selection
+
+// ─── helpers ───────────────────────────────────────────────────────────────
+function getSelections(key){ return state.votes[key] || []; }
+
+function isSelected(key, lbl){
+  return getSelections(key).some(s => s === lbl || s.startsWith(lbl + ' · '));
+}
+
+function getCompositeFor(key, lbl){
+  return (getSelections(key)).find(s => s === lbl || s.startsWith(lbl + ' · ')) || null;
+}
+
+// ─── render ────────────────────────────────────────────────────────────────
+function renderVote(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const key=state.currentVoterKey, name=state.currentVoterName;
+  const voters=allVoters(), total=voters.length;
+  const doneCount=Object.keys(state.votes).length;
+  document.getElementById('voteThemeName').textContent=th.emoji+' '+themeName(th);
+  document.getElementById('voteHeaderSub').textContent=t('votedCount',doneCount,total);
+  document.getElementById('voterName').textContent=name;
+
+  const sels = getSelections(key);
+
+  document.getElementById('voteOptions').innerHTML=state.currentOptions.map(o=>{
+    const lbl=optLabel(o);
+    const sel=isSelected(key,lbl);
+    const expanded=expandedOption===lbl;
+    // Badge showing sub-choice if selected
+    const composite=getCompositeFor(key,lbl);
+    const subBadge = composite && composite.includes(' · ')
+      ? `<span style="font-size:11px;color:var(--accent);margin-left:6px">${esc(composite.split(' · ').slice(1).join(' · '))}</span>` : '';
+    return `<div>
+      <button class="vote-option ${sel?'selected':''}" onclick="toggleOption('${escA(lbl)}')" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${esc(lbl)}</span>${subBadge}
+      </button>
+      ${(sel||expanded)&&hasSubs(o)?renderSubBlocks(o,lbl):''}
+    </div>`;
+  }).join('');
+
+  // custom input — show if any selection is fully custom
+  const customInp=document.getElementById('customVoteInput');
+  const knownLabels=state.currentOptions.map(optLabel);
+  const customSels=sels.filter(s=>!knownLabels.some(l=>s===l||s.startsWith(l+' · ')));
+  customInp.value=customSels.join(', ');
+  customInp.placeholder=t('customPlaceholder');
+  document.getElementById('customRow').style.borderColor=customSels.length?'var(--accent)':'';
+}
+
+function renderSubBlocks(opt, lbl){
+  const subs=optSubs(opt);
+  if(!subs.length) return '';
+  // Use activeSubSels if this is the expanded one, else parse from existing vote
+  const composite=getCompositeFor(state.currentVoterKey, lbl)||'';
+  const existingParts=composite.split(' · ').slice(1);
+  const html=subs.map((sg,gi)=>{
+    const chosen = expandedOption===lbl
+      ? (activeSubSels[sg.group]||'')
+      : (existingParts[gi]||'');
+    const btns=sg.values.filter(v=>v.trim()).map(v=>`
+      <button class="sub-btn ${chosen===v?'selected':''}" onclick="selectSubVal('${escA(lbl)}','${escA(sg.group)}','${escA(v)}')">${esc(v)}</button>`).join('');
+    return `<div class="sub-group">
+      ${sg.group?`<div class="sub-group-label">${esc(sg.group)}</div>`:''}
+      <div class="sub-group-btns">${btns}</div>
+    </div>`;
+  }).join('');
+  return `<div class="sub-options-block"><div class="sub-label">${t('subLabel')}</div>${html}</div>`;
+}
+
+// ─── selection logic ────────────────────────────────────────────────────────
+function toggleOption(lbl){
+  document.getElementById('customVoteInput').value='';
+  document.getElementById('customRow').style.borderColor='';
+  const key=state.currentVoterKey;
+  const opt=state.currentOptions.find(o=>optLabel(o)===lbl);
+
+  if(isSelected(key,lbl)){
+    // Deselect — remove this choice
+    state.votes[key]=(state.votes[key]||[]).filter(s=>s!==lbl && !s.startsWith(lbl+' · '));
+    if(!state.votes[key].length) delete state.votes[key];
+    if(expandedOption===lbl){ expandedOption=null; activeSubSels={}; }
+  } else {
+    // Select
+    if(hasSubs(opt)){
+      // Expand for sub-selection; pre-fill first values
+      expandedOption=lbl; activeSubSels={};
+      optSubs(opt).forEach(sg=>{ if(sg.values[0]) activeSubSels[sg.group]=sg.values[0]; });
+      commitSubVote(lbl);
+    } else {
+      if(!state.votes[key]) state.votes[key]=[];
+      state.votes[key].push(lbl);
+      expandedOption=null;
+    }
+  }
+  save(); // FIX 2: auto-save on every selection
+  renderVote();
+}
+
+function selectSubVal(lbl, group, val){
+  activeSubSels[group]=val;
+  commitSubVote(lbl);
+  save(); // FIX 2: auto-save
+  renderVote();
+}
+
+function commitSubVote(lbl){
+  const key=state.currentVoterKey;
+  const opt=state.currentOptions.find(o=>optLabel(o)===lbl);
+  const subs=opt?optSubs(opt):[];
+  const parts=[lbl];
+  subs.forEach(sg=>{ if(activeSubSels[sg.group]) parts.push(activeSubSels[sg.group]); });
+  const composite=parts.join(' · ');
+  if(!state.votes[key]) state.votes[key]=[];
+  // Replace existing composite for this label if present
+  const idx=state.votes[key].findIndex(s=>s===lbl||s.startsWith(lbl+' · '));
+  if(idx>=0) state.votes[key][idx]=composite;
+  else state.votes[key].push(composite);
+}
+
+function castVoteBtn(o){ toggleOption(optLabel(o)); }
+
+function onCustomInput(val){
+  const key=state.currentVoterKey;
+  const trimmed=val.trim();
+  // Remove previous custom entries, keep known-option selections
+  const knownLabels=state.currentOptions.map(optLabel);
+  if(!state.votes[key]) state.votes[key]=[];
+  state.votes[key]=state.votes[key].filter(s=>knownLabels.some(l=>s===l||s.startsWith(l+' · ')));
+  if(trimmed){
+    state.votes[key].push(trimmed);
+    document.getElementById('customRow').style.borderColor='var(--accent)';
+  } else {
+    document.getElementById('customRow').style.borderColor='';
+  }
+  if(!state.votes[key].length) delete state.votes[key];
+  expandedOption=null; activeSubSels={};
+  save(); // FIX 2: auto-save
+  // re-render buttons without full renderVote to keep cursor
+  document.getElementById('voteOptions').innerHTML=state.currentOptions.map(o=>{
+    const lbl=optLabel(o);
+    return `<div><button class="vote-option ${isSelected(key,lbl)?'selected':''}" onclick="toggleOption('${escA(lbl)}')">${esc(lbl)}</button></div>`;
+  }).join('');
+}
+
+function confirmVote(){
+  const key=state.currentVoterKey;
+  const choices=getSelections(key);
+  if(!choices.length){toast(t('toastNeedChoice'));return;}
+  // Add fully custom choices as plain options for future voters
+  const knownLabels=state.currentOptions.map(optLabel);
+  choices.forEach(choice=>{
+    const baseLabel=choice.split(' · ')[0];
+    if(!knownLabels.includes(baseLabel)){
+      state.currentOptions.push(choice);
+      toast(t('toastCustomAdded',choice));
+    }
+  });
+  expandedOption=null; activeSubSels={};
+  save();
+  backToPicker();
+}
+
+// ═══════════════════════════════════════
+//  RESULTS
+// ═══════════════════════════════════════
+function renderResults(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const voters=allVoters(), voted=Object.keys(state.votes), pending=voters.filter(v=>!(state.votes[v.key]&&state.votes[v.key].length));
+  document.getElementById('resultsThemeName').textContent=th.emoji+' '+themeName(th);
+  document.getElementById('resultsSub2').textContent=t('votedCount',voted.length,voters.length);
+  document.getElementById('resultSub').textContent=fmtDT(new Date());
+  const sorted=summarize(state.votes,state.currentOptions), max=sorted.length?sorted[0][1]:1;
+  document.getElementById('resultList').innerHTML=sorted.map(([o,c])=>{
+    const voters=Object.entries(state.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([n])=>n).join(', ');
+    return `<div class="result-item">
+      <div class="result-count ${c===0?'zero':''}">${c}</div>
+      <div class="result-info">
+        <div class="result-name">${esc(o)}</div>
+        ${c>0?`<div class="result-voters">${esc(voters)}</div>`:''}
+        <div class="result-bar-wrap"><div class="result-bar ${c===0?'empty':''}" style="width:${max>0?c/max*100:0}%"></div></div>
+      </div></div>`;
+  }).join('');
+  if(pending.length){
+    document.getElementById('pendingSection').style.display='';
+    document.getElementById('pendingNames').textContent=pending.map(v=>v.name).join(' · ');
+    document.getElementById('continueVoteBtn').style.display='';
+  } else {
+    document.getElementById('pendingSection').style.display='none';
+    document.getElementById('continueVoteBtn').style.display='none';
+  }
+}
+function continueVoting(){
+  showScreen('votepicker');
+}
+function finalizeRound(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  // Remap guest_xxx keys to readable names before storing
+  const namedVotes={};
+  const guestMap={};
+  (state.guests||[]).forEach(g=>{ guestMap[g.id]=g.name; });
+  Object.entries(state.votes).forEach(([key,val])=>{
+    const displayName = guestMap[key] || key;
+    namedVotes[displayName]=val;
+  });
+  state.history.push({ id:Date.now(), themeId:th.id, theme:themeName(th), emoji:th.emoji,
+    datetime:fmtDT(new Date()), options:[...state.currentOptions], votes:namedVotes,
+    guests:(state.guests||[]).map(g=>g.name) });
+  state.votes={}; state.guests=[]; state.currentVoterKey=null; state.currentVoterName=null;
+  save(); toast(t('toastRoundSaved')); showScreen('home');
+}
+
+// ═══════════════════════════════════════
+//  HISTORY DETAIL
+// ═══════════════════════════════════════
+function openHistDetail(idx){ viewingHistIdx=idx; showScreen('histdetail'); }
+function renderHistDetail(){
+  const h=state.history[viewingHistIdx]; if(!h){showScreen('home');return;}
+  document.getElementById('hdTitle').textContent=h.emoji+' '+h.theme;
+  document.getElementById('hdSub').textContent=h.datetime;
+  document.getElementById('hdTheme').textContent=h.emoji+' '+h.theme;
+  document.getElementById('hdDate').textContent=t('datePrefix')+h.datetime;
+  const sorted=summarize(h.votes,h.options), max=sorted.length?sorted[0][1]:1;
+  document.getElementById('hdTotals').innerHTML=sorted.map(([o,c])=>{
+    const who=Object.entries(h.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([n])=>n).join(' · ');
+    return `<div class="hd-total-item">
+      <div class="hd-count ${c===0?'zero':''}">${c}</div>
+      <div class="hd-opt-info">
+        <div class="hd-opt-name">${esc(o)}</div>
+        <div class="hd-bar-wrap"><div class="hd-bar" style="width:${max>0?c/max*100:0}%;${c===0?'background:var(--border)':''}"></div></div>
+        ${c>0?`<div class="hd-opt-names">${esc(who)}</div>`:''}
+      </div></div>`;
+  }).join('');
+  document.getElementById('hdPerList').innerHTML=Object.entries(h.votes)
+    .sort((a,b)=>a[0].localeCompare(b[0]))
+    .map(([n,arr])=>{
+      const choices=Array.isArray(arr)?arr:[arr];
+      return `<div class="hd-per-item"><div class="hd-per-name">${esc(n)}</div><div class="hd-per-choice">${esc(choices.join(' + '))}</div></div>`;
+    }).join('');
+}
+function deleteHistoryItem(){
+  confirm2(t('confirmDeleteOrder'),t('confirmDeleteOrderBody'),()=>{
+    state.history.splice(viewingHistIdx,1); save(); toast(t('toastDeleted')); showScreen('home');
+  });
+}
+function confirmClearHistory(){
+  confirm2(t('confirmClearHist'),t('confirmClearHistBody'),()=>{
+    state.history=[]; save(); toast(t('toastHistCleared')); renderHome();
+  });
+}
+
+// ═══════════════════════════════════════
+//  ADD THEME MODAL
+// ═══════════════════════════════════════
+function showAddThemeModal(){ openModal('addThemeModal'); }
+function addTheme(){
+  const name=document.getElementById('newThemeName').value.trim();
+  const emoji=document.getElementById('newThemeEmoji').value.trim()||'📋';
+  if(!name){toast(t('toastNeedName'));return;}
+  state.themes.push({id:'c_'+Date.now(), name:{nl:name,en:name,ne:name}, emoji, options:[]});
+  save(); closeModal('addThemeModal');
+  document.getElementById('newThemeName').value=''; document.getElementById('newThemeEmoji').value='';
+  renderHome(); toast(t('toastThemeAdded'));
+}
+
+// ═══════════════════════════════════════
+//  MODALS
+// ═══════════════════════════════════════
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function confirm2(title,body,cb){
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmBody').textContent=body;
+  document.getElementById('confirmOkBtn').onclick=()=>{closeModal('confirmModal');cb();};
+  openModal('confirmModal');
+}
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{ if(e.target===el) el.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════
+function summarize(votes,options){
+  const c={};
+  options.forEach(o=>{ c[optLabel(o)]=0; });
+  // votes[key] is now an array of choice strings
+  Object.values(votes).forEach(arr=>{
+    const items=Array.isArray(arr)?arr:[arr]; // backwards compat
+    items.forEach(v=>{ c[v]=(c[v]||0)+1; });
+  });
+  return Object.entries(c).sort((a,b)=>b[1]-a[1]);
+}
+function fmtDT(d){
+  return d.toLocaleDateString('nl-BE',{day:'2-digit',month:'2-digit',year:'numeric'})
+    +' · '+d.toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'});
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escA(s){ return String(s).replace(/'/g,"\\'"); }
+
+let toastTimer;
+function toast(msg){
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2400);
+}
+
+function confirmReset(){
+  confirm2(t('confirmReset'),t('confirmResetBody'),()=>{
+    try { localStorage.removeItem('gb6'); } catch(e){} window._gbMemory=null; try { location.reload(); } catch(e){ location.href=location.href; }
+  });
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+// ── INIT ──────────────────────────────────────────────────────────────────
+function init() {
+  // Brave browser blocks localStorage on file:// — detect and warn
+  (async () => {
+    try {
+      const isBrave = (navigator.brave && await navigator.brave.isBrave()) || false;
+      if (isBrave) {
+        const warn = document.createElement('div');
+        warn.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#c4622d;color:#fff;padding:12px 16px;font-size:14px;font-weight:600;z-index:9999;text-align:center;';
+        warn.textContent = '⚠️ Brave browser: open dit bestand in Chrome voor beste werking.';
+        document.body.prepend(warn);
+      }
+    } catch(e){}
+  })();
+  try {
+    load();
+  } catch(e) {
+    console.error('load() failed:', e);
+  }
+  try {
+    setLang(currentLang);
+  } catch(e) {
+    console.error('setLang() failed:', e);
+  }
+  try {
+    renderHome();
+  } catch(e) {
+    console.error('renderHome() failed:', e);
+    // Show visible error so user isn't staring at blank screen
+    document.body.innerHTML += '<div style="color:#e8a23a;padding:20px;font-size:16px">⚠️ Fout bij laden: ' + e.message + '<br><br>Probeer Chrome i.p.v. Brave.</div>';
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
