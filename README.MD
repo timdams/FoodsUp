@@ -4,6 +4,10 @@
 
 RoundUp is a single-file offline HTML app built for group travel. Each round, everyone taps their name, picks their order, and the app tallies the totals instantly. Built for 18 people across 4 families on a trek through Nepal.
 
+
+![](foodsup1.png)
+
+![](foodsup2.png)
 ---
 
 ## Features
