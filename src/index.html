@@ -39,10 +39,10 @@
 
   /* LANG SWITCHER */
   .lang-switcher { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-left: auto; }
-  .lang-btn { padding: 5px 10px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .lang-btn { padding: 5px 10px; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
   .lang-btn.active { background: var(--accent); color: #1a1410; }
 
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; transition: all 0.15s; user-select: none; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; transition: all 0.15s; user-select: none; text-decoration: none; }
   .btn:active { transform: scale(0.96); }
   .btn-primary { background: var(--accent); color: #1a1410; }
   .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
@@ -50,8 +50,9 @@
   .btn-success { background: var(--success); color: white; }
   .btn-warn { background: #7a5c10; color: var(--accent); border: 1px solid #a07820; }
   .btn-sm { padding: 6px 11px; font-size: 13px; border-radius: 8px; }
-  .btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 8px; font-size: 15px; }
+  .btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 8px; font-size: 15px; flex: none; }
   .btn-full { width: 100%; }
+  .btn-lg { padding: 15px 18px; font-size: 16px; border-radius: 12px; }
 
   .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 
@@ -66,6 +67,8 @@
   .theme-card:active { transform: scale(0.97); }
   .theme-card.selected { border-color: var(--accent); background: #2e2515; }
   .theme-card.selected::after { content: '✓'; position: absolute; top: 8px; right: 10px; color: var(--accent); font-size: 14px; font-weight: 700; }
+  .theme-card.add { border-style: dashed; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 12px; color: var(--muted); min-height: 96px; }
+  .theme-card.add .theme-emoji { font-size: 24px; margin: 0; }
   .theme-emoji { font-size: 26px; margin-bottom: 5px; }
   .theme-name { font-weight: 600; font-size: 14px; }
   .theme-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
@@ -85,34 +88,42 @@
   #order .content, #themeedit .content { padding: 16px; flex: 1; }
   .round-info { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
   .round-theme { font-family: Georgia, serif; font-size: 18px; font-weight: 700; color: var(--accent); }
-  .round-badge { background: var(--accent2); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .round-badge { background: var(--accent2); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
   .options-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
   .option-item { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
   .option-item.editing { border-color: var(--accent); }
-  .option-name { flex: 1; font-size: 15px; font-weight: 500; background: transparent; border: none; color: var(--text); font-family: inherit; outline: none; }
+  .option-name { flex: 1; min-width: 0; font-size: 15px; font-weight: 500; background: transparent; border: none; color: var(--text); font-family: inherit; outline: none; }
   .option-name::placeholder { color: var(--muted); }
+  .price-input { width: 74px; flex: none; background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; color: var(--text); font-family: inherit; font-size: 14px; text-align: right; outline: none; }
+  .price-input:focus { border-color: var(--accent); }
+  .price-input::placeholder { color: var(--muted); }
   .add-option-row { display: flex; gap: 8px; margin-bottom: 16px; }
-  .add-option-input { flex: 1; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
+  .add-option-input { flex: 1; min-width: 0; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
   .add-option-input:focus { border-color: var(--accent); }
   .add-option-input::placeholder { color: var(--muted); }
+  textarea.add-option-input { width: 100%; resize: vertical; line-height: 1.5; }
   .save-to-theme-bar { background: #2a2010; border: 1px solid #5a4010; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .save-to-theme-label { font-size: 13px; color: var(--accent); }
   .te-name-row { display: flex; gap: 8px; margin-bottom: 20px; }
+  .subs-badge { font-size: 11px; color: var(--accent); font-weight: 700; white-space: nowrap; }
 
   /* VOTE */
   #vote .content { padding: 16px; flex: 1; }
-  .voter-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-  .progress-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
-  .progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
   .voter-name-display { font-family: Georgia, serif; font-size: 26px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
   .voter-prompt { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
   .vote-options { display: flex; flex-direction: column; gap: 10px; }
-  .vote-option { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 20px; cursor: pointer; font-size: 17px; font-weight: 600; transition: all 0.15s; text-align: left; color: var(--text); width: 100%; font-family: inherit; }
+  .vote-row { display: flex; gap: 8px; align-items: stretch; }
+  .vote-option { flex: 1; background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 20px; cursor: pointer; font-size: 17px; font-weight: 600; transition: all 0.15s; text-align: left; color: var(--text); width: 100%; font-family: inherit; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .vote-option:active { transform: scale(0.98); }
   .vote-option.selected { border-color: var(--accent); background: #2e2515; color: var(--accent); }
-  .vote-option.selected::after { content: ' ✓'; }
+  .vote-option.selected::after { content: '✓'; }
+  .opt-price { font-size: 13px; color: var(--muted); font-weight: 600; margin-left: auto; padding-left: 8px; white-space: nowrap; }
+  .sub-badge { font-size: 11px; color: var(--accent); margin-left: 6px; }
+  .qty { display: flex; align-items: center; gap: 4px; background: var(--card); border: 2px solid var(--accent); border-radius: 14px; padding: 0 6px; }
+  .qty-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--card2); border: 1px solid var(--border); color: var(--accent); font-size: 22px; font-weight: 700; cursor: pointer; font-family: inherit; line-height: 1; }
+  .qty-btn:active { transform: scale(0.94); }
+  .qty-n { min-width: 24px; text-align: center; font-weight: 800; color: var(--accent); font-size: 18px; }
   .vote-nav { display: flex; gap: 10px; margin-top: 20px; padding-bottom: 20px; }
   .custom-option-row { margin-top: 14px; background: var(--card2); border: 1.5px dashed var(--border); border-radius: 14px; padding: 14px; transition: border-color 0.2s; }
   .custom-option-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
@@ -139,9 +150,10 @@
   .opt-subs { margin-left: 12px; border-left: 2px solid var(--border); padding-left: 10px; margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
   .sub-item { display: flex; align-items: center; gap: 6px; }
   .sub-group-header { display: flex; align-items: center; gap: 6px; margin-top: 8px; margin-bottom: 4px; }
-  .sub-group-name-input { flex:1; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; color: var(--accent); font-family: inherit; font-size: 13px; font-weight: 600; outline: none; }
-  .sub-val-input { flex:1; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 14px; outline: none; border-bottom: 1px solid var(--border); padding: 3px 6px; }
+  .sub-group-name-input { flex:1; min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; color: var(--accent); font-family: inherit; font-size: 13px; font-weight: 600; outline: none; }
+  .sub-val-input { flex:1; min-width: 0; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 14px; outline: none; border-bottom: 1px solid var(--border); padding: 3px 6px; }
   .sub-val-input::placeholder { color: var(--muted); }
+  .link-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; padding: 2px 0; text-align: left; }
 
   /* VOTER PICKER */
   #votepicker .content { padding: 16px; flex: 1; }
@@ -161,20 +173,22 @@
   .voter-tile-name { font-size: 13px; font-weight: 700; line-height: 1.2; word-break: break-word; }
   .voter-tile-choice { font-size: 11px; color: var(--accent); margin-top: 2px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .voter-tile-badge { font-size: 10px; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-  .picker-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
   .picker-actions { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; }
   .guest-add-row { display: flex; gap: 8px; margin-bottom: 20px; }
 
-  /* RESULTS */
-  #results .content { padding: 16px; flex: 1; }
+  /* RESULTS / HISTORY */
+  #results .content, #histdetail .content { padding: 16px; flex: 1; }
   .results-theme { font-family: Georgia, serif; font-size: 24px; font-weight: 900; color: var(--accent); margin-bottom: 4px; }
-  .results-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .results-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .total-bar { background: var(--card); border: 1.5px solid var(--accent); border-radius: 14px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .total-label { font-size: 13px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .total-value { font-family: Georgia, serif; font-size: 24px; font-weight: 900; color: var(--accent); }
   .result-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
   .result-item { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
   .result-count { font-family: Georgia, serif; font-size: 32px; font-weight: 900; color: var(--accent); min-width: 44px; text-align: center; }
   .result-count.zero { color: var(--muted); }
-  .result-info { flex: 1; }
-  .result-name { font-size: 16px; font-weight: 600; }
+  .result-info { flex: 1; min-width: 0; }
+  .result-name { font-size: 16px; font-weight: 600; display: flex; align-items: baseline; }
   .result-voters { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
   .result-bar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-top: 6px; overflow: hidden; }
   .result-bar { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s; }
@@ -183,43 +197,60 @@
   .pending-title { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
   .pending-names { font-size: 14px; color: var(--text); line-height: 1.8; }
   .results-actions { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; }
+  .per-list { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 4px 16px; margin-bottom: 20px; }
+  .hd-per-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .hd-per-item:last-child { border-bottom: none; }
+  .hd-per-name { font-weight: 600; }
+  .hd-per-choice { color: var(--accent); font-weight: 600; text-align: right; }
+  .per-note { font-size: 12px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .per-cost { font-size: 12px; color: var(--muted); margin-top: 2px; text-align: right; }
+  .hd-date { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
 
-  /* NAMES */
-  #names .content { padding: 16px; flex: 1; }
-  .names-intro { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
-  .names-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  /* GROUP */
+  #group .content { padding: 16px; flex: 1; }
+  .group-section { margin-bottom: 26px; }
+  .names-intro { color: var(--muted); font-size: 13px; margin-bottom: 12px; line-height: 1.45; }
+  .names-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
   .name-item { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 12px; }
   .name-num { color: var(--muted); font-size: 12px; min-width: 20px; }
-  .name-input { flex: 1; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
+  .name-input { flex: 1; min-width: 0; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 15px; outline: none; }
   .name-input::placeholder { color: var(--muted); }
+  .stack { display: flex; flex-direction: column; gap: 8px; }
 
-  /* HISTORY DETAIL */
-  #histdetail .content { padding: 16px; flex: 1; }
-  .hd-header-block { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
-  .hd-theme { font-family: Georgia, serif; font-size: 22px; font-weight: 900; color: var(--accent); }
-  .hd-date { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .hd-totals { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
-  .hd-total-item { display: flex; align-items: flex-start; gap: 10px; }
-  .hd-count { font-family: Georgia, serif; font-size: 28px; font-weight: 900; color: var(--accent); min-width: 42px; text-align: center; line-height: 1; padding-top: 2px; }
-  .hd-count.zero { color: var(--muted); }
-  .hd-opt-info { flex: 1; }
-  .hd-opt-name { font-size: 15px; font-weight: 600; }
-  .hd-opt-names { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.6; }
-  .hd-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 5px; overflow: hidden; }
-  .hd-bar { height: 100%; background: var(--accent); border-radius: 2px; }
-  .hd-per-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .hd-per-item:last-child { border-bottom: none; }
-  .hd-per-name { font-weight: 500; }
-  .hd-per-choice { color: var(--accent); font-weight: 600; }
+  /* WELCOME WIZARD */
+  #welcome .content { padding: calc(28px + env(safe-area-inset-top)) 20px 20px; flex: 1; display: flex; flex-direction: column; }
+  .wiz-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .wiz-logo { width: 64px; height: 64px; border-radius: 16px; }
+  .wiz-title { font-family: Georgia, serif; font-size: 28px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; }
+  .wiz-title span { color: var(--accent); }
+  .wiz-body { color: var(--muted); font-size: 15px; margin-bottom: 14px; line-height: 1.5; }
+  .wiz-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .wiz-list li { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 15px; display: flex; gap: 12px; align-items: center; }
+  .wiz-list li b { color: var(--accent); font-family: Georgia, serif; font-size: 20px; min-width: 18px; }
+  .wiz-privacy { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .wiz-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-bottom: 12px; }
+  .wiz-row { display: flex; gap: 10px; }
+  .wiz-dots { display: flex; gap: 6px; margin-bottom: 18px; }
+  .wiz-dot { width: 26px; height: 5px; border-radius: 3px; background: var(--border); }
+  .wiz-dot.on { background: var(--accent); }
+  .wiz-field { margin-bottom: 18px; }
+  .wiz-hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .pack-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .pack-card { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 14px; display: flex; gap: 14px; align-items: center; cursor: pointer; text-align: left; color: var(--text); font-family: inherit; width: 100%; }
+  .pack-card.selected { border-color: var(--accent); background: #2e2515; }
+  .pack-emoji { font-size: 30px; }
+  .pack-name { font-weight: 700; font-size: 15px; }
+  .pack-desc { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
   /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--card2); border: 1px solid var(--border); border-radius: 18px; padding: 24px; width: 100%; max-width: 400px; }
   .modal-title { font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
-  .modal-body { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .modal-body { color: var(--muted); font-size: 14px; margin-bottom: 16px; line-height: 1.45; }
   .modal-input { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text); font-family: inherit; font-size: 15px; outline: none; margin-bottom: 16px; }
   .modal-input:focus { border-color: var(--accent); }
+  textarea.modal-input { resize: vertical; min-height: 90px; font-size: 13px; }
   .modal-actions { display: flex; gap: 8px; }
 
   /* INSTALL / NOTICES */
@@ -234,21 +265,24 @@
   .resume-text { font-size: 14px; }
   .resume-text small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
 
-  .toast { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 200; transition: transform 0.3s; white-space: nowrap; }
+  .toast { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 200; transition: transform 0.3s; max-width: calc(100vw - 32px); text-align: center; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
+<!-- WELCOME (first start) -->
+<div id="welcome" class="screen">
+  <div class="content" id="wizBody"></div>
+</div>
+
 <!-- HOME -->
 <div id="home" class="screen active">
   <div class="header">
-    <div class="header-title">🍵 <span data-t="appTitle"></span></div>
+    <div class="header-title" id="homeTitle">🍲 FoodsUp</div>
     <div class="header-sub" data-t="appSub"></div>
     <div class="header-actions">
-      <button class="btn btn-secondary btn-sm" onclick="showScreen('names')" data-t="btnNames"></button>
-      <button class="btn btn-secondary btn-sm" onclick="showAddThemeModal()" data-t="btnAddTheme"></button>
-      <button class="btn btn-secondary btn-sm" onclick="confirmReset()" style="color:var(--muted)">↺</button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('group')" data-t="btnGroup"></button>
       <div class="lang-switcher">
         <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
         <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
@@ -266,7 +300,7 @@
     <div id="noNamesNotice" class="notice" style="display:none">
       <div class="notice-icon">👥</div>
       <div class="notice-text"><b data-t="noNamesTitle"></b><br><span data-t="noNamesBody"></span></div>
-      <button class="btn btn-primary btn-sm" onclick="showScreen('names')" data-t="btnAddNames"></button>
+      <button class="btn btn-primary btn-sm" onclick="showScreen('group')" data-t="btnAddNames"></button>
     </div>
     <div id="resumeBar" class="resume-bar" style="display:none">
       <div class="resume-text"><span id="resumeTitle"></span><small id="resumeSub"></small></div>
@@ -277,7 +311,7 @@
     <div class="section-label" data-t="labelThemes"></div>
     <div class="theme-grid" id="themeGrid"></div>
     <div class="theme-actions">
-      <button class="btn btn-primary btn-full" onclick="startOrder()" data-t="btnStartOrder"></button>
+      <button class="btn btn-primary btn-full btn-lg" onclick="startOrder()" data-t="btnStartOrder"></button>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div class="section-label" style="margin:0" data-t="labelHistory"></div>
@@ -288,21 +322,46 @@
   </div>
 </div>
 
-<!-- NAMES -->
-<div id="names" class="screen">
+<!-- GROUP: names, settings, sharing -->
+<div id="group" class="screen">
   <div class="header">
-    <div class="header-title" data-t="namesTitle"></div>
-    <div class="header-sub" data-t="namesSub"></div>
+    <div class="header-title" data-t="groupTitle"></div>
+    <div class="header-sub" data-t="groupSub"></div>
     <div class="header-actions">
       <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
-      <button class="btn btn-primary btn-sm" onclick="saveNames()" data-t="btnSave"></button>
+      <button class="btn btn-primary btn-sm" onclick="saveGroup()" data-t="btnDone"></button>
     </div>
   </div>
   <div class="content">
-    <div class="names-intro" data-t="namesIntro"></div>
-    <div class="names-list" id="namesList"></div>
-    <button class="btn btn-secondary btn-sm" onclick="addNameField()" data-t="btnAddName"></button>
-    <div style="height:20px"></div>
+    <div class="group-section">
+      <div class="section-label" data-t="labelGroupName"></div>
+      <input class="add-option-input" style="width:100%" id="groupNameInput" maxlength="40" data-placeholder-t="groupNamePlaceholder" oninput="state.groupName=this.value;save()">
+    </div>
+    <div class="group-section">
+      <div class="section-label" data-t="labelPeople"></div>
+      <div class="names-intro" data-t="namesIntro"></div>
+      <div class="names-list" id="namesList"></div>
+      <button class="btn btn-secondary btn-sm" onclick="addNameField()" data-t="btnAddName"></button>
+    </div>
+    <div class="group-section">
+      <div class="section-label" data-t="labelCurrency"></div>
+      <div class="names-intro" data-t="currencyIntro"></div>
+      <input class="add-option-input" style="width:110px" id="currencyInput" maxlength="4" placeholder="€" oninput="state.currency=this.value.trim();save()">
+    </div>
+    <div class="group-section">
+      <div class="section-label" data-t="labelShare"></div>
+      <div class="names-intro" data-t="shareIntro"></div>
+      <div class="stack">
+        <button class="btn btn-primary btn-full" onclick="shareSetupLink()" data-t="btnShareSetup"></button>
+        <button class="btn btn-secondary btn-full" onclick="openImport()" data-t="btnImportSetup"></button>
+        <button class="btn btn-secondary btn-full" onclick="downloadBackup()" data-t="btnBackup"></button>
+        <button class="btn btn-secondary btn-full" onclick="document.getElementById('restoreInput').click()" data-t="btnRestore"></button>
+        <input type="file" id="restoreInput" accept=".json,application/json" style="display:none" onchange="restoreBackup(this.files[0]);this.value=''">
+      </div>
+    </div>
+    <div class="group-section" style="border-top:1px solid var(--border);padding-top:16px">
+      <button class="btn btn-danger btn-sm" onclick="confirmReset()" data-t="btnResetAll"></button>
+    </div>
   </div>
 </div>
 
@@ -336,7 +395,7 @@
   </div>
 </div>
 
-<!-- ORDER -->
+<!-- ORDER (options for this round) -->
 <div id="order" class="screen">
   <div class="header">
     <div class="header-title" data-t="orderTitle"></div>
@@ -354,10 +413,6 @@
       </div>
       <div class="round-badge" id="orderOptionCount"></div>
     </div>
-    <div class="save-to-theme-bar">
-      <div class="save-to-theme-label" data-t="savePermanentLabel"></div>
-      <button class="btn btn-warn btn-sm" onclick="saveCurrentToTheme()" data-t="btnSaveDefault"></button>
-    </div>
     <div class="options-header">
       <div class="section-label" style="margin:0" data-t="labelOptions"></div>
       <button class="btn btn-secondary btn-sm" onclick="resetToThemeDefaults()" data-t="btnReset"></button>
@@ -367,7 +422,11 @@
       <input class="add-option-input" id="newOptionInput" data-placeholder-t="placeholderNewOption" onkeydown="if(event.key==='Enter')addOption()">
       <button class="btn btn-primary btn-sm" onclick="addOption()">+</button>
     </div>
-    <button class="btn btn-success btn-full" onclick="startVoting()" data-t="btnStartVoting"></button>
+    <div class="save-to-theme-bar">
+      <div class="save-to-theme-label" data-t="savePermanentLabel"></div>
+      <button class="btn btn-warn btn-sm" onclick="saveCurrentToTheme()" data-t="btnSaveDefault"></button>
+    </div>
+    <button class="btn btn-success btn-full btn-lg" onclick="startVoting()" data-t="btnStartVoting"></button>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -378,7 +437,7 @@
     <div class="header-title" id="pickerThemeName"></div>
     <div class="header-sub" id="pickerHeaderSub"></div>
     <div class="header-actions">
-      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnHome"></button>
       <button class="btn btn-primary btn-sm" onclick="showScreen('results')" data-t="resultsTitle"></button>
     </div>
   </div>
@@ -391,8 +450,7 @@
       <button class="btn btn-warn btn-sm" onclick="addGuest()" data-t="btnAddGuest"></button>
     </div>
     <div class="picker-actions">
-      <button class="btn btn-success btn-full" onclick="showScreen('results')" data-t="btnFinalize"></button>
-      <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnNewRound"></button>
+      <button class="btn btn-success btn-full btn-lg" onclick="showScreen('results')" data-t="btnToResults"></button>
     </div>
   </div>
 </div>
@@ -412,13 +470,15 @@
     <div class="vote-options" id="voteOptions"></div>
     <div class="custom-option-row" id="customRow">
       <div class="custom-option-label" data-t="customLabel"></div>
-      <div style="display:flex;gap:8px">
-        <input class="add-option-input" id="customVoteInput" data-placeholder-t="customPlaceholder" oninput="onCustomInput(this.value)">
-      </div>
+      <input class="add-option-input" style="width:100%" id="customVoteInput" data-placeholder-t="customPlaceholder" oninput="onCustomInput(this.value)">
+    </div>
+    <div class="custom-option-row">
+      <div class="custom-option-label" data-t="noteLabel"></div>
+      <input class="add-option-input" style="width:100%" id="noteInput" maxlength="120" data-placeholder-t="notePlaceholder" oninput="onNoteInput(this.value)">
     </div>
     <div class="vote-nav">
       <button class="btn btn-secondary" onclick="backToPicker()" data-t="btnBack"></button>
-      <button class="btn btn-primary" style="flex:1" onclick="confirmVote()" data-t="btnConfirmVote"></button>
+      <button class="btn btn-primary btn-lg" style="flex:1" onclick="confirmVote()" data-t="btnConfirmVote"></button>
     </div>
   </div>
 </div>
@@ -428,20 +488,28 @@
   <div class="header">
     <div class="header-title" data-t="resultsTitle"></div>
     <div class="header-sub" id="resultSub"></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('votepicker')" data-t="btnBackToNames"></button>
+    </div>
   </div>
   <div class="content">
     <div class="results-theme" id="resultsThemeName"></div>
     <div class="results-sub" id="resultsSub2"></div>
+    <div id="resultsTotal"></div>
     <div class="result-list" id="resultList"></div>
     <div id="pendingSection" style="display:none" class="pending-section">
       <div class="pending-title" data-t="pendingTitle"></div>
       <div class="pending-names" id="pendingNames"></div>
     </div>
+    <div id="resultsPerWrap">
+      <div class="section-label" data-t="hdWhoWhat"></div>
+      <div class="per-list" id="resultsPer"></div>
+    </div>
     <div class="results-actions">
       <button class="btn btn-primary btn-full" onclick="showScreen('votepicker')" id="continueVoteBtn" style="display:none" data-t="btnContinueVote"></button>
       <button class="btn btn-secondary btn-full" onclick="shareCurrentRound()" data-t="btnShare"></button>
-      <button class="btn btn-success btn-full" onclick="finalizeRound()" data-t="btnFinalize"></button>
-      <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnNewRound"></button>
+      <button class="btn btn-success btn-full btn-lg" onclick="finalizeRound()" data-t="btnFinalize"></button>
+      <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnHomeKeep"></button>
     </div>
     <div style="height:20px"></div>
   </div>
@@ -459,13 +527,12 @@
     </div>
   </div>
   <div class="content">
-    <div class="hd-header-block">
-      <div class="hd-theme" id="hdTheme"></div>
-      <div class="hd-date" id="hdDate"></div>
-      <div class="hd-totals" id="hdTotals"></div>
-    </div>
+    <div class="results-theme" id="hdTheme"></div>
+    <div class="hd-date" id="hdDate"></div>
+    <div id="hdTotal"></div>
+    <div class="result-list" id="hdTotals"></div>
     <div class="section-label" data-t="hdWhoWhat"></div>
-    <div id="hdPerList"></div>
+    <div class="per-list" id="hdPerList"></div>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -475,11 +542,24 @@
   <div class="modal">
     <div class="modal-title" data-t="modalNewThemeTitle"></div>
     <div class="modal-body" data-t="modalNewThemeBody"></div>
-    <input class="modal-input" id="newThemeName" data-placeholder-t="modalNamePlaceholder" maxlength="30">
-    <input class="modal-input" id="newThemeEmoji" data-placeholder-t="modalEmojiPlaceholder" maxlength="5">
+    <input class="modal-input" id="newThemeName" data-placeholder-t="modalNamePlaceholder" maxlength="30" onkeydown="if(event.key==='Enter')addTheme()">
+    <input class="modal-input" id="newThemeEmoji" data-placeholder-t="modalEmojiPlaceholder" maxlength="5" onkeydown="if(event.key==='Enter')addTheme()">
     <div class="modal-actions">
       <button class="btn btn-secondary" style="flex:1" onclick="closeModal('addThemeModal')" data-t="btnCancel"></button>
       <button class="btn btn-primary" style="flex:1" onclick="addTheme()" data-t="btnAdd"></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: import setup link -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-title" data-t="importModalTitle"></div>
+    <div class="modal-body"><span data-t="importModalBody"></span><br><br><small data-t="importIphoneHint"></small></div>
+    <textarea class="modal-input" id="importInput" data-placeholder-t="importPlaceholder"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('importModal')" data-t="btnCancel"></button>
+      <button class="btn btn-primary" style="flex:1" onclick="importFromInput()" data-t="btnImport"></button>
     </div>
   </div>
 </div>
@@ -491,7 +571,7 @@
     <div class="modal-body" id="confirmBody"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" style="flex:1" onclick="closeModal('confirmModal')" data-t="btnCancel"></button>
-      <button class="btn btn-danger" style="flex:1" id="confirmOkBtn" data-t="btnOk"></button>
+      <button class="btn btn-danger" style="flex:1" id="confirmOkBtn"></button>
     </div>
   </div>
 </div>
@@ -519,279 +599,392 @@
 // ═══════════════════════════════════════
 const LANGS = {
   nl: {
-    appTitle: 'Groepsbestelling', appSub: 'Groepsbestellingen in een paar tikken',
-    locale: 'nl-BE', guestBadge: 'gast',
+    appSub: 'Groepsbestellingen in een paar tikken', locale: 'nl-BE', datePrefix: '📅 ',
+    btnGroup: '👥 Groep', btnBack: '← Terug', btnSave: 'Opslaan ✓', btnDone: 'Klaar ✓', btnHome: '← Start',
+    btnStartOrder: 'Bestelling starten →', btnStartVoting: 'Iedereen laten kiezen →', btnVote: 'Verder →',
+    btnReset: '⟳ Standaard', btnDelete: '🗑 Verwijder', btnDeleteTheme: '🗑 Menu verwijderen', btnClearAll: 'Alles wissen',
+    btnAdd: 'Toevoegen', btnCancel: 'Annuleer', btnOk: 'OK',
+    btnContinueVote: '▶ Verder bestellen', btnFinalize: '✓ Ronde afsluiten & opslaan', btnHomeKeep: '← Naar start (ronde blijft bewaard)',
+    btnToResults: '📊 Bekijk resultaat', btnBackToNames: '← Namen',
+    btnSaveDefault: 'Bewaren', btnAddName: '+ Naam toevoegen', btnEditShort: '✎ Bewerk', btnNewTheme: 'Nieuw menu',
+    homeWelcome1: 'Kies een', homeWelcome2: 'menu', homeWelcomeSub: 'Tik ✎ op een menu om de keuzes of prijzen aan te passen.',
+    labelThemes: "Menu's", labelHistory: 'Geschiedenis', labelOptions: 'Keuzes',
+    groupTitle: '👥 Groep', groupSub: 'Namen, instellingen en delen',
+    labelGroupName: 'Naam van de groep', groupNamePlaceholder: 'bv. Kamp 2027, Team Marketing',
+    labelPeople: 'Deelnemers', namesIntro: 'Tip: plak een hele lijst namen in één keer (één per regel, of gescheiden door komma’s).', namePlaceholder: 'Naam',
+    labelCurrency: 'Munteenheid', currencyIntro: 'Gebruikt bij prijzen. Prijzen zijn optioneel: vul ze in bij een menu (✎).',
+    labelShare: 'Delen & back-up', shareIntro: 'Stuur je namen en menu’s naar iemand anders, zodat die meteen kan starten. Of maak een back-up van alles.',
+    btnShareSetup: '🔗 Deel groep via link', btnImportSetup: '📥 Link van iemand anders plakken', btnBackup: '💾 Back-up downloaden', btnRestore: '📂 Back-up terugzetten',
+    btnResetAll: '↺ Alles wissen',
+    teHeaderSub: 'Standaardkeuzes van dit menu', teIntro: 'Deze keuzes worden de standaard voor volgende rondes. Een prijs invullen is optioneel.',
+    teNameLabel: 'Naam & emoji', teOptionsLabel: 'Keuzes & prijs', tePlaceholderName: 'Naam van het menu', placeholderNewOption: 'Nieuwe keuze...', pricePlaceholder: 'prijs',
+    orderTitle: '✏️ Keuzes voor deze ronde', orderSub: 'Wijzigingen gelden enkel voor deze ronde', orderRoundSub: 'Enkel deze ronde',
+    savePermanentLabel: '💾 Deze keuzes ook als standaard bewaren?',
+    votePrompt: 'Wat wil je? Je mag meerdere dingen kiezen.', customLabel: '✍️ Iets anders?', customPlaceholder: 'Typ hier je eigen keuze...',
+    noteLabel: '📝 Opmerking', notePlaceholder: 'bv. zonder ui, extra pikant...',
+    resultsTitle: '📊 Resultaat', pendingTitle: '⏳ Nog niet besteld', hdWhoWhat: 'Wie bestelde wat', totalLabel: 'Totaal',
+    modalNewThemeTitle: 'Nieuw menu', modalNewThemeBody: 'Geef het menu een naam en een emoji. Daarna vul je de keuzes in.',
+    modalNamePlaceholder: 'Naam (bv. Avondeten)', modalEmojiPlaceholder: 'Emoji (bv. 🍽️)',
+    btnAddSubGroup: '+ Subkeuze (bv. wit/bruin)', btnAddSubVal: '+ Waarde',
+    subGroupPlaceholder: 'Naam (bv. Brood)', subValPlaceholder: 'Waarde (bv. Bruin)', subLabel: 'Maak je keuze af:',
+    pickerTitle: 'Namen', pickerIntro: 'Tik op je naam en kies. Geef de gsm daarna door. ✓ = klaar.',
+    labelGuests: 'Extra gasten (enkel deze ronde)', guestPlaceholder: 'Naam gast...', btnAddGuest: '+ Gast', guestBadge: 'gast',
+    btnConfirmVote: 'Bevestigen ✓',
+    optionsCount: (n) => n === 1 ? '1 keuze' : `${n} keuzes`,
+    votedCount: (d,t) => `${d} van ${t} besteld`,
+    noHistory: 'Nog geen rondes opgeslagen.',
+    toastNeedTheme: 'Kies eerst een menu!', toastNeedOption: 'Voeg minstens 1 keuze toe!',
+    toastNeedChoice: 'Maak eerst een keuze!', toastNamesSaved: 'Opgeslagen ✓', toastThemeSaved: 'Menu opgeslagen ✓',
+    toastThemeAdded: 'Menu toegevoegd ✓', toastThemeDeleted: 'Menu verwijderd',
+    toastRoundSaved: 'Ronde opgeslagen ✓', toastDeleted: 'Verwijderd', toastHistCleared: 'Geschiedenis gewist', toastNeedName: 'Geef een naam!',
+    toastCustomAdded: (v) => `"${v}" toegevoegd als keuze voor iedereen`,
+    toastSavedDefault: (n) => `Bewaard als standaard voor "${n}" ✓`,
+    toastNamesPasted: (n) => `${n} namen toegevoegd ✓`,
+    toastImported: 'Groep overgenomen ✓', toastImportFailed: 'Deze link of code werkt niet.',
+    toastBackupRestored: 'Back-up teruggezet ✓', toastBackupInvalid: 'Dit is geen FoodsUp-back-up.', toastBackupSaved: 'Back-up gedownload ✓',
+    confirmDeleteOrder: 'Ronde verwijderen?', confirmDeleteOrderBody: 'Dit verwijdert deze ronde uit de geschiedenis.',
+    confirmClearHist: 'Volledige geschiedenis wissen?', confirmClearHistBody: 'Alle opgeslagen rondes worden verwijderd.',
+    confirmDeleteTheme: (n) => `"${n}" verwijderen?`, confirmDeleteThemeBody: 'Dit verwijdert het menu permanent.',
+    confirmReset: 'Alles wissen?', confirmResetBody: 'Dit verwijdert alle namen, menu’s en geschiedenis op dit toestel. Daarna start de app opnieuw.',
+    confirmNewRound: 'Lopende bestelling wissen?', confirmNewRoundBody: 'Er is nog een bestelling bezig die niet is opgeslagen. Een nieuwe starten wist die.',
+    confirmImport: (g) => `Groep „${g}” overnemen?`,
+    confirmImportBody: (p,m) => `${p} namen en ${m} menu’s. Je huidige namen en menu’s worden vervangen; je geschiedenis blijft.`,
+    confirmRestore: 'Back-up terugzetten?', confirmRestoreBody: 'Alles op dit toestel wordt vervangen door de inhoud van de back-up.',
+    btnImport: 'Overnemen', btnRestoreOk: 'Terugzetten',
+    importModalTitle: '📥 Groep overnemen', importModalBody: 'Plak de link of code die je van iemand uit je groep kreeg.',
+    importIphoneHint: 'iPhone: open je de link in Safari, dan komt de groep in Safari terecht, niet in de app op je beginscherm. Kopieer de link dan liever en plak hem hier.',
+    importPlaceholder: 'https://…#import=…',
+    shareSetupTitle: 'FoodsUp-groep', shareSetupText: (g) => `Doe mee met „${g}” in FoodsUp! Open deze link om de namen en menu’s over te nemen:`,
+    unnamedGroup: 'mijn groep',
     installTitle: 'Installeer als app', installBody: 'Eigen icoon op je beginscherm, werkt ook zonder internet.', btnInstall: 'Installeer',
     iosTitle: '📲 Op je beginscherm zetten', iosStep1: 'Tik onderaan in Safari op de Deel-knop (vierkantje met pijl ↑).',
     iosStep2: 'Scroll en kies „Zet op beginscherm”.', iosStep3: 'Tik op „Voeg toe”. Open FoodsUp voortaan via het icoon.',
     noNamesTitle: 'Nog geen deelnemers', noNamesBody: 'Voeg eerst de namen van je groep toe.', btnAddNames: '👥 Namen toevoegen',
     btnResume: 'Hervat ▶', resumeTitle: (th) => `Lopende bestelling: ${th}`, resumeSub: (d,t) => `${d} van ${t} besteld`,
-    confirmNewRound: 'Lopende bestelling wissen?', confirmNewRoundBody: 'Er is nog een bestelling bezig die niet is opgeslagen. Een nieuwe starten wist die.',
     btnShare: '📤 Delen', toastCopied: 'Gekopieerd naar klembord ✓', toastShareFailed: 'Delen lukte niet',
     braveWarn: '⚠️ Brave blokkeert opslag voor lokale bestanden. Open FoodsUp via de website of in Chrome.',
     loadError: '⚠️ Fout bij laden:',
-    btnNames: '👥 Namen', btnAddTheme: '+ Thema', btnBack: '← Terug', btnSave: 'Opslaan ✓',
-    btnStartOrder: 'Bestelling starten →', btnStartVoting: 'Stemmen starten →',
-    btnVote: 'Stemmen →', btnReset: '⟳ Reset', btnDelete: '🗑 Verwijder',
-    btnDeleteTheme: '🗑 Thema verwijderen', btnClearAll: 'Alles wissen',
-    btnAdd: 'Toevoegen', btnCancel: 'Annuleer', btnOk: 'OK',
-    btnPrev: '← Vorige', btnContinueVote: '▶ Verder stemmen',
-    btnFinalize: '✓ Ronde afsluiten & opslaan', btnNewRound: '← Nieuwe ronde (niet opslaan)',
-    btnSaveDefault: 'Als standaard', btnAddName: '+ Naam toevoegen',
-    homeWelcome1: 'Kies een', homeWelcome2: 'thema',
-    homeWelcomeSub: 'Tik ✎ op een thema om het permanent aan te passen',
-    labelThemes: "Thema's", labelHistory: 'Geschiedenis', labelOptions: 'Opties',
-    namesTitle: '👥 Deelnemers', namesSub: 'Namen van de groep',
-    namesIntro: 'Namen worden gebruikt bij het stemmen.',
-    teHeaderSub: 'Permanente standaard opties', teIntro: 'Deze opties worden de standaard voor toekomstige rondes.',
-    teNameLabel: 'Naam & Emoji', teOptionsLabel: 'Standaard opties',
-    tePlaceholderName: 'Thema naam', placeholderNewOption: 'Nieuwe optie...',
-    orderTitle: '✏️ Opties instellen', orderSub: 'Enkel voor deze ronde', orderRoundSub: 'Ronde-specifiek',
-    savePermanentLabel: '💾 Ook permanent opslaan in thema?',
-    votePrompt: 'Kies jouw keuze:', customLabel: '✍️ Ander gerecht?',
-    customPlaceholder: 'Typ hier je eigen keuze...',
-    resultsTitle: '📊 Resultaat', pendingTitle: '⏳ Nog niet gestemd',
-    hdWhoWhat: 'Wie bestelde wat',
-    modalNewThemeTitle: 'Nieuw thema', modalNewThemeBody: 'Naam en emoji voor het nieuwe thema.',
-    modalNamePlaceholder: 'Naam (bijv. Avondeten)', modalEmojiPlaceholder: 'Emoji (bijv. 🍽️)',
-    btnEditShort: '✎ Bewerk',
-    btnAddSubGroup: '+ Subgroep', btnAddSubVal: '+ Waarde',
-    subGroupPlaceholder: 'Groepsnaam (bijv. Drank)', subValPlaceholder: 'Waarde (bijv. Koffie)',
-    subLabel: 'Verfijn je keuze:',
-    pickerTitle: 'Deelnemers', pickerIntro: 'Tik een naam om te bestellen. Vinkje = al gedaan.',
-    labelGuests: 'Tijdelijke gasten (dragers, gidsen...)',
-    guestPlaceholder: 'Naam tijdelijke gast...', btnAddGuest: '+ Gast',
-    btnConfirmVote: 'Bevestigen ✓', btnBack2Picker: '← Overzicht',
-    optionsCount: (n) => `${n} opties`,
-    votedCount: (d,t) => `${d} van ${t} gestemd`,
-    noHistory: 'Nog geen rondes gespeeld.',
-    toastNeedTheme: 'Kies eerst een thema!', toastNeedOption: 'Voeg minstens 1 optie toe!',
-    toastNeedChoice: 'Maak eerst een keuze!', toastAllVoted: 'Iedereen heeft gestemd!',
-    toastNamesSaved: 'Namen opgeslagen ✓', toastThemeSaved: 'Thema opgeslagen ✓',
-    toastThemeAdded: 'Thema toegevoegd ✓', toastThemeDeleted: 'Thema verwijderd',
-    toastRoundSaved: 'Ronde opgeslagen ✓', toastDeleted: 'Verwijderd',
-    toastHistCleared: 'Geschiedenis gewist', toastNeedName: 'Geef een naam!',
-    toastCustomAdded: (v) => `"${v}" toegevoegd als keuze voor iedereen`,
-    toastSavedDefault: (n) => `Opgeslagen als standaard voor "${n}" ✓`,
-    confirmDeleteOrder: 'Bestelling verwijderen?', confirmDeleteOrderBody: 'Dit verwijdert deze ronde uit de geschiedenis.',
-    confirmClearHist: 'Volledige geschiedenis wissen?', confirmClearHistBody: 'Alle opgeslagen bestellingen worden verwijderd.',
-    confirmDeleteTheme: (n) => `"${n}" verwijderen?`, confirmDeleteThemeBody: 'Dit verwijdert het thema permanent.',
-    confirmReset: 'Alles wissen?', confirmResetBody: 'Dit verwijdert alle namen, thema-aanpassingen en geschiedenis. De app start opnieuw.',
-    datePrefix: '📅 ',
+    wizWelcomeTitle: 'Welkom bij <span>FoodsUp</span> 👋', wizWelcomeBody: 'Samen bestellen met een groep, zonder briefjes of chaos:',
+    wizStep1: 'Zet de namen van je groep erin', wizStep2: 'Kies een menu', wizStep3: 'Geef de gsm door: iedereen tikt z’n naam en kiest',
+    wizStep4: 'Deel het totaal met de ober of in de groepschat',
+    wizPrivacy: '🔒 Alles blijft op je eigen toestel. Geen account, geen internet nodig.',
+    wizStart: 'Aan de slag →', wizHaveLink: 'Ik kreeg een link van mijn groep',
+    wizNamesTitle: 'Wie doet er <span>mee</span>?', wizGroupLabel: 'Naam van de groep (optioneel)',
+    wizNamesLabel: 'Namen', wizNamesHint: 'Eén naam per regel. Je kan dit later nog aanpassen via 👥 Groep.',
+    wizNamesPlaceholder: 'Anna\nBram\nCharlotte',
+    wizPackTitle: 'Waarvoor <span>gebruik</span> je het?', wizPackSub: 'Kies een startpakket met menu’s. Alles kan je daarna nog aanpassen.',
+    wizNext: 'Verder →', wizDone: 'Klaar ✓', wizSkip: 'Overslaan', toastWelcome: 'Klaar! Kies een menu om te starten.',
   },
   en: {
-    appTitle: 'Group Order', appSub: 'Group orders in a few taps',
-    locale: 'en-GB', guestBadge: 'guest',
+    appSub: 'Group orders in a few taps', locale: 'en-GB', datePrefix: '📅 ',
+    btnGroup: '👥 Group', btnBack: '← Back', btnSave: 'Save ✓', btnDone: 'Done ✓', btnHome: '← Home',
+    btnStartOrder: 'Start order →', btnStartVoting: 'Let everyone choose →', btnVote: 'Next →',
+    btnReset: '⟳ Defaults', btnDelete: '🗑 Delete', btnDeleteTheme: '🗑 Delete menu', btnClearAll: 'Clear all',
+    btnAdd: 'Add', btnCancel: 'Cancel', btnOk: 'OK',
+    btnContinueVote: '▶ Continue ordering', btnFinalize: '✓ Close round & save', btnHomeKeep: '← Home (round is kept)',
+    btnToResults: '📊 See results', btnBackToNames: '← Names',
+    btnSaveDefault: 'Save', btnAddName: '+ Add name', btnEditShort: '✎ Edit', btnNewTheme: 'New menu',
+    homeWelcome1: 'Choose a', homeWelcome2: 'menu', homeWelcomeSub: 'Tap ✎ on a menu to change its choices or prices.',
+    labelThemes: 'Menus', labelHistory: 'History', labelOptions: 'Choices',
+    groupTitle: '👥 Group', groupSub: 'Names, settings and sharing',
+    labelGroupName: 'Group name', groupNamePlaceholder: 'e.g. Summer camp, Marketing team',
+    labelPeople: 'Participants', namesIntro: 'Tip: paste a whole list of names at once (one per line, or separated by commas).', namePlaceholder: 'Name',
+    labelCurrency: 'Currency', currencyIntro: 'Used for prices. Prices are optional: add them to a menu (✎).',
+    labelShare: 'Sharing & backup', shareIntro: 'Send your names and menus to someone else so they can start right away. Or back up everything.',
+    btnShareSetup: '🔗 Share group via link', btnImportSetup: '📥 Paste a link from someone else', btnBackup: '💾 Download backup', btnRestore: '📂 Restore backup',
+    btnResetAll: '↺ Clear everything',
+    teHeaderSub: 'Default choices for this menu', teIntro: 'These choices become the default for future rounds. Prices are optional.',
+    teNameLabel: 'Name & emoji', teOptionsLabel: 'Choices & price', tePlaceholderName: 'Menu name', placeholderNewOption: 'New choice...', pricePlaceholder: 'price',
+    orderTitle: '✏️ Choices for this round', orderSub: 'Changes only apply to this round', orderRoundSub: 'This round only',
+    savePermanentLabel: '💾 Also save these choices as the default?',
+    votePrompt: 'What would you like? You can pick several things.', customLabel: '✍️ Something else?', customPlaceholder: 'Type your own choice here...',
+    noteLabel: '📝 Note', notePlaceholder: 'e.g. no onions, extra spicy...',
+    resultsTitle: '📊 Results', pendingTitle: '⏳ Not ordered yet', hdWhoWhat: 'Who ordered what', totalLabel: 'Total',
+    modalNewThemeTitle: 'New menu', modalNewThemeBody: 'Give the menu a name and an emoji. Then add the choices.',
+    modalNamePlaceholder: 'Name (e.g. Dinner)', modalEmojiPlaceholder: 'Emoji (e.g. 🍽️)',
+    btnAddSubGroup: '+ Sub-choice (e.g. white/brown)', btnAddSubVal: '+ Value',
+    subGroupPlaceholder: 'Name (e.g. Bread)', subValPlaceholder: 'Value (e.g. Brown)', subLabel: 'Complete your choice:',
+    pickerTitle: 'Names', pickerIntro: 'Tap your name and choose. Then pass the phone on. ✓ = done.',
+    labelGuests: 'Extra guests (this round only)', guestPlaceholder: 'Guest name...', btnAddGuest: '+ Guest', guestBadge: 'guest',
+    btnConfirmVote: 'Confirm ✓',
+    optionsCount: (n) => n === 1 ? '1 choice' : `${n} choices`,
+    votedCount: (d,t) => `${d} of ${t} ordered`,
+    noHistory: 'No rounds saved yet.',
+    toastNeedTheme: 'Choose a menu first!', toastNeedOption: 'Add at least 1 choice!',
+    toastNeedChoice: 'Make a choice first!', toastNamesSaved: 'Saved ✓', toastThemeSaved: 'Menu saved ✓',
+    toastThemeAdded: 'Menu added ✓', toastThemeDeleted: 'Menu deleted',
+    toastRoundSaved: 'Round saved ✓', toastDeleted: 'Deleted', toastHistCleared: 'History cleared', toastNeedName: 'Enter a name!',
+    toastCustomAdded: (v) => `"${v}" added as a choice for everyone`,
+    toastSavedDefault: (n) => `Saved as default for "${n}" ✓`,
+    toastNamesPasted: (n) => `${n} names added ✓`,
+    toastImported: 'Group imported ✓', toastImportFailed: 'This link or code doesn’t work.',
+    toastBackupRestored: 'Backup restored ✓', toastBackupInvalid: 'This is not a FoodsUp backup.', toastBackupSaved: 'Backup downloaded ✓',
+    confirmDeleteOrder: 'Delete round?', confirmDeleteOrderBody: 'This removes this round from the history.',
+    confirmClearHist: 'Clear full history?', confirmClearHistBody: 'All saved rounds will be deleted.',
+    confirmDeleteTheme: (n) => `Delete "${n}"?`, confirmDeleteThemeBody: 'This permanently deletes the menu.',
+    confirmReset: 'Clear everything?', confirmResetBody: 'This deletes all names, menus and history on this device. The app then restarts.',
+    confirmNewRound: 'Discard current order?', confirmNewRoundBody: 'An order is still in progress and not saved. Starting a new one discards it.',
+    confirmImport: (g) => `Import group “${g}”?`,
+    confirmImportBody: (p,m) => `${p} names and ${m} menus. Your current names and menus will be replaced; your history stays.`,
+    confirmRestore: 'Restore backup?', confirmRestoreBody: 'Everything on this device will be replaced by the backup.',
+    btnImport: 'Import', btnRestoreOk: 'Restore',
+    importModalTitle: '📥 Import group', importModalBody: 'Paste the link or code you got from someone in your group.',
+    importIphoneHint: 'iPhone: opening the link in Safari puts the group in Safari, not in the app on your home screen. Better copy the link and paste it here.',
+    importPlaceholder: 'https://…#import=…',
+    shareSetupTitle: 'FoodsUp group', shareSetupText: (g) => `Join “${g}” in FoodsUp! Open this link to get the names and menus:`,
+    unnamedGroup: 'my group',
     installTitle: 'Install as app', installBody: 'Own icon on your home screen, works without internet.', btnInstall: 'Install',
     iosTitle: '📲 Add to home screen', iosStep1: 'In Safari, tap the Share button at the bottom (square with arrow ↑).',
     iosStep2: 'Scroll down and choose “Add to Home Screen”.', iosStep3: 'Tap “Add”. From now on, open FoodsUp via the icon.',
     noNamesTitle: 'No participants yet', noNamesBody: 'First add the names of your group.', btnAddNames: '👥 Add names',
     btnResume: 'Resume ▶', resumeTitle: (th) => `Order in progress: ${th}`, resumeSub: (d,t) => `${d} of ${t} ordered`,
-    confirmNewRound: 'Discard current order?', confirmNewRoundBody: 'An order is still in progress and not saved. Starting a new one discards it.',
     btnShare: '📤 Share', toastCopied: 'Copied to clipboard ✓', toastShareFailed: 'Sharing failed',
     braveWarn: '⚠️ Brave blocks storage for local files. Open FoodsUp via the website or in Chrome.',
     loadError: '⚠️ Error while loading:',
-    btnNames: '👥 Names', btnAddTheme: '+ Theme', btnBack: '← Back', btnSave: 'Save ✓',
-    btnStartOrder: 'Start order →', btnStartVoting: 'Start voting →',
-    btnVote: 'Vote →', btnReset: '⟳ Reset', btnDelete: '🗑 Delete',
-    btnDeleteTheme: '🗑 Delete theme', btnClearAll: 'Clear all',
-    btnAdd: 'Add', btnCancel: 'Cancel', btnOk: 'OK',
-    btnPrev: '← Previous', btnContinueVote: '▶ Continue voting',
-    btnFinalize: '✓ Close round & save', btnNewRound: '← New round (don\'t save)',
-    btnSaveDefault: 'Set as default', btnAddName: '+ Add name',
-    homeWelcome1: 'Choose a', homeWelcome2: 'theme',
-    homeWelcomeSub: 'Tap ✎ on a theme to edit it permanently',
-    labelThemes: 'Themes', labelHistory: 'History', labelOptions: 'Options',
-    namesTitle: '👥 Participants', namesSub: 'Group members',
-    namesIntro: 'Names are used during voting.',
-    teHeaderSub: 'Permanent default options', teIntro: 'These options become the default for future rounds.',
-    teNameLabel: 'Name & Emoji', teOptionsLabel: 'Default options',
-    tePlaceholderName: 'Theme name', placeholderNewOption: 'New option...',
-    orderTitle: '✏️ Set options', orderSub: 'This round only', orderRoundSub: 'Round-specific',
-    savePermanentLabel: '💾 Also save permanently to theme?',
-    votePrompt: 'Make your choice:', customLabel: '✍️ Other dish?',
-    customPlaceholder: 'Type your own choice here...',
-    resultsTitle: '📊 Results', pendingTitle: '⏳ Not yet voted',
-    hdWhoWhat: 'Who ordered what',
-    modalNewThemeTitle: 'New theme', modalNewThemeBody: 'Name and emoji for the new theme.',
-    modalNamePlaceholder: 'Name (e.g. Dinner)', modalEmojiPlaceholder: 'Emoji (e.g. 🍽️)',
-    btnEditShort: '✎ Edit',
-    btnAddSubGroup: '+ Sub-group', btnAddSubVal: '+ Value',
-    subGroupPlaceholder: 'Group name (e.g. Drink)', subValPlaceholder: 'Value (e.g. Coffee)',
-    subLabel: 'Refine your choice:',
-    pickerTitle: 'Participants', pickerIntro: 'Tap a name to order. Checkmark = done.',
-    labelGuests: 'Temporary guests (porters, guides...)',
-    guestPlaceholder: 'Temporary guest name...', btnAddGuest: '+ Guest',
-    btnConfirmVote: 'Confirm ✓', btnBack2Picker: '← Overview',
-    optionsCount: (n) => `${n} options`,
-    votedCount: (d,t) => `${d} of ${t} voted`,
-    noHistory: 'No rounds played yet.',
-    toastNeedTheme: 'Choose a theme first!', toastNeedOption: 'Add at least 1 option!',
-    toastNeedChoice: 'Make a choice first!', toastAllVoted: 'Everyone has voted!',
-    toastNamesSaved: 'Names saved ✓', toastThemeSaved: 'Theme saved ✓',
-    toastThemeAdded: 'Theme added ✓', toastThemeDeleted: 'Theme deleted',
-    toastRoundSaved: 'Round saved ✓', toastDeleted: 'Deleted',
-    toastHistCleared: 'History cleared', toastNeedName: 'Enter a name!',
-    toastCustomAdded: (v) => `"${v}" added as option for everyone`,
-    toastSavedDefault: (n) => `Saved as default for "${n}" ✓`,
-    confirmDeleteOrder: 'Delete order?', confirmDeleteOrderBody: 'This removes this round from history.',
-    confirmClearHist: 'Clear full history?', confirmClearHistBody: 'All saved orders will be deleted.',
-    confirmDeleteTheme: (n) => `Delete "${n}"?`, confirmDeleteThemeBody: 'This permanently deletes the theme.',
-    confirmReset: 'Clear everything?', confirmResetBody: 'This deletes all names, theme edits and history. The app will restart.',
-    datePrefix: '📅 ',
+    wizWelcomeTitle: 'Welcome to <span>FoodsUp</span> 👋', wizWelcomeBody: 'Order together as a group, without notes or chaos:',
+    wizStep1: 'Add the names of your group', wizStep2: 'Choose a menu', wizStep3: 'Pass the phone around: everyone taps their name and chooses',
+    wizStep4: 'Share the totals with the waiter or in the group chat',
+    wizPrivacy: '🔒 Everything stays on your own device. No account, no internet needed.',
+    wizStart: 'Get started →', wizHaveLink: 'I got a link from my group',
+    wizNamesTitle: 'Who’s <span>joining</span>?', wizGroupLabel: 'Group name (optional)',
+    wizNamesLabel: 'Names', wizNamesHint: 'One name per line. You can change this later via 👥 Group.',
+    wizNamesPlaceholder: 'Anna\nBen\nCharlotte',
+    wizPackTitle: 'What will you <span>use</span> it for?', wizPackSub: 'Pick a starter pack with menus. You can change everything afterwards.',
+    wizNext: 'Next →', wizDone: 'Done ✓', wizSkip: 'Skip', toastWelcome: 'All set! Choose a menu to start.',
   },
   ne: {
-    appTitle: 'समूह अर्डर', appSub: 'केही ट्यापमै समूह अर्डर',
-    locale: 'ne-NP', guestBadge: 'पाहुना',
+    appSub: 'केही ट्यापमै समूह अर्डर', locale: 'ne-NP', datePrefix: '📅 ',
+    btnGroup: '👥 समूह', btnBack: '← फिर्ता', btnSave: 'सुरक्षित ✓', btnDone: 'भयो ✓', btnHome: '← सुरु',
+    btnStartOrder: 'अर्डर सुरु →', btnStartVoting: 'सबैलाई छान्न दिनुस् →', btnVote: 'अघि →',
+    btnReset: '⟳ मानक', btnDelete: '🗑 मेट्नुस्', btnDeleteTheme: '🗑 मेनु हटाउनुस्', btnClearAll: 'सबै मेट्नुस्',
+    btnAdd: 'थप्नुस्', btnCancel: 'रद्द', btnOk: 'ठिक छ',
+    btnContinueVote: '▶ अर्डर जारी', btnFinalize: '✓ राउन्ड समाप्त गरी सुरक्षित', btnHomeKeep: '← सुरुमा (राउन्ड सुरक्षित रहन्छ)',
+    btnToResults: '📊 नतिजा हेर्नुस्', btnBackToNames: '← नामहरू',
+    btnSaveDefault: 'सुरक्षित', btnAddName: '+ नाम थप्नुस्', btnEditShort: '✎', btnNewTheme: 'नयाँ मेनु',
+    homeWelcome1: 'एउटा', homeWelcome2: 'मेनु छान्नुस्', homeWelcomeSub: 'छनोट वा मूल्य बदल्न मेनुमा ✎ थिच्नुस्।',
+    labelThemes: 'मेनुहरू', labelHistory: 'इतिहास', labelOptions: 'छनोटहरू',
+    groupTitle: '👥 समूह', groupSub: 'नाम, सेटिङ र सेयर',
+    labelGroupName: 'समूहको नाम', groupNamePlaceholder: 'जस्तै: ट्रेक २०२७',
+    labelPeople: 'सहभागीहरू', namesIntro: 'सुझाव: धेरै नामहरू एकैपटक टाँस्नुस् (प्रति लाइन एक नाम)।', namePlaceholder: 'नाम',
+    labelCurrency: 'मुद्रा', currencyIntro: 'मूल्यका लागि। मूल्य ऐच्छिक हो: मेनुमा (✎) थप्नुस्।',
+    labelShare: 'सेयर र ब्याकअप', shareIntro: 'आफ्ना नाम र मेनु अरूलाई पठाउनुस्, ताकि उनीहरू तुरुन्तै सुरु गर्न सकून्। वा सबैको ब्याकअप लिनुस्।',
+    btnShareSetup: '🔗 लिङ्कबाट समूह सेयर', btnImportSetup: '📥 अरूको लिङ्क टाँस्नुस्', btnBackup: '💾 ब्याकअप डाउनलोड', btnRestore: '📂 ब्याकअप फर्काउनुस्',
+    btnResetAll: '↺ सबै मेट्नुस्',
+    teHeaderSub: 'यो मेनुका मानक छनोटहरू', teIntro: 'यी छनोटहरू आगामी राउन्डका मानक बन्छन्। मूल्य ऐच्छिक हो।',
+    teNameLabel: 'नाम र Emoji', teOptionsLabel: 'छनोट र मूल्य', tePlaceholderName: 'मेनुको नाम', placeholderNewOption: 'नयाँ छनोट...', pricePlaceholder: 'मूल्य',
+    orderTitle: '✏️ यस राउन्डका छनोटहरू', orderSub: 'परिवर्तन यस राउन्डमा मात्र लागू हुन्छ', orderRoundSub: 'यस राउन्डमा मात्र',
+    savePermanentLabel: '💾 यी छनोटहरू मानकको रूपमा पनि राख्ने?',
+    votePrompt: 'के चाहिन्छ? धेरै कुरा छान्न सकिन्छ।', customLabel: '✍️ अरू केही?', customPlaceholder: 'आफ्नो छनोट यहाँ टाइप गर्नुस्...',
+    noteLabel: '📝 टिप्पणी', notePlaceholder: 'जस्तै: प्याज नहाल्नु, अलि पिरो...',
+    resultsTitle: '📊 नतिजा', pendingTitle: '⏳ अझै अर्डर गरेका छैनन्', hdWhoWhat: 'कसले के अर्डर गर्यो', totalLabel: 'जम्मा',
+    modalNewThemeTitle: 'नयाँ मेनु', modalNewThemeBody: 'मेनुको नाम र emoji दिनुस्। त्यसपछि छनोटहरू थप्नुस्।',
+    modalNamePlaceholder: 'नाम (जस्तै: बेलुकीको खाना)', modalEmojiPlaceholder: 'Emoji (जस्तै: 🍽️)',
+    btnAddSubGroup: '+ उप-छनोट', btnAddSubVal: '+ मान',
+    subGroupPlaceholder: 'नाम (जस्तै: पेय)', subValPlaceholder: 'मान (जस्तै: कफी)', subLabel: 'आफ्नो छनोट पूरा गर्नुस्:',
+    pickerTitle: 'नामहरू', pickerIntro: 'आफ्नो नाम थिचेर छान्नुस्। त्यसपछि फोन अर्कोलाई दिनुस्। ✓ = भयो।',
+    labelGuests: 'थप पाहुना (यस राउन्डमा मात्र)', guestPlaceholder: 'पाहुनाको नाम...', btnAddGuest: '+ पाहुना', guestBadge: 'पाहुना',
+    btnConfirmVote: 'पुष्टि गर्नुस् ✓',
+    optionsCount: (n) => `${n} छनोट`,
+    votedCount: (d,t) => `${t} मध्ये ${d} ले अर्डर गरे`,
+    noHistory: 'अहिलेसम्म कुनै राउन्ड सुरक्षित छैन।',
+    toastNeedTheme: 'पहिले मेनु छान्नुस्!', toastNeedOption: 'कम्तिमा १ छनोट थप्नुस्!',
+    toastNeedChoice: 'पहिले छनोट गर्नुस्!', toastNamesSaved: 'सुरक्षित ✓', toastThemeSaved: 'मेनु सुरक्षित ✓',
+    toastThemeAdded: 'मेनु थपियो ✓', toastThemeDeleted: 'मेनु हटाइयो',
+    toastRoundSaved: 'राउन्ड सुरक्षित ✓', toastDeleted: 'मेटियो', toastHistCleared: 'इतिहास मेटियो', toastNeedName: 'नाम दिनुहोस्!',
+    toastCustomAdded: (v) => `"${v}" सबैका लागि छनोटमा थपियो`,
+    toastSavedDefault: (n) => `"${n}" को मानकको रूपमा सुरक्षित ✓`,
+    toastNamesPasted: (n) => `${n} नाम थपिए ✓`,
+    toastImported: 'समूह आयात भयो ✓', toastImportFailed: 'यो लिङ्क वा कोडले काम गरेन।',
+    toastBackupRestored: 'ब्याकअप फर्कियो ✓', toastBackupInvalid: 'यो FoodsUp ब्याकअप होइन।', toastBackupSaved: 'ब्याकअप डाउनलोड भयो ✓',
+    confirmDeleteOrder: 'राउन्ड हटाउने?', confirmDeleteOrderBody: 'यसले यो राउन्ड इतिहासबाट हटाउँछ।',
+    confirmClearHist: 'सम्पूर्ण इतिहास मेट्ने?', confirmClearHistBody: 'सबै सुरक्षित राउन्डहरू हटाइनेछन्।',
+    confirmDeleteTheme: (n) => `"${n}" हटाउने?`, confirmDeleteThemeBody: 'यसले मेनु स्थायी रूपमा हटाउँछ।',
+    confirmReset: 'सबै मेट्ने?', confirmResetBody: 'यसले यो उपकरणका सबै नाम, मेनु र इतिहास हटाउँछ। एप पुनः सुरु हुनेछ।',
+    confirmNewRound: 'चलिरहेको अर्डर मेट्ने?', confirmNewRoundBody: 'एउटा अर्डर अझै सुरक्षित गरिएको छैन। नयाँ सुरु गर्दा त्यो मेटिन्छ।',
+    confirmImport: (g) => `समूह “${g}” आयात गर्ने?`,
+    confirmImportBody: (p,m) => `${p} नाम र ${m} मेनु। हालका नाम र मेनु बदलिनेछन्; इतिहास रहन्छ।`,
+    confirmRestore: 'ब्याकअप फर्काउने?', confirmRestoreBody: 'यो उपकरणमा भएका सबै कुरा ब्याकअपले बदलिनेछ।',
+    btnImport: 'आयात', btnRestoreOk: 'फर्काउनुस्',
+    importModalTitle: '📥 समूह आयात', importModalBody: 'समूहका कसैबाट पाएको लिङ्क वा कोड यहाँ टाँस्नुस्।',
+    importIphoneHint: 'iPhone: Safari मा लिङ्क खोल्दा समूह Safari मा जान्छ, होम स्क्रिनको एपमा होइन। लिङ्क कपी गरेर यहाँ टाँस्नु राम्रो।',
+    importPlaceholder: 'https://…#import=…',
+    shareSetupTitle: 'FoodsUp समूह', shareSetupText: (g) => `FoodsUp मा “${g}” मा सामेल हुनुस्! नाम र मेनु लिन यो लिङ्क खोल्नुस्:`,
+    unnamedGroup: 'मेरो समूह',
     installTitle: 'एपको रूपमा इन्स्टल गर्नुस्', installBody: 'होम स्क्रिनमा आफ्नै आइकन, इन्टरनेट बिना पनि चल्छ।', btnInstall: 'इन्स्टल',
     iosTitle: '📲 होम स्क्रिनमा राख्नुस्', iosStep1: 'Safari मा तल रहेको Share बटन (↑ भएको वर्ग) थिच्नुस्।',
     iosStep2: '“Add to Home Screen” छान्नुस्।', iosStep3: '“Add” थिच्नुस्। अबदेखि आइकनबाट FoodsUp खोल्नुस्।',
     noNamesTitle: 'अहिलेसम्म कुनै सहभागी छैन', noNamesBody: 'पहिले आफ्नो समूहका नामहरू थप्नुस्।', btnAddNames: '👥 नाम थप्नुस्',
     btnResume: 'जारी ▶', resumeTitle: (th) => `चलिरहेको अर्डर: ${th}`, resumeSub: (d,t) => `${t} मध्ये ${d} ले अर्डर गरे`,
-    confirmNewRound: 'चलिरहेको अर्डर मेट्ने?', confirmNewRoundBody: 'एउटा अर्डर अझै सुरक्षित गरिएको छैन। नयाँ सुरु गर्दा त्यो मेटिन्छ।',
     btnShare: '📤 सेयर', toastCopied: 'क्लिपबोर्डमा कपी भयो ✓', toastShareFailed: 'सेयर गर्न सकिएन',
     braveWarn: '⚠️ Brave ले स्थानीय फाइलको भण्डारण रोक्छ। वेबसाइट वा Chrome बाट FoodsUp खोल्नुस्।',
     loadError: '⚠️ लोड गर्दा त्रुटि:',
-    btnNames: '👥 नाम', btnAddTheme: '+ विषय', btnBack: '← फिर्ता', btnSave: 'सुरक्षित ✓',
-    btnStartOrder: 'अर्डर सुरु →', btnStartVoting: 'मतदान सुरु →',
-    btnVote: 'मतदान →', btnReset: '⟳ रिसेट', btnDelete: '🗑 मेट्नुस्',
-    btnDeleteTheme: '🗑 विषय हटाउनुस्', btnClearAll: 'सबै मेट्नुस्',
-    btnAdd: 'थप्नुस्', btnCancel: 'रद्द', btnOk: 'ठिक छ',
-    btnPrev: '← अघिल्लो', btnContinueVote: '▶ मतदान जारी',
-    btnFinalize: '✓ राउन्ड समाप्त गरी सुरक्षित', btnNewRound: '← नयाँ राउन्ड (नसुरक्षित)',
-    btnSaveDefault: 'मानक बनाउनुस्', btnAddName: '+ नाम थप्नुस्',
-    homeWelcome1: 'एउटा', homeWelcome2: 'विषय छान्नुहोस्',
-    homeWelcomeSub: '✎ थिचेर विषय स्थायी रूपमा परिवर्तन गर्नुस्',
-    labelThemes: 'विषयहरू', labelHistory: 'इतिहास', labelOptions: 'विकल्पहरू',
-    namesTitle: '👥 सहभागीहरू', namesSub: 'समूहका नामहरू',
-    namesIntro: 'मतदान गर्दा नामहरू प्रयोग गरिन्छ।',
-    teHeaderSub: 'स्थायी मानक विकल्पहरू', teIntro: 'यी विकल्पहरू भविष्यका राउन्डको मानक बन्नेछन्।',
-    teNameLabel: 'नाम र Emoji', teOptionsLabel: 'मानक विकल्पहरू',
-    tePlaceholderName: 'विषयको नाम', placeholderNewOption: 'नयाँ विकल्प...',
-    orderTitle: '✏️ विकल्पहरू सेट', orderSub: 'केवल यस राउन्डका लागि', orderRoundSub: 'राउन्ड-विशिष्ट',
-    savePermanentLabel: '💾 विषयमा स्थायी रूपमा सुरक्षित?',
-    votePrompt: 'आफ्नो छनोट गर्नुस्:', customLabel: '✍️ अर्को परिकार?',
-    customPlaceholder: 'आफ्नो छनोट यहाँ टाइप गर्नुस्...',
-    resultsTitle: '📊 नतिजा', pendingTitle: '⏳ अझै मतदान गरिएको छैन',
-    hdWhoWhat: 'कसले के अर्डर गर्यो',
-    modalNewThemeTitle: 'नयाँ विषय', modalNewThemeBody: 'नयाँ विषयको नाम र emoji।',
-    modalNamePlaceholder: 'नाम (जस्तै: बेलुकीको खाना)', modalEmojiPlaceholder: 'Emoji (जस्तै: 🍽️)',
-    btnEditShort: '✎',
-    btnAddSubGroup: '+ उपसमूह', btnAddSubVal: '+ मूल्य',
-    subGroupPlaceholder: 'समूहको नाम (जस्तै: पेय)', subValPlaceholder: 'मूल्य (जस्तै: कफी)',
-    subLabel: 'आफ्नो छनोट थप गर्नुस्:',
-    pickerTitle: 'सहभागीहरू', pickerIntro: 'अर्डर गर्न नाम थिच्नुस्। ✓ = भइसक्यो।',
-    labelGuests: 'अस्थायी पाहुनाहरू (भरिया, गाइड...)',
-    guestPlaceholder: 'अस्थायी पाहुनाको नाम...', btnAddGuest: '+ पाहुना',
-    btnConfirmVote: 'पुष्टि गर्नुस् ✓', btnBack2Picker: '← अवलोकन',
-    optionsCount: (n) => `${n} विकल्प`,
-    votedCount: (d,t) => `${d} मध्ये ${t} ले मतदान गरे`,
-    noHistory: 'अहिलेसम्म कुनै राउन्ड खेलिएको छैन।',
-    toastNeedTheme: 'पहिले विषय छान्नुस्!', toastNeedOption: 'कम्तिमा १ विकल्प थप्नुस्!',
-    toastNeedChoice: 'पहिले छनोट गर्नुस्!', toastAllVoted: 'सबैले मतदान गरिसके!',
-    toastNamesSaved: 'नामहरू सुरक्षित ✓', toastThemeSaved: 'विषय सुरक्षित ✓',
-    toastThemeAdded: 'विषय थपियो ✓', toastThemeDeleted: 'विषय हटाइयो',
-    toastRoundSaved: 'राउन्ड सुरक्षित ✓', toastDeleted: 'मेटियो',
-    toastHistCleared: 'इतिहास मेटियो', toastNeedName: 'नाम दिनुहोस्!',
-    toastCustomAdded: (v) => `"${v}" सबैका लागि विकल्प थपियो`,
-    toastSavedDefault: (n) => `"${n}" को मानक रूपमा सुरक्षित ✓`,
-    confirmDeleteOrder: 'अर्डर हटाउने?', confirmDeleteOrderBody: 'यसले यो राउन्ड इतिहासबाट हटाउँछ।',
-    confirmClearHist: 'सम्पूर्ण इतिहास मेट्ने?', confirmClearHistBody: 'सबै सुरक्षित अर्डरहरू हटाइनेछन्।',
-    confirmDeleteTheme: (n) => `"${n}" हटाउने?`, confirmDeleteThemeBody: 'यसले विषय स्थायी रूपमा हटाउँछ।',
-    confirmReset: 'सबै मेट्ने?', confirmResetBody: 'यसले सबै नाम, विषय र इतिहास हटाउँछ। एप पुनः सुरु हुनेछ।',
-    datePrefix: '📅 ',
+    wizWelcomeTitle: '<span>FoodsUp</span> मा स्वागत छ 👋', wizWelcomeBody: 'समूहमा सजिलै अर्डर गर्नुस्, कागज र गडबडी बिना:',
+    wizStep1: 'आफ्नो समूहका नामहरू राख्नुस्', wizStep2: 'मेनु छान्नुस्', wizStep3: 'फोन घुमाउनुस्: सबैले आफ्नो नाम थिचेर छान्छन्',
+    wizStep4: 'जम्मा अर्डर वेटर वा समूह च्याटमा सेयर गर्नुस्',
+    wizPrivacy: '🔒 सबै कुरा तपाईंकै उपकरणमा रहन्छ। खाता वा इन्टरनेट चाहिँदैन।',
+    wizStart: 'सुरु गरौं →', wizHaveLink: 'मैले समूहबाट लिङ्क पाएँ',
+    wizNamesTitle: 'को को <span>सहभागी</span> हुनुहुन्छ?', wizGroupLabel: 'समूहको नाम (ऐच्छिक)',
+    wizNamesLabel: 'नामहरू', wizNamesHint: 'प्रति लाइन एक नाम। पछि 👥 समूहबाट बदल्न सकिन्छ।',
+    wizNamesPlaceholder: 'राम\nसीता\nहरि',
+    wizPackTitle: 'केका लागि <span>प्रयोग</span> गर्नुहुन्छ?', wizPackSub: 'मेनुसहितको सुरुवाती प्याक छान्नुस्। पछि सबै बदल्न सकिन्छ।',
+    wizNext: 'अघि →', wizDone: 'भयो ✓', wizSkip: 'छोड्नुस्', toastWelcome: 'तयार! सुरु गर्न मेनु छान्नुस्।',
   }
 };
 
 let currentLang = 'nl';
 function t(key, ...args) {
-  const val = LANGS[currentLang][key];
-  return typeof val === 'function' ? val(...args) : (val ?? LANGS.nl[key] ?? key);
+  const val = LANGS[currentLang][key] ?? LANGS.en[key];
+  return typeof val === 'function' ? val(...args) : (val ?? key);
 }
+
+const RENDERS = () => ({ welcome:renderWelcome, home:renderHome, group:renderGroup, order:renderOrder, vote:renderVote,
+  votepicker:renderVotePicker, results:renderResults, histdetail:renderHistDetail, themeedit:renderThemeEdit });
 
 function setLang(lang) {
   currentLang = lang;
   state.lang = lang;
   save();
-  // Update body font class
   document.body.className = lang === 'ne' ? 'lang-ne' : '';
   document.documentElement.lang = lang;
-  // Update all static data-t elements
-  document.querySelectorAll('[data-t]').forEach(el => {
-    el.textContent = t(el.dataset.t);
-  });
-  document.querySelectorAll('[data-placeholder-t]').forEach(el => {
-    el.placeholder = t(el.dataset.placeholderT);
-  });
-  // Update lang button active state
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === lang);
-  });
-  // Re-render current screen
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-placeholder-t]').forEach(el => { el.placeholder = t(el.dataset.placeholderT); });
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
   const active = document.querySelector('.screen.active');
-  if (active) {
-    const id = active.id;
-    const renders = { home: renderHome, names: renderNames, order: renderOrder,
-      vote: renderVote, votepicker: renderVotePicker, results: renderResults, histdetail: renderHistDetail, themeedit: renderThemeEdit };
-    if (renders[id]) renders[id]();
-  }
+  const render = active && RENDERS()[active.id];
+  if (render) render();
 }
 
 // ═══════════════════════════════════════
-//  DEFAULT THEMES  (options per language; picked once on first start)
+//  STARTER PACKS  (options per language; ne falls back to en)
 // ═══════════════════════════════════════
-const DEFAULT_THEMES = [
-  { id:'teatime', name:{nl:'Koffie & thee', en:'Coffee & tea', ne:'चियाको समय'},  emoji:'☕',
-    options:{ nl:['Koffie','Thee','Cappuccino','Water','Frisdrank'],
-              en:['Coffee','Tea','Cappuccino','Water','Soda'],
-              ne:['चिया','कफी','मसला चिया','पानी','सफ्ट ड्रिंक'] } },
-  { id:'lunch',   name:{nl:'Lunch', en:'Lunch', ne:'दिउँसोको खाना'}, emoji:'🥪',
-    options:{ nl:['Broodje kaas','Broodje hesp','Soep','Salade','Niets'],
-              en:['Cheese sandwich','Ham sandwich','Soup','Salad','Nothing'],
-              ne:['स्यान्डविच','सूप','सलाद','म्यागी','केही चाहिँदैन'] } },
-  { id:'dinner',  name:{nl:'Avondeten', en:'Dinner', ne:'बेलुकीको खाना'}, emoji:'🍽️',
-    options:{ nl:['Vlees','Vis','Vegetarisch','Kindermenu','Niets'],
-              en:['Meat','Fish','Vegetarian','Kids menu','Nothing'],
-              ne:['दाल भात','मोमो','थुकपा','शाकाहारी','केही चाहिँदैन'] } },
-  { id:'drinks',  name:{nl:'Drankjes', en:'Drinks', ne:'पेयपदार्थ'}, emoji:'🥤',
-    options:{ nl:['Bier','Wijn','Frisdrank','Water','Sap'],
-              en:['Beer','Wine','Soda','Water','Juice'],
-              ne:['बियर','रक्सी','सफ्ट ड्रिंक','पानी','जुस'] } },
-  { id:'snacks',  name:{nl:'Snacks', en:'Snacks', ne:'खाजा'}, emoji:'🍿',
-    options:{ nl:['Chips','Noten','Fruit','Koekjes','Niets'],
-              en:['Crisps','Nuts','Fruit','Biscuits','Nothing'],
-              ne:['चिप्स','बदाम','फलफूल','बिस्कुट','केही चाहिँदैन'] } },
+// An option is a plain string OR {label, price?, subs?:[{group, values:[]}]}
+const withBread = (labels, group, values) => labels.map(label => ({ label, subs:[{ group, values:[...values] }] }));
+const PACKS = [
+  { id:'restaurant', emoji:'🍽️',
+    name:{nl:'Restaurant & uitstap', en:'Restaurant & day out', ne:'रेस्टुरेन्ट र घुमफिर'},
+    desc:{nl:'Koffie & thee, lunch, avondeten, drankjes, snacks', en:'Coffee & tea, lunch, dinner, drinks, snacks', ne:'चिया, खाना, पेय, खाजा'},
+    themes:[
+      { id:'teatime', name:{nl:'Koffie & thee', en:'Coffee & tea', ne:'चियाको समय'}, emoji:'☕',
+        options:{ nl:['Koffie','Thee','Cappuccino','Water','Frisdrank'], en:['Coffee','Tea','Cappuccino','Water','Soda'], ne:['चिया','कफी','मसला चिया','पानी','सफ्ट ड्रिंक'] } },
+      { id:'lunch', name:{nl:'Lunch', en:'Lunch', ne:'दिउँसोको खाना'}, emoji:'🥪',
+        options:{ nl:['Broodje kaas','Broodje hesp','Soep','Salade','Niets'], en:['Cheese sandwich','Ham sandwich','Soup','Salad','Nothing'], ne:['स्यान्डविच','सूप','सलाद','म्यागी','केही चाहिँदैन'] } },
+      { id:'dinner', name:{nl:'Avondeten', en:'Dinner', ne:'बेलुकीको खाना'}, emoji:'🍽️',
+        options:{ nl:['Vlees','Vis','Vegetarisch','Kindermenu','Niets'], en:['Meat','Fish','Vegetarian','Kids menu','Nothing'], ne:['दाल भात','मोमो','थुकपा','शाकाहारी','केही चाहिँदैन'] } },
+      { id:'drinks', name:{nl:'Drankjes', en:'Drinks', ne:'पेयपदार्थ'}, emoji:'🥤',
+        options:{ nl:['Bier','Wijn','Frisdrank','Water','Sap'], en:['Beer','Wine','Soda','Water','Juice'], ne:['बियर','रक्सी','सफ्ट ड्रिंक','पानी','जुस'] } },
+      { id:'snacks', name:{nl:'Snacks', en:'Snacks', ne:'खाजा'}, emoji:'🍿',
+        options:{ nl:['Chips','Noten','Fruit','Koekjes','Niets'], en:['Crisps','Nuts','Fruit','Biscuits','Nothing'], ne:['चिप्स','बदाम','फलफूल','बिस्कुट','केही चाहिँदैन'] } },
+    ] },
+  { id:'work', emoji:'🥖',
+    name:{nl:'Broodjes op het werk', en:'Office lunch', ne:'अफिसको खाजा'},
+    desc:{nl:'Broodjes (wit of bruin), drankjes, koffie', en:'Sandwiches (white or brown), drinks, coffee', ne:'स्यान्डविच, पेय, कफी'},
+    themes:[
+      { id:'sandwiches', name:{nl:'Broodjes', en:'Sandwiches', ne:'स्यान्डविच'}, emoji:'🥖',
+        options:{ nl:withBread(['Kaas','Hesp','Kaas & hesp','Smos','Kip curry','Tonijn','Vegetarisch'], 'Brood', ['Wit','Bruin']),
+                  en:withBread(['Cheese','Ham','Ham & cheese','Club','Chicken curry','Tuna','Veggie'], 'Bread', ['White','Brown']) } },
+      { id:'officedrinks', name:{nl:'Drankjes', en:'Drinks', ne:'पेय'}, emoji:'🥤',
+        options:{ nl:['Plat water','Bruiswater','Cola','Cola zero','Fruitsap'], en:['Still water','Sparkling water','Coke','Coke zero','Juice'] } },
+      { id:'coffee', name:{nl:'Koffie', en:'Coffee', ne:'कफी'}, emoji:'☕',
+        options:{ nl:['Koffie','Koffie met melk','Cappuccino','Thee'], en:['Coffee','Coffee with milk','Cappuccino','Tea'] } },
+    ] },
+  { id:'bar', emoji:'🍺',
+    name:{nl:'Rondje in de bar', en:'Round at the bar', ne:'बारमा राउन्ड'},
+    desc:{nl:'Bier, wijn, fris en hapjes', en:'Beer, wine, soft drinks and snacks', ne:'बियर, वाइन र खाजा'},
+    themes:[
+      { id:'round', name:{nl:'Rondje', en:'Round', ne:'राउन्ड'}, emoji:'🍺',
+        options:{ nl:['Pils','Speciaalbier','Alcoholvrij bier','Witte wijn','Rode wijn','Cava','Frisdrank','Water'],
+                  en:['Lager','Craft beer','Alcohol-free beer','White wine','Red wine','Bubbles','Soft drink','Water'] } },
+      { id:'barsnacks', name:{nl:'Hapjes', en:'Snacks', ne:'खाजा'}, emoji:'🍟',
+        options:{ nl:['Chips','Nootjes','Bitterballen','Kaasblokjes','Nacho’s'], en:['Crisps','Nuts','Bar bites','Cheese cubes','Nachos'] } },
+    ] },
+  { id:'trek', emoji:'🏔️',
+    name:{nl:'Trektocht in Nepal', en:'Trekking in Nepal', ne:'नेपालमा ट्रेक'},
+    desc:{nl:'Chai, dal bhat, momo’s… (waar FoodsUp ontstond)', en:'Chai, dal bhat, momos… (where FoodsUp was born)', ne:'चिया, दाल भात, मोमो…'},
+    themes:[
+      { id:'trektea', name:{nl:'Theepauze', en:'Tea break', ne:'चियाको समय'}, emoji:'🍵',
+        options:{ nl:['Melkthee','Zwarte thee','Citroenthee','Hot lemon','Masala chai','Koffie','Warm water'],
+                  en:['Milk tea','Black tea','Lemon tea','Hot lemon','Masala chai','Coffee','Hot water'],
+                  ne:['दूध चिया','कालो चिया','कागती चिया','तातो कागती','मसला चिया','कफी','तातो पानी'] } },
+      { id:'trekbreakfast', name:{nl:'Ontbijt', en:'Breakfast', ne:'बिहानको खाजा'}, emoji:'🍳',
+        options:{ nl:['Pannenkoek','Omelet','Tibetaans brood','Porridge','Toast'],
+                  en:['Pancake','Omelette','Tibetan bread','Porridge','Toast'],
+                  ne:['प्यानकेक','अम्लेट','तिब्बती रोटी','दलिया','टोस्ट'] } },
+      { id:'trekdinner', name:{nl:'Avondeten', en:'Dinner', ne:'बेलुकीको खाना'}, emoji:'🍛',
+        options:{ nl:['Dal bhat', { label:'Momo’s', subs:[{ group:'Vulling', values:['Groenten','Kip','Buffel'] }] },'Thukpa','Fried rice','Chow mein','Niets'],
+                  en:['Dal bhat', { label:'Momos', subs:[{ group:'Filling', values:['Veg','Chicken','Buff'] }] },'Thukpa','Fried rice','Chow mein','Nothing'],
+                  ne:['दाल भात', { label:'मोमो', subs:[{ group:'प्रकार', values:['तरकारी','कुखुरा','भैंसी'] }] },'थुकपा','फ्राइड राइस','चाउमिन','केही चाहिँदैन'] } },
+      { id:'trekdrinks', name:{nl:'Drankjes', en:'Drinks', ne:'पेयपदार्थ'}, emoji:'🥤',
+        options:{ nl:['Bier','Cola','Sprite','Water','Sap'], en:['Beer','Coke','Sprite','Water','Juice'], ne:['बियर','कोक','स्प्राइट','पानी','जुस'] } },
+    ] },
+  { id:'empty', emoji:'📝',
+    name:{nl:'Leeg beginnen', en:'Start empty', ne:'खाली सुरु'},
+    desc:{nl:'Maak zelf je menu’s', en:'Make your own menus', ne:'आफैं मेनु बनाउनुस्'},
+    themes:[] },
 ];
-function defaultThemes(lang) {
-  return DEFAULT_THEMES.map(th => ({ ...th, name:{...th.name}, options:[...(th.options[lang] || th.options.en)] }));
+function packThemes(packId, lang) {
+  const pack = PACKS.find(p => p.id === packId) || PACKS[0];
+  return pack.themes.map(th => ({
+    id: th.id, emoji: th.emoji, name: { ...th.name },
+    options: JSON.parse(JSON.stringify(th.options[lang] || th.options.en)),
+  }));
 }
-
-function themeName(t) {
-  if (typeof t.name === 'object') return t.name[currentLang] || t.name.nl || t.name.en || '';
-  return t.name;
-}
+function langText(obj) { return obj[currentLang] || obj.en || obj.nl || ''; }
+function themeName(th) { return typeof th.name === 'object' ? langText(th.name) : th.name; }
 
 // ═══════════════════════════════════════
 //  OPTION HELPERS
 // ═══════════════════════════════════════
-// An option is either a plain string OR {label, subs:[{group, values:[]}]}
-function optLabel(o)   { return typeof o === 'string' ? o : o.label; }
-function optSubs(o)    { return (typeof o === 'object' && o.subs) ? o.subs : []; }
-function hasSubs(o)    { return optSubs(o).length > 0; }
-// Build the composite vote string: "Label · GroupA:Val · GroupB:Val"
-function buildChoice(label, subSelections) {
-  const parts = [label];
-  for (const [group, val] of Object.entries(subSelections)) {
-    if (val) parts.push(val);
-  }
-  return parts.join(' · ');
+function optLabel(o)  { return typeof o === 'string' ? o : o.label; }
+function optSubs(o)   { return (o && typeof o === 'object' && Array.isArray(o.subs)) ? o.subs : []; }
+function hasSubs(o)   { return optSubs(o).length > 0; }
+function optPrice(o)  { return (o && typeof o === 'object' && typeof o.price === 'number') ? o.price : null; }
+// Make list[i] an object so a field can be set on it
+function optObj(list, i) { if (typeof list[i] === 'string') list[i] = { label: list[i] }; return list[i]; }
+// Collapse back to a plain string when nothing but the label is left
+function normOpt(o) {
+  if (typeof o === 'string') return o;
+  const out = { label: o.label };
+  if (typeof o.price === 'number') out.price = o.price;
+  if (o.subs && o.subs.length) out.subs = o.subs;
+  return Object.keys(out).length === 1 ? o.label : out;
+}
+function setOptPrice(list, i, v) {
+  const o = optObj(list, i), p = parsePrice(v);
+  if (p === null) delete o.price; else o.price = p;
+  list[i] = normOpt(o);
+}
+function parsePrice(v) {
+  const s = String(v).trim().replace(',', '.');
+  if (!s) return null;
+  const n = parseFloat(s);
+  return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : null;
+}
+function fmtMoney(n, cur = state.currency) {
+  const s = n.toLocaleString(t('locale'), { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  return cur ? `${cur} ${s}` : s;
+}
+// A choice is "Label" or "Label · sub · sub"; it belongs to the option with that label
+function optionFor(choice, options) {
+  return options.find(o => { const l = optLabel(o); return choice === l || choice.startsWith(l + ' · '); });
+}
+function priceOf(choice, options) { const o = optionFor(choice, options); return o ? optPrice(o) : null; }
+function hasPrices(options) { return options.some(o => optPrice(o) !== null); }
+function asArr(x) { return Array.isArray(x) ? x : [x]; }
+function personTotal(items, options) { return items.reduce((s, c) => s + (priceOf(c, options) || 0), 0); }
+// ["Tea","Tea","Cake"] -> "2× Tea + Cake"
+function fmtItems(items) {
+  const m = new Map();
+  items.forEach(c => m.set(c, (m.get(c) || 0) + 1));
+  return [...m].map(([c, n]) => n > 1 ? `${n}× ${c}` : c).join(' + ');
 }
 
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
-// people = [{id, name}] — votes are keyed by person id (or guest id), never by name
-let state = { themes:[], people:[], selectedThemeId:null, currentOptions:[], votes:{}, voterIndex:0, history:[], lang:null, guests:[], currentVoterKey:null, currentVoterName:null, roundActive:false };
+// people = [{id, name}]; votes/notes are keyed by person id (or guest id), never by name.
+// votes[key] is an array of choice strings; a repeated entry means quantity (2× tea).
+let state = { themes:[], people:[], groupName:'', currency:null, selectedThemeId:null, currentOptions:[], votes:{}, notes:{},
+  history:[], lang:null, guests:[], currentVoterKey:null, currentVoterName:null, roundActive:false, onboarded:false };
 let editingThemeId = null;
 let viewingHistIdx = null;
 
@@ -808,11 +1001,15 @@ function load() {
     if (raw) saved = JSON.parse(raw) || {};
   } catch(e) { try { localStorage.removeItem('gb6'); } catch(_){} }
   // Only take over what was actually saved, so old saves can be detected and migrated
-  state = { ...state, people: undefined, roundActive: undefined, ...saved };
+  state = { ...state, people: undefined, roundActive: undefined, onboarded: undefined, ...saved };
   if (!LANGS[state.lang]) state.lang = detectLang();
   currentLang = state.lang;
-  if (!Array.isArray(state.themes) || !state.themes.length) state.themes = defaultThemes(currentLang);
+  // Anyone who already used the app (older versions had no flag) skips the welcome wizard
+  if (typeof state.onboarded !== 'boolean') state.onboarded = Object.keys(saved).length > 0;
+  if (!Array.isArray(state.themes)) state.themes = [];
+  if (!state.themes.length && !state.onboarded) state.themes = packThemes('restaurant', currentLang);
   if (!state.votes || typeof state.votes !== 'object') state.votes = {};
+  if (!state.notes || typeof state.notes !== 'object') state.notes = {};
   // Migrate old format: names were plain strings and votes were keyed by name
   if (!Array.isArray(state.people)) {
     state.people = (Array.isArray(state.names) ? state.names : []).map(n => ({ id: newId('p'), name: String(n) }));
@@ -820,10 +1017,11 @@ function load() {
       if (state.votes[p.name] && !state.votes[p.id]) { state.votes[p.id] = state.votes[p.name]; delete state.votes[p.name]; }
     });
   }
-  delete state.names;
+  delete state.names; delete state.voterIndex;
+  if (typeof state.groupName !== 'string') state.groupName = '';
+  if (typeof state.currency !== 'string') state.currency = currentLang === 'ne' ? 'रु' : '€';
   if (!Array.isArray(state.history)) state.history = [];
   if (!Array.isArray(state.currentOptions)) state.currentOptions = [];
-  if (typeof state.voterIndex !== 'number') state.voterIndex = 0;
   if (!Array.isArray(state.guests)) state.guests = [];
   // A round with votes in it counts as active (old saves had no flag)
   if (typeof state.roundActive !== 'boolean') state.roundActive = Object.keys(state.votes).length > 0;
@@ -840,26 +1038,106 @@ function newId(prefix) { return prefix + '_' + Date.now().toString(36) + (idSeq+
 //  NAVIGATION
 // ═══════════════════════════════════════
 function showScreen(id) {
-  if (id !== 'names' && document.getElementById('names').classList.contains('active')) { cleanPeople(); save(); }
+  if (id !== 'group' && document.getElementById('group').classList.contains('active')) { cleanPeople(); save(); }
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const renders = { home:renderHome, names:renderNames, order:renderOrder, vote:renderVote,
-    votepicker:renderVotePicker, results:renderResults, histdetail:renderHistDetail, themeedit:renderThemeEdit };
-  if (renders[id]) renders[id]();
+  const render = RENDERS()[id];
+  if (render) render();
   window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+//  WELCOME WIZARD (first start)
+// ═══════════════════════════════════════
+let wizStep = 0, wizPack = 'restaurant';
+let wizDraft = null;
+function renderWelcome() {
+  if (!wizDraft) wizDraft = { group: state.groupName, names: state.people.map(p => p.name).join('\n') };
+  const body = document.getElementById('wizBody');
+  const dots = `<div class="wiz-dots">${[0,1,2].map(i => `<div class="wiz-dot ${i<=wizStep?'on':''}"></div>`).join('')}</div>`;
+  const langs = `<div class="lang-switcher">${['nl','en','ne'].map(l =>
+    `<button class="lang-btn ${l===currentLang?'active':''}" onclick="setLang('${l}')">${l==='ne'?'नेपाली':l.toUpperCase()}</button>`).join('')}</div>`;
+  if (wizStep === 0) {
+    body.innerHTML = `
+      <div class="wiz-top"><img class="wiz-logo" src="icons/icon-192.png" alt="">${langs}</div>
+      <div class="wiz-title">${t('wizWelcomeTitle')}</div>
+      <div class="wiz-body">${esc(t('wizWelcomeBody'))}</div>
+      <ol class="wiz-list">${[1,2,3,4].map(i => `<li><b>${i}</b><span>${esc(t('wizStep'+i))}</span></li>`).join('')}</ol>
+      <div class="wiz-privacy">${esc(t('wizPrivacy'))}</div>
+      <div class="wiz-actions">
+        <button class="btn btn-primary btn-full btn-lg" onclick="wizGo(1)">${esc(t('wizStart'))}</button>
+        <button class="btn btn-secondary btn-full" onclick="openImport()">${esc(t('wizHaveLink'))}</button>
+      </div>`;
+  } else if (wizStep === 1) {
+    body.innerHTML = `${dots}
+      <div class="wiz-title">${t('wizNamesTitle')}</div>
+      <div class="wiz-field">
+        <div class="section-label">${esc(t('wizGroupLabel'))}</div>
+        <input class="add-option-input" style="width:100%" id="wizGroup" maxlength="40" placeholder="${esc(t('groupNamePlaceholder'))}" value="${esc(wizDraft.group)}" oninput="wizDraft.group=this.value">
+      </div>
+      <div class="wiz-field">
+        <div class="section-label">${esc(t('wizNamesLabel'))}</div>
+        <textarea class="add-option-input" id="wizNames" rows="8" oninput="wizDraft.names=this.value"></textarea>
+        <div class="wiz-hint">${esc(t('wizNamesHint'))}</div>
+      </div>
+      <div class="wiz-actions"><div class="wiz-row">
+        <button class="btn btn-secondary" onclick="wizGo(0)">${esc(t('btnBack'))}</button>
+        <button class="btn btn-primary btn-lg" style="flex:1" onclick="wizGo(2)">${esc(t('wizNext'))}</button>
+      </div></div>`;
+    const ta = document.getElementById('wizNames');
+    ta.value = wizDraft.names; ta.placeholder = t('wizNamesPlaceholder');
+  } else {
+    body.innerHTML = `${dots}
+      <div class="wiz-title">${t('wizPackTitle')}</div>
+      <div class="wiz-body">${esc(t('wizPackSub'))}</div>
+      <div class="pack-list">${PACKS.map(p => `
+        <button class="pack-card ${p.id===wizPack?'selected':''}" onclick="wizPick('${p.id}')">
+          <div class="pack-emoji">${p.emoji}</div>
+          <div><div class="pack-name">${esc(langText(p.name))}</div><div class="pack-desc">${esc(langText(p.desc))}</div></div>
+        </button>`).join('')}</div>
+      <div class="wiz-actions"><div class="wiz-row">
+        <button class="btn btn-secondary" onclick="wizGo(1)">${esc(t('btnBack'))}</button>
+        <button class="btn btn-primary btn-lg" style="flex:1" onclick="wizFinish()">${esc(t('wizDone'))}</button>
+      </div></div>`;
+  }
+}
+function wizGo(step) { wizStep = step; renderWelcome(); window.scrollTo(0,0); }
+function wizPick(id) { wizPack = id; renderWelcome(); }
+function wizFinish() {
+  state.groupName = wizDraft.group.trim();
+  state.people = mergePeople(splitNames(wizDraft.names));
+  state.themes = packThemes(wizPack, currentLang);
+  state.selectedThemeId = null; state.roundActive = false; state.votes = {}; state.notes = {};
+  state.onboarded = true;
+  save();
+  showScreen('home');
+  toast(t('toastWelcome'));
+}
+function splitNames(txt) { return String(txt).split(/[\r\n,;\t]+/).map(s => s.trim()).filter(Boolean); }
+// Keep existing ids for names that are already known, so an ongoing round stays linked
+function mergePeople(names) {
+  const pool = [...state.people];
+  return names.map(name => {
+    const i = pool.findIndex(p => p.name === name);
+    return i >= 0 ? pool.splice(i, 1)[0] : { id: newId('p'), name };
+  });
 }
 
 // ═══════════════════════════════════════
 //  HOME
 // ═══════════════════════════════════════
 function renderHome() {
+  document.getElementById('homeTitle').textContent = '🍲 ' + (state.groupName.trim() || 'FoodsUp');
   document.getElementById('themeGrid').innerHTML = state.themes.map(th => `
     <div class="theme-card ${homeSelectedId()===th.id?'selected':''}" onclick="selectTheme('${escA(th.id)}')">
       <div class="theme-emoji">${esc(th.emoji)}</div>
       <div class="theme-name">${esc(themeName(th))}</div>
-      <div class="theme-count">${t('optionsCount', th.options.length)}</div>
-      <div class="theme-edit-btn" onclick="event.stopPropagation();openThemeEdit('${escA(th.id)}')">${t('btnEditShort')}</div>
-    </div>`).join('');
+      <div class="theme-count">${esc(t('optionsCount', th.options.length))}</div>
+      <div class="theme-edit-btn" onclick="event.stopPropagation();openThemeEdit('${escA(th.id)}')">${esc(t('btnEditShort'))}</div>
+    </div>`).join('') + `
+    <div class="theme-card add" onclick="showAddThemeModal()">
+      <div class="theme-emoji">＋</div><div class="theme-name">${esc(t('btnNewTheme'))}</div>
+    </div>`;
 
   document.getElementById('noNamesNotice').style.display = state.people.length ? 'none' : '';
   const resume = document.getElementById('resumeBar');
@@ -877,7 +1155,7 @@ function renderHome() {
   const hist = document.getElementById('historyList');
   const clearBtn = document.getElementById('clearHistBtn');
   if (!state.history.length) {
-    hist.innerHTML = `<span style="color:var(--muted);font-size:14px">${t('noHistory')}</span>`;
+    hist.innerHTML = `<span style="color:var(--muted);font-size:14px">${esc(t('noHistory'))}</span>`;
     clearBtn.style.display = 'none';
   } else {
     clearBtn.style.display = '';
@@ -887,7 +1165,7 @@ function renderHome() {
       return `<div class="history-item" onclick="openHistDetail(${realIdx})">
         <div class="history-left">
           <div class="history-title">${esc(h.emoji)} ${esc(h.theme)}</div>
-          <div class="history-meta">${t('datePrefix')}${h.datetime}</div>
+          <div class="history-meta">${t('datePrefix')}${esc(h.datetime)}</div>
           <div class="history-summary">${esc(top||'—')}</div>
         </div>
         <div class="history-arrow">›</div>
@@ -911,7 +1189,7 @@ function startOrder() {
   const begin = () => {
     const th = state.themes.find(x => x.id === id);
     state.selectedThemeId = id; pickedThemeId = null;
-    state.currentOptions = JSON.parse(JSON.stringify(th.options)); state.votes = {}; state.guests = []; state.voterIndex = 0;
+    state.currentOptions = JSON.parse(JSON.stringify(th.options)); state.votes = {}; state.notes = {}; state.guests = [];
     state.roundActive = false;
     save();
     showScreen('order');
@@ -923,21 +1201,26 @@ function startOrder() {
 function resumeRound() { pickedThemeId = null; showScreen('votepicker'); }
 
 // ═══════════════════════════════════════
-//  NAMES
+//  GROUP (names, currency, sharing)
 // ═══════════════════════════════════════
+function renderGroup() {
+  document.getElementById('groupNameInput').value = state.groupName;
+  document.getElementById('currencyInput').value = state.currency;
+  renderNames();
+}
 function renderNames() {
   document.getElementById('namesList').innerHTML = state.people.map((p,i) => `
     <div class="name-item">
       <div class="name-num">${i+1}</div>
-      <input class="name-input" value="${esc(p.name)}" placeholder="${esc(t('btnAddName'))}" oninput="updateName(${i},this.value)"
-        onkeydown="if(event.key==='Enter')addNameField()">
+      <input class="name-input" value="${esc(p.name)}" placeholder="${esc(t('namePlaceholder'))}" oninput="updateName(${i},this.value)"
+        onpaste="onNamePaste(event,${i})" onkeydown="if(event.key==='Enter')addNameField()">
       <button class="btn btn-icon btn-secondary" onclick="removeName(${i})">×</button>
     </div>`).join('');
 }
 function updateName(i,v){ state.people[i].name=v; save(); }
 function removeName(i){
   const p=state.people[i];
-  delete state.votes[p.id];
+  delete state.votes[p.id]; delete state.notes[p.id];
   state.people.splice(i,1); save(); renderNames();
 }
 function addNameField(){
@@ -945,120 +1228,219 @@ function addNameField(){
   const inputs=document.querySelectorAll('#namesList .name-input');
   inputs[inputs.length-1].focus();
 }
+// Pasting a list (WhatsApp, spreadsheet…) into a name field adds one person per line
+function onNamePaste(e, i){
+  const txt=(e.clipboardData||window.clipboardData).getData('text');
+  const names=splitNames(txt);
+  if(names.length<2) return;
+  e.preventDefault();
+  const current=state.people[i];
+  if(!current.name.trim()) current.name=names.shift();
+  state.people.splice(i+1, 0, ...names.map(name=>({ id:newId('p'), name })));
+  save(); renderNames();
+  toast(t('toastNamesPasted', names.length + (current.name ? 1 : 0)));
+}
 function cleanPeople(){
   // Drop empty rows, but keep anyone who already has an order this round
   state.people.forEach(p => { p.name = p.name.trim(); });
   state.people = state.people.filter(p => p.name || state.votes[p.id]);
   state.people.forEach((p,i) => { if (!p.name) p.name = String(i+1); });
 }
-function saveNames(){ cleanPeople(); save(); toast(t('toastNamesSaved')); showScreen('home'); }
+function saveGroup(){ cleanPeople(); state.groupName=state.groupName.trim(); save(); toast(t('toastNamesSaved')); showScreen('home'); }
+
+// ═══════════════════════════════════════
+//  SHARE SETUP VIA LINK  (#import=<code>, no server needed)
+// ═══════════════════════════════════════
+const APP_URL = location.protocol === 'file:' ? 'https://timdams.github.io/FoodsUp/' : location.origin + location.pathname;
+function b64urlFromBytes(bytes){
+  let s=''; for (let i=0;i<bytes.length;i++) s+=String.fromCharCode(bytes[i]);
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function bytesFromB64url(str){
+  str=str.replace(/-/g,'+').replace(/_/g,'/'); while(str.length%4) str+='=';
+  const s=atob(str), b=new Uint8Array(s.length);
+  for (let i=0;i<s.length;i++) b[i]=s.charCodeAt(i);
+  return b;
+}
+async function pipeBytes(bytes, stream){
+  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+}
+// Code = 'z' + deflated JSON, or 'j' + plain JSON when compression isn't available
+async function encodeSetup(obj){
+  const bytes=new TextEncoder().encode(JSON.stringify(obj));
+  if (window.CompressionStream) {
+    try { return 'z'+b64urlFromBytes(await pipeBytes(bytes, new CompressionStream('deflate'))); } catch(e){}
+  }
+  return 'j'+b64urlFromBytes(bytes);
+}
+async function decodeSetup(code){
+  const bytes=bytesFromB64url(code.slice(1));
+  const raw = code[0]==='z' ? await pipeBytes(bytes, new DecompressionStream('deflate')) : bytes;
+  return JSON.parse(new TextDecoder().decode(raw));
+}
+async function shareSetupLink(){
+  cleanPeople(); save();
+  const setup={ v:1, g:state.groupName.trim(), c:state.currency, p:state.people.map(p=>p.name), t:state.themes };
+  const url=APP_URL+'#import='+await encodeSetup(setup);
+  const name=setup.g||t('unnamedGroup');
+  shareText(t('shareSetupTitle'), t('shareSetupText', name)+'\n'+url);
+}
+function extractCode(text){
+  const s=String(text||'').trim();
+  const m=s.match(/import=([A-Za-z0-9_-]+)/);
+  if (m) return m[1];
+  return /^[zj][A-Za-z0-9_-]{8,}$/.test(s) ? s : null;
+}
+function openImport(){ document.getElementById('importInput').value=''; openModal('importModal'); }
+function importFromInput(){
+  const code=extractCode(document.getElementById('importInput').value);
+  if (!code) { toast(t('toastImportFailed')); return; }
+  closeModal('importModal');
+  importSetupCode(code);
+}
+async function importSetupCode(code){
+  let setup;
+  try {
+    setup=await decodeSetup(code);
+    if (!setup || !Array.isArray(setup.p) || !Array.isArray(setup.t)) throw new Error('bad setup');
+  } catch(e) { console.warn('import failed', e); toast(t('toastImportFailed')); return; }
+  const themes=setup.t.filter(th=>th && typeof th.id==='string' && Array.isArray(th.options))
+    .map(th=>({ id:th.id, emoji:String(th.emoji||'📋'), name:th.name, options:th.options }));
+  const names=setup.p.map(String).map(s=>s.trim()).filter(Boolean);
+  confirm2(t('confirmImport', setup.g||t('unnamedGroup')), t('confirmImportBody', names.length, themes.length), ()=>{
+    state.people=mergePeople(names);
+    state.themes=themes;
+    state.groupName=String(setup.g||'');
+    if (typeof setup.c==='string') state.currency=setup.c;
+    if (!state.themes.some(x=>x.id===state.selectedThemeId)) { state.selectedThemeId=null; state.roundActive=false; }
+    state.onboarded=true;
+    save(); showScreen('home'); toast(t('toastImported'));
+  }, t('btnImport'));
+}
+function checkImportHash(){
+  const code=extractCode(location.hash);
+  if (!code) return false;
+  try { history.replaceState(null, '', location.pathname + location.search); } catch(e) {}
+  importSetupCode(code);
+  return true;
+}
+
+// ═══════════════════════════════════════
+//  BACKUP (download / restore a JSON file)
+// ═══════════════════════════════════════
+function downloadBackup(){
+  cleanPeople(); save();
+  const blob=new Blob([JSON.stringify({ app:'FoodsUp', v:1, exported:new Date().toISOString(), state }, null, 1)], { type:'application/json' });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`foodsup-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  toast(t('toastBackupSaved'));
+}
+function restoreBackup(file){
+  if (!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let data;
+    try { data=JSON.parse(reader.result); } catch(e) { toast(t('toastBackupInvalid')); return; }
+    const s=data && (data.state || data);
+    if (!s || !Array.isArray(s.themes)) { toast(t('toastBackupInvalid')); return; }
+    confirm2(t('confirmRestore'), t('confirmRestoreBody'), ()=>{
+      state=s; state.onboarded=true; save();
+      load(); setLang(currentLang); showScreen('home'); toast(t('toastBackupRestored'));
+    }, t('btnRestoreOk'));
+  };
+  reader.readAsText(file);
+}
 
 // ═══════════════════════════════════════
 //  THEME EDIT
 // ═══════════════════════════════════════
+function editingTheme() { return state.themes.find(x => x.id === editingThemeId); }
 function openThemeEdit(id) { editingThemeId = id; showScreen('themeedit'); }
 function renderThemeEdit() {
-  const th = state.themes.find(x => x.id === editingThemeId); if (!th) return;
+  const th = editingTheme(); if (!th) { showScreen('home'); return; }
   document.getElementById('teTitle').textContent = th.emoji + ' ' + themeName(th);
   document.getElementById('teEmoji').value = th.emoji;
   document.getElementById('teName').value = themeName(th);
   renderTeOptions();
 }
+function priceInput(o, handler) {
+  const p = optPrice(o);
+  return `<input class="price-input" inputmode="decimal" value="${p !== null ? esc(String(p)) : ''}"
+    placeholder="${esc(state.currency || t('pricePlaceholder'))}" aria-label="${esc(t('pricePlaceholder'))}" oninput="${handler}">`;
+}
 function renderTeOptions() {
-  const th = state.themes.find(x => x.id === editingThemeId);
+  const th = editingTheme();
   document.getElementById('teOptionList').innerHTML = th.options.map((o,i) => {
-    const lbl = optLabel(o);
     const subs = optSubs(o);
     const subsHtml = subs.map((sg, gi) => `
       <div class="sub-group-header">
-        <input class="sub-group-name-input" value="${esc(sg.group)}" placeholder="${t('subGroupPlaceholder')}"
+        <input class="sub-group-name-input" value="${esc(sg.group)}" placeholder="${esc(t('subGroupPlaceholder'))}"
           oninput="updateTeSubGroup(${i},${gi},this.value)">
         <button class="btn btn-icon btn-danger btn-sm" onclick="removeTeSubGroup(${i},${gi})">×</button>
       </div>
       ${sg.values.map((v,vi)=>`
         <div class="sub-item">
-          <input class="sub-val-input" value="${esc(v)}" placeholder="${t('subValPlaceholder')}"
+          <input class="sub-val-input" value="${esc(v)}" placeholder="${esc(t('subValPlaceholder'))}"
             oninput="updateTeSubVal(${i},${gi},${vi},this.value)">
           <button class="btn btn-icon btn-secondary btn-sm" onclick="removeTeSubVal(${i},${gi},${vi})">×</button>
         </div>`).join('')}
-      <button class="btn btn-secondary btn-sm" style="margin-top:4px;font-size:12px" onclick="addTeSubVal(${i},${gi})">${t('btnAddSubVal')}</button>
+      <button class="btn btn-secondary btn-sm" style="margin-top:4px;font-size:12px;align-self:flex-start" onclick="addTeSubVal(${i},${gi})">${esc(t('btnAddSubVal'))}</button>
     `).join('');
     return `<div class="option-item" style="flex-direction:column;align-items:stretch;gap:6px">
       <div style="display:flex;align-items:center;gap:8px">
-        <input class="option-name" value="${esc(lbl)}" oninput="updateTeOptLabel(${i},this.value)"
-          onfocus="this.parentElement.parentElement.classList.add('editing')" onblur="this.parentElement.parentElement.classList.remove('editing')">
-        <button class="btn btn-secondary btn-sm" onclick="addTeSubGroup(${i})" title="${t('btnAddSubGroup')}" style="white-space:nowrap;font-size:12px">${t('btnAddSubGroup')}</button>
+        <input class="option-name" value="${esc(optLabel(o))}" oninput="updateTeOptLabel(${i},this.value)"
+          onfocus="this.closest('.option-item').classList.add('editing')" onblur="this.closest('.option-item').classList.remove('editing')">
+        ${priceInput(o, `setOptPrice(editingTheme().options,${i},this.value)`)}
         <button class="btn btn-icon btn-danger btn-sm" onclick="removeTeOpt(${i})">×</button>
       </div>
       ${subs.length>0?`<div class="opt-subs">${subsHtml}</div>`:''}
+      <button class="link-btn" onclick="addTeSubGroup(${i})">${esc(t('btnAddSubGroup'))}</button>
     </div>`;
   }).join('');
 }
 function updateTeOptLabel(i,v){
-  const th=state.themes.find(x=>x.id===editingThemeId);
-  const o=th.options[i];
-  if(typeof o==='string') th.options[i]=v.trim()||o;
-  else { o.label=v.trim()||o.label; }
+  const list=editingTheme().options, o=list[i];
+  if(typeof o==='string') list[i]=v.trim()||o; else o.label=v.trim()||o.label;
 }
-function updateTeOpt(i,v){ updateTeOptLabel(i,v); }
-function removeTeOpt(i){ state.themes.find(x=>x.id===editingThemeId).options.splice(i,1); renderTeOptions(); }
+function removeTeOpt(i){ editingTheme().options.splice(i,1); renderTeOptions(); }
 function addTeOption(){
   const inp=document.getElementById('teNewOption'), v=inp.value.trim(); if(!v) return;
-  state.themes.find(x=>x.id===editingThemeId).options.push(v); inp.value=''; renderTeOptions();
+  editingTheme().options.push(v); inp.value=''; renderTeOptions();
 }
 function addTeSubGroup(i){
-  const th=state.themes.find(x=>x.id===editingThemeId);
-  let o=th.options[i];
-  if(typeof o==='string') { o={label:o,subs:[]}; th.options[i]=o; }
+  const o=optObj(editingTheme().options, i);
+  if(!o.subs) o.subs=[];
   o.subs.push({group:'',values:['']});
   renderTeOptions();
 }
 function removeTeSubGroup(i,gi){
-  const th=state.themes.find(x=>x.id===editingThemeId);
-  const o=th.options[i]; o.subs.splice(gi,1);
-  if(o.subs.length===0) th.options[i]=o.label; // back to string
+  const list=editingTheme().options, o=list[i];
+  o.subs.splice(gi,1);
+  list[i]=normOpt(o);
   renderTeOptions();
 }
-function updateTeSubGroup(i,gi,v){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].group=v; }
-function addTeSubVal(i,gi){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].values.push(''); renderTeOptions(); }
-function removeTeSubVal(i,gi,vi){ const sg=state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi]; sg.values.splice(vi,1); renderTeOptions(); }
-function updateTeSubVal(i,gi,vi,v){ state.themes.find(x=>x.id===editingThemeId).options[i].subs[gi].values[vi]=v; }
+function updateTeSubGroup(i,gi,v){ editingTheme().options[i].subs[gi].group=v; }
+function addTeSubVal(i,gi){ editingTheme().options[i].subs[gi].values.push(''); renderTeOptions(); }
+function removeTeSubVal(i,gi,vi){ editingTheme().options[i].subs[gi].values.splice(vi,1); renderTeOptions(); }
+function updateTeSubVal(i,gi,vi,v){ editingTheme().options[i].subs[gi].values[vi]=v; }
 function saveThemeEdit(){
-  const th=state.themes.find(x=>x.id===editingThemeId);
-  // Rebuild options entirely from DOM to capture any unsaved input state
-  const optionItems = document.querySelectorAll('#teOptionList > div');
-  optionItems.forEach((item, i) => {
-    if(i >= th.options.length) return;
-    // Read main label
-    const labelInp = item.querySelector('.option-name');
-    if(labelInp) updateTeOptLabel(i, labelInp.value);
-    // Read sub group names and values
-    const subGroups = item.querySelectorAll('.opt-subs .sub-group-header');
-    const subValsBlocks = item.querySelectorAll('.opt-subs > div');
-    // Simpler: just read all sub-group-name-inputs and sub-val-inputs in order
-    if(typeof th.options[i] === 'object') {
-      const groupInputs = item.querySelectorAll('.sub-group-name-input');
-      groupInputs.forEach((inp, gi) => {
-        if(th.options[i].subs[gi]) th.options[i].subs[gi].group = inp.value;
-      });
-      const valInputs = item.querySelectorAll('.sub-val-input');
-      // Map val inputs back: they're sequential across all groups
-      let vi_global = 0;
-      th.options[i].subs.forEach((sg, gi) => {
-        sg.values.forEach((_, vi) => {
-          const inp = valInputs[vi_global++];
-          if(inp) sg.values[vi] = inp.value;
-        });
-      });
-    }
+  const th=editingTheme();
+  // Tidy up: drop empty sub-values and nameless, empty sub-groups
+  th.options=th.options.map(o=>{
+    if(typeof o==='string') return o;
+    if(o.subs) o.subs=o.subs.map(sg=>({group:sg.group.trim(), values:sg.values.map(v=>v.trim()).filter(Boolean)})).filter(sg=>sg.values.length);
+    return normOpt(o);
   });
-  th.emoji = document.getElementById('teEmoji').value.trim()||th.emoji;
-  const newName = document.getElementById('teName').value.trim();
-  if (newName) { if (typeof th.name === 'object') th.name[currentLang] = newName; else th.name = newName; }
+  th.emoji=document.getElementById('teEmoji').value.trim()||th.emoji;
+  const newName=document.getElementById('teName').value.trim();
+  if (newName) { if (typeof th.name==='object') th.name[currentLang]=newName; else th.name=newName; }
   save(); toast(t('toastThemeSaved')); showScreen('home');
 }
 function confirmDeleteTheme(){
-  const th=state.themes.find(x=>x.id===editingThemeId);
+  const th=editingTheme();
   confirm2(t('confirmDeleteTheme', themeName(th)), t('confirmDeleteThemeBody'), ()=>{
     state.themes=state.themes.filter(x=>x.id!==editingThemeId);
     if(state.selectedThemeId===editingThemeId){ state.selectedThemeId=null; state.roundActive=false; }
@@ -1068,18 +1450,20 @@ function confirmDeleteTheme(){
 }
 
 // ═══════════════════════════════════════
-//  ORDER
+//  ORDER (options for this round)
 // ═══════════════════════════════════════
+function roundTheme() { return state.themes.find(x=>x.id===state.selectedThemeId); }
 function renderOrder(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const th=roundTheme();
   if(!th){showScreen('home');return;}
   document.getElementById('orderThemeName').textContent=th.emoji+' '+themeName(th);
   document.getElementById('orderOptionCount').textContent=t('optionsCount', state.currentOptions.length);
   document.getElementById('optionList').innerHTML=state.currentOptions.map((o,i)=>`
     <div class="option-item">
-      <input class="option-name" value="${esc(optLabel(o))}" onchange="updateOpt(${i},this.value)"
+      <input class="option-name" value="${esc(optLabel(o))}" oninput="updateOpt(${i},this.value)"
         onfocus="this.parentElement.classList.add('editing')" onblur="this.parentElement.classList.remove('editing')">
-      ${hasSubs(o)?`<span style="font-size:11px;color:var(--accent);font-weight:700">⊕ subs</span>`:''}
+      ${hasSubs(o)?`<span class="subs-badge">⊕</span>`:''}
+      ${priceInput(o, `setOptPrice(state.currentOptions,${i},this.value);save()`)}
       <button class="btn btn-icon btn-danger btn-sm" onclick="removeOpt(${i})">×</button>
     </div>`).join('');
 }
@@ -1087,29 +1471,22 @@ function updateOpt(i,v){
   const o=state.currentOptions[i];
   if(typeof o==='string') state.currentOptions[i]=v.trim()||o;
   else o.label=v.trim()||o.label;
-  document.getElementById('orderOptionCount').textContent=t('optionsCount',state.currentOptions.length);
+  save();
 }
-function removeOpt(i){ state.currentOptions.splice(i,1); renderOrder(); }
+function removeOpt(i){ state.currentOptions.splice(i,1); save(); renderOrder(); }
 function addOption(){
   const inp=document.getElementById('newOptionInput'), v=inp.value.trim(); if(!v) return;
-  state.currentOptions.push(v); inp.value=''; renderOrder();
+  state.currentOptions.push(v); inp.value=''; save(); renderOrder();
 }
-function resetToThemeDefaults(){ state.currentOptions=JSON.parse(JSON.stringify(state.themes.find(x=>x.id===state.selectedThemeId).options)); renderOrder(); }
+function resetToThemeDefaults(){ state.currentOptions=JSON.parse(JSON.stringify(roundTheme().options)); save(); renderOrder(); }
 function saveCurrentToTheme(){
-  // re-sync labels from DOM but keep sub structure
-  document.querySelectorAll('#optionList .option-name').forEach((inp,i)=>{
-    if(i<state.currentOptions.length) updateOpt(i, inp.value);
-  });
-  const th=state.themes.find(x=>x.id===state.selectedThemeId); th.options=JSON.parse(JSON.stringify(state.currentOptions));
+  const th=roundTheme(); th.options=JSON.parse(JSON.stringify(state.currentOptions));
   save(); toast(t('toastSavedDefault', themeName(th)));
 }
 
 // ═══════════════════════════════════════
 //  VOTER PICKER
 // ═══════════════════════════════════════
-// state.guests = [{id, name, temp:true}] added at round start
-// state.currentVoterKey = name string (from names or guest id)
-
 function startVoting(){
   if(!state.currentOptions.length){toast(t('toastNeedOption'));return;}
   // Votes are only reset when a new round starts (startOrder), never here
@@ -1125,25 +1502,20 @@ function allVoters(){
   const guests = (state.guests||[]).map(g=>({key:g.id, name:g.name, temp:true}));
   return [...perms, ...guests];
 }
-function voterName(key){
-  const v=allVoters().find(v=>v.key===key);
-  return v ? v.name : key;
-}
 function votedCount(voters){ return voters.filter(v=>state.votes[v.key]&&state.votes[v.key].length).length; }
 
 function renderVotePicker(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const th=roundTheme();
   if(!th){showScreen('home');return;}
   const voters=allVoters();
   document.getElementById('pickerThemeName').textContent=th.emoji+' '+themeName(th);
   document.getElementById('pickerHeaderSub').textContent=t('votedCount',votedCount(voters),voters.length);
-
   document.getElementById('voterGrid').innerHTML=voters.map(v=>{
     const sels=state.votes[v.key]||[];
     const done=sels.length>0;
-    const choiceStr=sels.join(' + ');
+    const choiceStr=fmtItems(sels);
     const shortChoice=choiceStr.length>16?choiceStr.slice(0,15)+'…':choiceStr;
-    return `<div class="voter-tile ${done?'done':''} ${v.temp?'guest':''}" onclick="openVoterVote('${escA(v.key)}','${escA(v.name)}',${v.temp})">
+    return `<div class="voter-tile ${done?'done':''} ${v.temp?'guest':''}" onclick="openVoterVote('${escA(v.key)}','${escA(v.name)}')">
       ${v.temp?`<div class="voter-tile-badge">${esc(t('guestBadge'))}</div>`:''}
       <div class="voter-tile-name">${esc(v.name)}</div>
       ${done?`<div class="voter-tile-choice">${esc(shortChoice)}</div>`:''}
@@ -1154,7 +1526,6 @@ function renderVotePicker(){
 function addGuest(){
   const inp=document.getElementById('guestNameInput');
   const name=inp.value.trim(); if(!name) return;
-  if(!state.guests) state.guests=[];
   state.guests.push({id:newId('guest'), name});
   inp.value='';
   save();
@@ -1162,85 +1533,74 @@ function addGuest(){
   toast('+ '+name);
 }
 
-function openVoterVote(key, name, isTemp){
+function openVoterVote(key, name){
   state.currentVoterKey=key;
   state.currentVoterName=name;
   expandedOption=null;
   activeSubSels={};
   showScreen('vote');
 }
-
-function backToPicker(){
-  showScreen('votepicker');
-}
+function backToPicker(){ showScreen('votepicker'); }
 
 // ═══════════════════════════════════════
 //  VOTE (single person)
 // ═══════════════════════════════════════
-// Track sub-selections per active option: { groupName: chosenValue }
-// votes[key] = array of choice-strings, e.g. ["Thee","Koekje"] or ["Set·Koffie·Jam"]
-// activeSubSels: for the option currently being sub-configured: {group: val}
-let activeSubSels = {};     // sub-selections for the option being expanded
-let expandedOption = null;  // which main option label is currently expanded for sub-selection
+// votes[key] = array of choice strings, e.g. ["Tea","Tea","Cake"] or ["Set · Coffee · Jam"]
+let activeSubSels = {};     // sub-selections for the option being expanded: {group: value}
+let expandedOption = null;  // which option label is currently expanded for sub-selection
 
-// ─── helpers ───────────────────────────────────────────────────────────────
 function getSelections(key){ return state.votes[key] || []; }
+function matchesLabel(s, lbl){ return s === lbl || s.startsWith(lbl + ' · '); }
+function isSelected(key, lbl){ return getSelections(key).some(s => matchesLabel(s, lbl)); }
+function getCompositeFor(key, lbl){ return getSelections(key).find(s => matchesLabel(s, lbl)) || null; }
+function isKnownChoice(s){ return state.currentOptions.some(o => matchesLabel(s, optLabel(o))); }
 
-function isSelected(key, lbl){
-  return getSelections(key).some(s => s === lbl || s.startsWith(lbl + ' · '));
-}
-
-function getCompositeFor(key, lbl){
-  return (getSelections(key)).find(s => s === lbl || s.startsWith(lbl + ' · ')) || null;
-}
-
-// ─── render ────────────────────────────────────────────────────────────────
 function renderVote(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId);
-  const key=state.currentVoterKey, name=state.currentVoterName;
+  const th=roundTheme();
+  const key=state.currentVoterKey;
   if(!th||!key){showScreen('home');return;}
   const voters=allVoters();
   document.getElementById('voteThemeName').textContent=th.emoji+' '+themeName(th);
   document.getElementById('voteHeaderSub').textContent=t('votedCount',votedCount(voters),voters.length);
-  document.getElementById('voterName').textContent=name;
+  document.getElementById('voterName').textContent=state.currentVoterName;
+  renderVoteOptions();
+  const customSels=getSelections(key).filter(s=>!isKnownChoice(s));
+  document.getElementById('customVoteInput').value=customSels.join(', ');
+  document.getElementById('customRow').style.borderColor=customSels.length?'var(--accent)':'';
+  document.getElementById('noteInput').value=state.notes[key]||'';
+}
 
-  const sels = getSelections(key);
-
+function renderVoteOptions(){
+  const key=state.currentVoterKey;
   document.getElementById('voteOptions').innerHTML=state.currentOptions.map(o=>{
-    const lbl=optLabel(o);
-    const sel=isSelected(key,lbl);
-    const expanded=expandedOption===lbl;
-    // Badge showing sub-choice if selected
+    const lbl=optLabel(o), sel=isSelected(key,lbl), subs=hasSubs(o), price=optPrice(o);
     const composite=getCompositeFor(key,lbl);
     const subBadge = composite && composite.includes(' · ')
-      ? `<span style="font-size:11px;color:var(--accent);margin-left:6px">${esc(composite.split(' · ').slice(1).join(' · '))}</span>` : '';
+      ? `<span class="sub-badge">${esc(composite.split(' · ').slice(1).join(' · '))}</span>` : '';
+    const priceTag = price!==null ? `<span class="opt-price">${esc(fmtMoney(price))}</span>` : '';
+    const n=getSelections(key).filter(s=>s===lbl).length;
+    const qty = sel && !subs ? `<div class="qty">
+        <button class="qty-btn" onclick="changeQty('${escA(lbl)}',-1)" aria-label="−">−</button>
+        <div class="qty-n">${n}</div>
+        <button class="qty-btn" onclick="changeQty('${escA(lbl)}',1)" aria-label="+">+</button>
+      </div>` : '';
     return `<div>
-      <button class="vote-option ${sel?'selected':''}" onclick="toggleOption('${escA(lbl)}')" style="display:flex;justify-content:space-between;align-items:center">
-        <span>${esc(lbl)}</span>${subBadge}
-      </button>
-      ${(sel||expanded)&&hasSubs(o)?renderSubBlocks(o,lbl):''}
+      <div class="vote-row">
+        <button class="vote-option ${sel?'selected':''}" onclick="toggleOption('${escA(lbl)}')"><span>${esc(lbl)}${subBadge}</span>${priceTag}</button>
+        ${qty}
+      </div>
+      ${(sel||expandedOption===lbl)&&subs?renderSubBlocks(o,lbl):''}
     </div>`;
   }).join('');
-
-  // custom input — show if any selection is fully custom
-  const customInp=document.getElementById('customVoteInput');
-  const knownLabels=state.currentOptions.map(optLabel);
-  const customSels=sels.filter(s=>!knownLabels.some(l=>s===l||s.startsWith(l+' · ')));
-  customInp.value=customSels.join(', ');
-  customInp.placeholder=t('customPlaceholder');
-  document.getElementById('customRow').style.borderColor=customSels.length?'var(--accent)':'';
 }
 
 function renderSubBlocks(opt, lbl){
   const subs=optSubs(opt);
   if(!subs.length) return '';
-  // Use activeSubSels if this is the expanded one, else parse from existing vote
   const composite=getCompositeFor(state.currentVoterKey, lbl)||'';
   const existingParts=composite.split(' · ').slice(1);
   const html=subs.map((sg,gi)=>{
-    const chosen = expandedOption===lbl
-      ? (activeSubSels[sg.group]||'')
-      : (existingParts[gi]||'');
+    const chosen = expandedOption===lbl ? (activeSubSels[sg.group]||'') : (existingParts[gi]||'');
     const btns=sg.values.filter(v=>v.trim()).map(v=>`
       <button class="sub-btn ${chosen===v?'selected':''}" onclick="selectSubVal('${escA(lbl)}','${escA(sg.group)}','${escA(v)}')">${esc(v)}</button>`).join('');
     return `<div class="sub-group">
@@ -1248,93 +1608,90 @@ function renderSubBlocks(opt, lbl){
       <div class="sub-group-btns">${btns}</div>
     </div>`;
   }).join('');
-  return `<div class="sub-options-block"><div class="sub-label">${t('subLabel')}</div>${html}</div>`;
+  return `<div class="sub-options-block"><div class="sub-label">${esc(t('subLabel'))}</div>${html}</div>`;
 }
 
-// ─── selection logic ────────────────────────────────────────────────────────
 function toggleOption(lbl){
-  document.getElementById('customVoteInput').value='';
-  document.getElementById('customRow').style.borderColor='';
   const key=state.currentVoterKey;
   const opt=state.currentOptions.find(o=>optLabel(o)===lbl);
-
   if(isSelected(key,lbl)){
-    // Deselect — remove this choice
-    state.votes[key]=(state.votes[key]||[]).filter(s=>s!==lbl && !s.startsWith(lbl+' · '));
+    state.votes[key]=getSelections(key).filter(s=>!matchesLabel(s,lbl));
     if(!state.votes[key].length) delete state.votes[key];
     if(expandedOption===lbl){ expandedOption=null; activeSubSels={}; }
+  } else if(hasSubs(opt)){
+    // Expand for sub-selection; pre-fill the first values
+    expandedOption=lbl; activeSubSels={};
+    optSubs(opt).forEach(sg=>{ const first=sg.values.find(v=>v.trim()); if(first) activeSubSels[sg.group]=first; });
+    commitSubVote(lbl);
   } else {
-    // Select
-    if(hasSubs(opt)){
-      // Expand for sub-selection; pre-fill first values
-      expandedOption=lbl; activeSubSels={};
-      optSubs(opt).forEach(sg=>{ if(sg.values[0]) activeSubSels[sg.group]=sg.values[0]; });
-      commitSubVote(lbl);
-    } else {
-      if(!state.votes[key]) state.votes[key]=[];
-      state.votes[key].push(lbl);
-      expandedOption=null;
-    }
+    (state.votes[key]=getSelections(key)).push(lbl);
+    expandedOption=null;
   }
-  save(); // FIX 2: auto-save on every selection
-  renderVote();
+  save();
+  renderVoteOptions();
+}
+
+function changeQty(lbl, delta){
+  const key=state.currentVoterKey;
+  const arr=state.votes[key]=getSelections(key);
+  if(delta>0) arr.push(lbl);
+  else { const idx=arr.lastIndexOf(lbl); if(idx>=0) arr.splice(idx,1); }
+  if(!arr.length) delete state.votes[key];
+  save();
+  renderVoteOptions();
 }
 
 function selectSubVal(lbl, group, val){
+  if(expandedOption!==lbl){
+    // Re-open an already chosen option: start from its current sub-choices
+    const opt=state.currentOptions.find(o=>optLabel(o)===lbl);
+    const parts=(getCompositeFor(state.currentVoterKey,lbl)||'').split(' · ').slice(1);
+    expandedOption=lbl; activeSubSels={};
+    optSubs(opt).forEach((sg,gi)=>{ if(parts[gi]) activeSubSels[sg.group]=parts[gi]; });
+  }
   activeSubSels[group]=val;
   commitSubVote(lbl);
-  save(); // FIX 2: auto-save
-  renderVote();
+  save();
+  renderVoteOptions();
 }
 
 function commitSubVote(lbl){
   const key=state.currentVoterKey;
   const opt=state.currentOptions.find(o=>optLabel(o)===lbl);
-  const subs=opt?optSubs(opt):[];
   const parts=[lbl];
-  subs.forEach(sg=>{ if(activeSubSels[sg.group]) parts.push(activeSubSels[sg.group]); });
+  optSubs(opt).forEach(sg=>{ if(activeSubSels[sg.group]) parts.push(activeSubSels[sg.group]); });
   const composite=parts.join(' · ');
-  if(!state.votes[key]) state.votes[key]=[];
-  // Replace existing composite for this label if present
-  const idx=state.votes[key].findIndex(s=>s===lbl||s.startsWith(lbl+' · '));
-  if(idx>=0) state.votes[key][idx]=composite;
-  else state.votes[key].push(composite);
+  const arr=state.votes[key]=getSelections(key);
+  const idx=arr.findIndex(s=>matchesLabel(s,lbl));
+  if(idx>=0) arr[idx]=composite; else arr.push(composite);
 }
-
-function castVoteBtn(o){ toggleOption(optLabel(o)); }
 
 function onCustomInput(val){
   const key=state.currentVoterKey;
   const trimmed=val.trim();
-  // Remove previous custom entries, keep known-option selections
-  const knownLabels=state.currentOptions.map(optLabel);
-  if(!state.votes[key]) state.votes[key]=[];
-  state.votes[key]=state.votes[key].filter(s=>knownLabels.some(l=>s===l||s.startsWith(l+' · ')));
-  if(trimmed){
-    state.votes[key].push(trimmed);
-    document.getElementById('customRow').style.borderColor='var(--accent)';
-  } else {
-    document.getElementById('customRow').style.borderColor='';
-  }
+  // Replace previous custom entries, keep the selections of listed options
+  state.votes[key]=getSelections(key).filter(isKnownChoice);
+  if(trimmed) state.votes[key].push(trimmed);
+  document.getElementById('customRow').style.borderColor=trimmed?'var(--accent)':'';
   if(!state.votes[key].length) delete state.votes[key];
   expandedOption=null; activeSubSels={};
-  save(); // FIX 2: auto-save
-  // re-render buttons without full renderVote to keep cursor
-  document.getElementById('voteOptions').innerHTML=state.currentOptions.map(o=>{
-    const lbl=optLabel(o);
-    return `<div><button class="vote-option ${isSelected(key,lbl)?'selected':''}" onclick="toggleOption('${escA(lbl)}')">${esc(lbl)}</button></div>`;
-  }).join('');
+  save();
+  renderVoteOptions(); // not renderVote(): keeps the cursor in the input
+}
+
+function onNoteInput(val){
+  const key=state.currentVoterKey;
+  if(val.trim()) state.notes[key]=val; else delete state.notes[key];
+  save();
 }
 
 function confirmVote(){
   const key=state.currentVoterKey;
   const choices=getSelections(key);
   if(!choices.length){toast(t('toastNeedChoice'));return;}
-  // Add fully custom choices as plain options for future voters
-  const knownLabels=state.currentOptions.map(optLabel);
-  choices.forEach(choice=>{
-    const baseLabel=choice.split(' · ')[0];
-    if(!knownLabels.includes(baseLabel)){
+  // Add custom choices as plain options for the next people
+  [...new Set(choices)].forEach(choice=>{
+    if(!isKnownChoice(choice)){
       state.currentOptions.push(choice);
       toast(t('toastCustomAdded',choice));
     }
@@ -1347,54 +1704,101 @@ function confirmVote(){
 // ═══════════════════════════════════════
 //  RESULTS
 // ═══════════════════════════════════════
+// Votes and notes of the current round keyed by display name; duplicate names get " (2)", " (3)"…
+function roundByName(){
+  const votes={}, notes={};
+  allVoters().forEach(v=>{
+    const val=state.votes[v.key];
+    if(!val||!val.length) return;
+    let name=v.name, n=2;
+    while(votes[name]) name=`${v.name} (${n++})`;
+    votes[name]=val;
+    const note=(state.notes[v.key]||'').trim();
+    if(note) notes[name]=note;
+  });
+  return {votes, notes};
+}
+
+// Shared by the results screen and history detail; votes/notes are keyed by display name
+function summaryHtml(votes, options, notes, cur){
+  let sorted=summarize(votes,options);
+  // Once something is ordered, choices nobody picked are just noise
+  if(sorted.some(([,c])=>c>0)) sorted=sorted.filter(([,c])=>c>0);
+  const max=Math.max(1, ...sorted.map(([,c])=>c));
+  const priced=hasPrices(options);
+  const totals=sorted.map(([o,c])=>{
+    const who=Object.entries(votes).map(([n,arr])=>{
+      const k=asArr(arr).filter(x=>x===o).length;
+      return k ? (k>1?`${n} ×${k}`:n) : null;
+    }).filter(Boolean).join(', ');
+    const p=priceOf(o,options);
+    return `<div class="result-item">
+      <div class="result-count ${c===0?'zero':''}">${c}</div>
+      <div class="result-info">
+        <div class="result-name"><span>${esc(o)}</span>${p!==null&&c>0?`<span class="opt-price">${esc(fmtMoney(p*c,cur))}</span>`:''}</div>
+        ${c>0?`<div class="result-voters">${esc(who)}</div>`:''}
+        <div class="result-bar-wrap"><div class="result-bar ${c===0?'empty':''}" style="width:${c/max*100}%"></div></div>
+      </div></div>`;
+  }).join('');
+  const per=Object.entries(votes).sort((a,b)=>a[0].localeCompare(b[0])).map(([n,arr])=>{
+    const items=asArr(arr), note=notes&&notes[n];
+    return `<div class="hd-per-item">
+      <div><div class="hd-per-name">${esc(n)}</div>${note?`<div class="per-note">📝 ${esc(note)}</div>`:''}</div>
+      <div><div class="hd-per-choice">${esc(fmtItems(items))}</div>${priced?`<div class="per-cost">${esc(fmtMoney(personTotal(items,options),cur))}</div>`:''}</div>
+    </div>`;
+  }).join('');
+  const total=priced ? Object.values(votes).reduce((s,arr)=>s+personTotal(asArr(arr),options),0) : null;
+  const totalHtml=total!==null ? `<div class="total-bar"><div class="total-label">${esc(t('totalLabel'))}</div><div class="total-value">${esc(fmtMoney(total,cur))}</div></div>` : '';
+  return { totals, per, totalHtml };
+}
+
 function renderResults(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  const th=roundTheme();
   if(!th){showScreen('home');return;}
   const voters=allVoters(), pending=voters.filter(v=>!(state.votes[v.key]&&state.votes[v.key].length));
   document.getElementById('resultsThemeName').textContent=th.emoji+' '+themeName(th);
   document.getElementById('resultsSub2').textContent=t('votedCount',votedCount(voters),voters.length);
   document.getElementById('resultSub').textContent=fmtDT(new Date());
-  const sorted=summarize(state.votes,state.currentOptions), max=sorted.length?sorted[0][1]:1;
-  document.getElementById('resultList').innerHTML=sorted.map(([o,c])=>{
-    const voters=Object.entries(state.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([k])=>voterName(k)).join(', ');
-    return `<div class="result-item">
-      <div class="result-count ${c===0?'zero':''}">${c}</div>
-      <div class="result-info">
-        <div class="result-name">${esc(o)}</div>
-        ${c>0?`<div class="result-voters">${esc(voters)}</div>`:''}
-        <div class="result-bar-wrap"><div class="result-bar ${c===0?'empty':''}" style="width:${max>0?c/max*100:0}%"></div></div>
-      </div></div>`;
-  }).join('');
-  if(pending.length){
-    document.getElementById('pendingSection').style.display='';
-    document.getElementById('pendingNames').textContent=pending.map(v=>v.name).join(' · ');
-    document.getElementById('continueVoteBtn').style.display='';
-  } else {
-    document.getElementById('pendingSection').style.display='none';
-    document.getElementById('continueVoteBtn').style.display='none';
-  }
+  const {votes, notes}=roundByName();
+  const s=summaryHtml(votes, state.currentOptions, notes, state.currency);
+  document.getElementById('resultsTotal').innerHTML=s.totalHtml;
+  document.getElementById('resultList').innerHTML=s.totals;
+  document.getElementById('resultsPer').innerHTML=s.per;
+  document.getElementById('resultsPerWrap').style.display=s.per?'':'none';
+  document.getElementById('pendingSection').style.display=pending.length?'':'none';
+  document.getElementById('continueVoteBtn').style.display=pending.length?'':'none';
+  document.getElementById('pendingNames').textContent=pending.map(v=>v.name).join(' · ');
 }
-// Votes of the current round keyed by display name; duplicate names get " (2)", " (3)"…
-function roundVotesByName(){
-  const out={};
-  allVoters().forEach(v=>{
-    const val=state.votes[v.key];
-    if(!val||!val.length) return;
-    let name=v.name, n=2;
-    while(out[name]) name=`${v.name} (${n++})`;
-    out[name]=val;
-  });
-  return out;
+function finalizeRound(){
+  const th=roundTheme();
+  const {votes, notes}=roundByName();
+  state.history.push({ id:Date.now(), themeId:th.id, theme:themeName(th), emoji:th.emoji,
+    datetime:fmtDT(new Date()), options:JSON.parse(JSON.stringify(state.currentOptions)), votes, notes,
+    currency:state.currency, guests:state.guests.map(g=>g.name) });
+  state.votes={}; state.notes={}; state.guests=[]; state.currentVoterKey=null; state.currentVoterName=null; state.roundActive=false;
+  save(); toast(t('toastRoundSaved')); showScreen('home');
 }
 
 // ═══════════════════════════════════════
-//  SHARE
+//  SHARE RESULTS
 // ═══════════════════════════════════════
-function buildShareText(title, datetime, votes, options){
-  const totals=summarize(votes,options).filter(([,c])=>c>0).map(([o,c])=>`${c}× ${o}`);
-  const per=Object.entries(votes).sort((a,b)=>a[0].localeCompare(b[0]))
-    .map(([n,arr])=>`${n}: ${(Array.isArray(arr)?arr:[arr]).join(' + ')}`);
-  return [title, datetime, '', ...totals, '', '---', ...per].join('\n');
+function buildShareText(title, datetime, votes, options, notes, cur){
+  const priced=hasPrices(options);
+  const totals=summarize(votes,options).filter(([,c])=>c>0).map(([o,c])=>{
+    const p=priceOf(o,options);
+    return `${c}× ${o}` + (priced&&p!==null ? ` (${fmtMoney(p*c,cur)})` : '');
+  });
+  const lines=[title, datetime, '', ...totals];
+  if(priced){
+    const total=Object.values(votes).reduce((s,arr)=>s+personTotal(asArr(arr),options),0);
+    lines.push('', `${t('totalLabel')}: ${fmtMoney(total,cur)}`);
+  }
+  lines.push('', '---');
+  Object.entries(votes).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([n,arr])=>{
+    const items=asArr(arr), note=notes&&notes[n];
+    lines.push(`${n}: ${fmtItems(items)}` + (note?` — ${note}`:'') + (priced?` (${fmtMoney(personTotal(items,options),cur)})`:''));
+  });
+  return lines.join('\n');
 }
 async function shareText(title, text){
   if(navigator.share){
@@ -1410,27 +1814,15 @@ async function shareText(title, text){
   } catch(e){ toast(t('toastShareFailed')); }
 }
 function shareCurrentRound(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId); if(!th) return;
+  const th=roundTheme(); if(!th) return;
   const title=th.emoji+' '+themeName(th);
-  shareText(title, buildShareText(title, fmtDT(new Date()), roundVotesByName(), state.currentOptions));
+  const {votes, notes}=roundByName();
+  shareText(title, buildShareText(title, fmtDT(new Date()), votes, state.currentOptions, notes, state.currency));
 }
 function shareHistoryItem(){
   const h=state.history[viewingHistIdx]; if(!h) return;
   const title=h.emoji+' '+h.theme;
-  shareText(title, buildShareText(title, h.datetime, h.votes, h.options));
-}
-
-function continueVoting(){
-  showScreen('votepicker');
-}
-function finalizeRound(){
-  const th=state.themes.find(x=>x.id===state.selectedThemeId);
-  const namedVotes=roundVotesByName();
-  state.history.push({ id:Date.now(), themeId:th.id, theme:themeName(th), emoji:th.emoji,
-    datetime:fmtDT(new Date()), options:[...state.currentOptions], votes:namedVotes,
-    guests:(state.guests||[]).map(g=>g.name) });
-  state.votes={}; state.guests=[]; state.currentVoterKey=null; state.currentVoterName=null; state.roundActive=false;
-  save(); toast(t('toastRoundSaved')); showScreen('home');
+  shareText(title, buildShareText(title, h.datetime, h.votes, h.options, h.notes, h.currency ?? state.currency));
 }
 
 // ═══════════════════════════════════════
@@ -1443,23 +1835,10 @@ function renderHistDetail(){
   document.getElementById('hdSub').textContent=h.datetime;
   document.getElementById('hdTheme').textContent=h.emoji+' '+h.theme;
   document.getElementById('hdDate').textContent=t('datePrefix')+h.datetime;
-  const sorted=summarize(h.votes,h.options), max=sorted.length?sorted[0][1]:1;
-  document.getElementById('hdTotals').innerHTML=sorted.map(([o,c])=>{
-    const who=Object.entries(h.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([n])=>n).join(' · ');
-    return `<div class="hd-total-item">
-      <div class="hd-count ${c===0?'zero':''}">${c}</div>
-      <div class="hd-opt-info">
-        <div class="hd-opt-name">${esc(o)}</div>
-        <div class="hd-bar-wrap"><div class="hd-bar" style="width:${max>0?c/max*100:0}%;${c===0?'background:var(--border)':''}"></div></div>
-        ${c>0?`<div class="hd-opt-names">${esc(who)}</div>`:''}
-      </div></div>`;
-  }).join('');
-  document.getElementById('hdPerList').innerHTML=Object.entries(h.votes)
-    .sort((a,b)=>a[0].localeCompare(b[0]))
-    .map(([n,arr])=>{
-      const choices=Array.isArray(arr)?arr:[arr];
-      return `<div class="hd-per-item"><div class="hd-per-name">${esc(n)}</div><div class="hd-per-choice">${esc(choices.join(' + '))}</div></div>`;
-    }).join('');
+  const s=summaryHtml(h.votes, h.options, h.notes||{}, h.currency ?? state.currency);
+  document.getElementById('hdTotal').innerHTML=s.totalHtml;
+  document.getElementById('hdTotals').innerHTML=s.totals;
+  document.getElementById('hdPerList').innerHTML=s.per;
 }
 function deleteHistoryItem(){
   confirm2(t('confirmDeleteOrder'),t('confirmDeleteOrderBody'),()=>{
@@ -1475,15 +1854,17 @@ function confirmClearHistory(){
 // ═══════════════════════════════════════
 //  ADD THEME MODAL
 // ═══════════════════════════════════════
-function showAddThemeModal(){ openModal('addThemeModal'); }
+function showAddThemeModal(){ openModal('addThemeModal'); setTimeout(()=>document.getElementById('newThemeName').focus(), 50); }
 function addTheme(){
   const name=document.getElementById('newThemeName').value.trim();
   const emoji=document.getElementById('newThemeEmoji').value.trim()||'📋';
   if(!name){toast(t('toastNeedName'));return;}
-  state.themes.push({id:'c_'+Date.now(), name:{nl:name,en:name,ne:name}, emoji, options:[]});
+  const id=newId('c');
+  state.themes.push({id, name:{nl:name,en:name,ne:name}, emoji, options:[]});
   save(); closeModal('addThemeModal');
   document.getElementById('newThemeName').value=''; document.getElementById('newThemeEmoji').value='';
-  renderHome(); toast(t('toastThemeAdded'));
+  toast(t('toastThemeAdded'));
+  openThemeEdit(id); // go straight to adding choices
 }
 
 // ═══════════════════════════════════════
@@ -1491,10 +1872,13 @@ function addTheme(){
 // ═══════════════════════════════════════
 function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function confirm2(title,body,cb){
+function confirm2(title,body,cb,okLabel){
   document.getElementById('confirmTitle').textContent=title;
   document.getElementById('confirmBody').textContent=body;
-  document.getElementById('confirmOkBtn').onclick=()=>{closeModal('confirmModal');cb();};
+  const ok=document.getElementById('confirmOkBtn');
+  ok.textContent=okLabel||t('btnOk');
+  ok.className='btn '+(okLabel?'btn-primary':'btn-danger');
+  ok.onclick=()=>{closeModal('confirmModal');cb();};
   openModal('confirmModal');
 }
 document.querySelectorAll('.modal-overlay').forEach(el=>{
@@ -1507,10 +1891,13 @@ document.querySelectorAll('.modal-overlay').forEach(el=>{
 function summarize(votes,options){
   const c={};
   options.forEach(o=>{ c[optLabel(o)]=0; });
-  // votes[key] is now an array of choice strings
   Object.values(votes).forEach(arr=>{
-    const items=Array.isArray(arr)?arr:[arr]; // backwards compat
-    items.forEach(v=>{ c[v]=(c[v]||0)+1; });
+    asArr(arr).forEach(v=>{ c[v]=(c[v]||0)+1; });
+  });
+  // "Momos 0" is noise when "Momos · Chicken" was ordered
+  options.forEach(o=>{
+    const l=optLabel(o);
+    if(c[l]===0 && Object.keys(c).some(k=>k.startsWith(l+' · '))) delete c[l];
   });
   return Object.entries(c).sort((a,b)=>b[1]-a[1]);
 }
@@ -1526,7 +1913,7 @@ function escA(s){ return esc(String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")
 let toastTimer;
 function toast(msg){
   const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2400);
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2600);
 }
 
 function confirmReset(){
@@ -1538,7 +1925,6 @@ function confirmReset(){
 // ═══════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════
-// ── INIT ──────────────────────────────────────────────────────────────────
 function init() {
   try {
     load();
@@ -1560,19 +1946,16 @@ function init() {
   setupPwa();
   try {
     setLang(currentLang);
+    showScreen(state.onboarded ? 'home' : 'welcome');
   } catch(e) {
-    console.error('setLang() failed:', e);
-  }
-  try {
-    renderHome();
-  } catch(e) {
-    console.error('renderHome() failed:', e);
-    // Show visible error so user isn't staring at blank screen
+    console.error('render failed:', e);
     const box = document.createElement('div');
     box.style.cssText = 'color:#e8a23a;padding:20px;font-size:16px';
     box.textContent = t('loadError') + ' ' + e.message;
     document.body.appendChild(box);
   }
+  checkImportHash();
+  window.addEventListener('hashchange', checkImportHash);
 }
 
 // ═══════════════════════════════════════
