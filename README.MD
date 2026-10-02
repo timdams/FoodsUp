@@ -1,5 +1,7 @@
 # 🍲 FoodsUp
 
+### 👉 [Open the app: timdams.github.io/FoodsUp](https://timdams.github.io/FoodsUp/)
+
 > **Collect group orders in seconds — works offline, no account, no server.**
 
 Everyone taps their name, picks what they want, and FoodsUp adds it all up. Made for a group trip through Nepal (18 people, lots of tea stops), and just as handy for a team lunch, a scout camp or a round at the bar.
