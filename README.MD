@@ -1,65 +1,52 @@
-# 🤠 FoodsUp
+# 🍲 FoodsUp
 
-> **Collect group orders in seconds — no internet required.**
+> **Collect group orders in seconds — works offline, no account, no server.**
 
-RoundUp is a single-file offline HTML app built for group travel. Each round, everyone taps their name, picks their order, and the app tallies the totals instantly. Built for 18 people across 4 families on a trek through Nepal.
-
+Everyone taps their name, picks what they want, and FoodsUp adds it all up. Made for a group trip through Nepal (18 people, lots of tea stops), and just as handy for a team lunch, a scout camp or a round at the bar.
 
 ![](foodsup1.png)
 
 ![](foodsup2.png)
----
-
-## Features
-
-**Ordering**
-- Tile-based voter grid — tap any name in any order, checkmark appears when done
-- Multi-select — pick multiple items per person (e.g. Tea + a biscuit)
-- Custom write-in option — type anything not on the list; it becomes a button for everyone after
-- Sub-options — attach choice groups to any option (e.g. "Breakfast set → Coffee or Tea → Jam or Honey")
-- Temporary guests — add porters, guides or anyone else per round without touching the permanent list
-
-**Themes**
-- 5 built-in themes: Tea time, Lunch, Dinner, Drinks, Snacks
-- Fully editable — add, rename, delete themes and their default options
-- Round-specific tweaks — adjust options for a single round without changing the defaults
-- Save round options back to the theme permanently with one tap
-
-**Results & History**
-- Live totals with bar chart and voter names per option
-- Full history of every saved round with date and time
-- Per-person breakdown — who ordered what
-- Share button — sends a formatted summary via WhatsApp, Signal, or any app (falls back to clipboard)
-
-**Multilingual**
-- Dutch / English / Nepali (Devanagari) — switch instantly via header toggle
-- Language preference is remembered across sessions
-- Theme names and UI are fully translated in all three languages
-
-**Reliability**
-- Votes are auto-saved to localStorage after every tap — reloading mid-round loses nothing
-- Works fully offline — no internet, no server, no installation
-- Single `.html` file — copy it anywhere, open it in Chrome
 
 ---
 
-## How to Use
+## 📲 Get the app (2 minutes, no technical knowledge needed)
+
+**Open this link on your phone: [timdams.github.io/FoodsUp](https://timdams.github.io/FoodsUp/)**, or scan:
+
+<img src="qr.png" alt="QR code to timdams.github.io/FoodsUp" width="160">
+
+Then put it on your home screen, so it works like a normal app, also without internet:
+
+| Phone | What to do |
+|---|---|
+| **Android** (Chrome, Samsung Internet) | Tap the **Install** button in the app, or menu **⋮ → Install app / Add to Home screen**. |
+| **iPhone / iPad** (Safari) | Tap the **Share** button (square with arrow ↑) → **Add to Home Screen** → **Add**. |
+| **Laptop** (Chrome, Edge) | Click the install icon in the address bar. |
+
+From then on, open FoodsUp via its icon. It keeps working offline, so it's fine on a mountain, a plane or a campsite.
+
+> 💡 Open the link once while you still have internet. After that, no connection is needed.
+
+Your data (names, menus, history) stays **on your own phone only**. Nothing is sent anywhere.
+
+---
+
+## How to use it
 
 ### Setup (once)
-1. Open `groepsbestelling.html` in **Chrome** on Android or desktop
-2. Tap **👥 Namen** to enter the names of all participants
-3. Tap **✎** on any theme to set the default options for that theme
+1. Tap **👥 Names** and enter the people in your group.
+2. Tap **✎** on a theme (Coffee & tea, Lunch, Dinner…) to set its options, or **+ Theme** to make your own.
 
 ### Each round
-1. Pick a theme on the home screen
-2. Tap **Start order** — optionally adjust options for this round only
-3. The voter grid appears — tap a name to open their order screen
-4. They pick one or more items (sub-options expand automatically if configured)
-5. Tap **Confirm ✓** — they get a checkmark, you're back at the grid
-6. When everyone is done, tap **📤 Share** to send the summary, then **Close round & save**
+1. Pick a theme and tap **Start order**. You can tweak the options for this round only.
+2. Tap a name and choose one or more items, then tap **Confirm ✓**. Hand the phone to the next person.
+3. Tap **📊 Results** to see the totals, then **📤 Share** to send them (WhatsApp, Signal, email…).
+4. Tap **Close round & save** to store the round in the history.
 
-### Sharing the result
-The share button sends a plain-text summary like this:
+If the phone locks or the app is closed mid-round, nothing is lost: the home screen shows **Resume ▶**.
+
+### Example of a shared summary
 
 ```
 🍽️ Dinner
@@ -73,10 +60,31 @@ The share button sends a plain-text summary like this:
 Dries: Dal Bhat
 Hendrik: Momos · Vegetarian
 Juno: Dal Bhat + Biscuit
-...
 ```
 
-Works with WhatsApp, Signal, email, or any share target on Android.
+---
+
+## Features
+
+**Ordering**
+- Tile grid of names; tap anyone in any order, and a checkmark shows who's done
+- Multi-select: tea *and* a biscuit
+- Write-in option: type anything not on the list, and it becomes a button for everyone
+- Sub-options, e.g. "Breakfast set → Coffee or Tea → Jam or Honey"
+- Temporary guests (porters, guides, colleagues) per round
+
+**Themes**
+- Starter themes: Coffee & tea, Lunch, Dinner, Drinks, Snacks
+- Add, rename or delete themes and their options
+- Change options for one round, or save them as the new default
+
+**Results & history**
+- Live totals with bars and who ordered what
+- History of every saved round
+- Share any round, now or later
+
+**Languages**
+- Dutch, English and Nepali (Devanagari). Picks your phone's language on first start; switch anytime.
 
 ---
 
@@ -84,41 +92,23 @@ Works with WhatsApp, Signal, email, or any share target on Android.
 
 | Situation | What to do |
 |---|---|
-| Porter wants to order too | Tap **+ Guest** on the voter grid |
-| Someone wants two things | Tap both options — both stay selected |
-| Breakfast set with choices | Edit the theme → **+ Sub-group** on the set option |
-| Wrong order after confirming | Tap the name again — choices are still editable |
-| App looks broken | Use **Chrome**, not Brave or Firefox |
-| Lost all data after reload | This shouldn't happen — votes auto-save. If it does, check Chrome's site settings |
+| A porter or guest wants to order | Tap **+ Guest** on the names grid |
+| Someone wants two things | Tap both options |
+| Breakfast set with choices | Edit the theme → **+ Sub-group** on that option |
+| Wrong order after confirming | Tap the name again; it's still editable |
+| Accidentally went back to the home screen | Tap **Resume ▶** |
 
 ---
 
-## Browser Compatibility
+## Technical notes
 
-| Browser | Works? | Notes |
-|---|---|---|
-| Chrome (Android / Desktop) | ✅ | Recommended |
-| Samsung Internet | ✅ | Works |
-| Firefox (Android) | ⚠️ | May block localStorage on `file://` |
-| Brave | ❌ | Blocks localStorage — use Chrome instead |
-| Safari (iOS) | ⚠️ | Works but localStorage may be restricted |
-
----
-
-## Technical Notes
-
-- **Single file** — all HTML, CSS and JavaScript in one `.html` file, no dependencies
-- **No internet required** — Google Fonts removed, system fonts used (`Georgia`, `Segoe UI`)
-- **Storage** — `localStorage` key `gb6`, falls back to in-memory if blocked
-- **Data model** — votes stored as arrays per voter key to support multi-select
-- **Options** — plain strings or `{ label, subs: [{ group, values[] }] }` objects for sub-option trees
-- **Languages** — i18n via a `LANGS` constant object, switched at runtime via `setLang()`
-
----
-
-## Context
-
-Built for a group trip to Nepal (April 2026) — 18 people, 4 families, many tea stops and dinner orders to coordinate. Designed to work without WiFi, survive a phone reload mid-trek, and be handed to a Nepali guide who can read the Devanagari UI.
+- **Plain HTML/CSS/JS**, no framework, no build step. The whole app is [`src/index.html`](src/index.html).
+- **PWA**: [`manifest.webmanifest`](src/manifest.webmanifest) and a service worker ([`sw.js`](src/sw.js)) that caches the app for offline use. New versions are picked up in the background and show up the next time the app is opened. Bump `CACHE` in `sw.js` when you add or rename files.
+- **Hosting**: every push to `main` deploys `src/` to GitHub Pages ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
+- **Icons**: generated by `python tools/make_icons.py` (needs Pillow).
+- **Storage**: `localStorage` key `gb6`. People have stable ids (`{id, name}`); votes are keyed by id. Old saves (names as plain strings) are migrated automatically.
+- **Still works as a single file**: you can open `src/index.html` directly, but some browsers (Brave, Firefox, Safari) restrict storage for `file://` pages, so the website/installed app is recommended.
+- **Run locally**: `cd src && python -m http.server 8000`, then open <http://localhost:8000>.
 
 ---
 

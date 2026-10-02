@@ -3,8 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Groepsbestelling</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FoodsUp</title>
+<meta name="description" content="Groepsbestellingen in een paar tikken — werkt offline.">
+<meta name="theme-color" content="#1a1410">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FoodsUp">
 <style>
   /* Fonts via system stack — works fully offline */
 
@@ -18,10 +28,11 @@
   body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
   body.lang-ne { font-family: 'Noto Sans Devanagari', 'Mangal', Arial Unicode MS, sans-serif; }
 
-  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen { display: none; min-height: 100vh; flex-direction: column; max-width: 680px; margin: 0 auto; }
   .screen.active { display: flex; }
 
-  .header { background: linear-gradient(135deg,#2e1f0a,#1a1410); border-bottom: 2px solid var(--accent); padding: 14px 20px 10px; position: sticky; top: 0; z-index: 10; }
+  .header { background: linear-gradient(135deg,#2e1f0a,#1a1410); border-bottom: 2px solid var(--accent); padding: calc(14px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) 10px calc(20px + env(safe-area-inset-left)); position: sticky; top: 0; z-index: 10; }
+  .content { padding-bottom: env(safe-area-inset-bottom) !important; }
   .header-title { font-family: Georgia, serif; font-size: 20px; font-weight: 900; color: var(--accent); }
   .header-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .header-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
@@ -211,7 +222,19 @@
   .modal-input:focus { border-color: var(--accent); }
   .modal-actions { display: flex; gap: 8px; }
 
-  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 200; transition: transform 0.3s; white-space: nowrap; }
+  /* INSTALL / NOTICES */
+  .notice { background: var(--card); border: 1.5px solid var(--accent); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .notice-icon { font-size: 26px; }
+  .notice-text { flex: 1; font-size: 14px; line-height: 1.4; }
+  .notice-text b { color: var(--accent); }
+  .notice-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; }
+  .ios-steps { color: var(--text); font-size: 15px; line-height: 1.6; margin: 0 0 20px 20px; }
+  .ios-steps li { margin-bottom: 8px; }
+  .resume-bar { background: #1a2e1a; border: 1.5px solid var(--success); border-radius: 14px; padding: 12px 14px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .resume-text { font-size: 14px; }
+  .resume-text small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  .toast { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 200; transition: transform 0.3s; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -227,13 +250,28 @@
       <button class="btn btn-secondary btn-sm" onclick="showAddThemeModal()" data-t="btnAddTheme"></button>
       <button class="btn btn-secondary btn-sm" onclick="confirmReset()" style="color:var(--muted)">↺</button>
       <div class="lang-switcher">
-        <button class="lang-btn" onclick="setLang('nl')">NL</button>
-        <button class="lang-btn" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('ne')">नेपाली</button>
+        <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="ne" onclick="setLang('ne')">नेपाली</button>
       </div>
     </div>
   </div>
   <div class="content">
+    <div id="installNotice" class="notice" style="display:none">
+      <div class="notice-icon">📲</div>
+      <div class="notice-text"><b data-t="installTitle"></b><br><span data-t="installBody"></span></div>
+      <button class="btn btn-primary btn-sm" onclick="installApp()" data-t="btnInstall"></button>
+      <button class="notice-close" onclick="dismissInstall()" aria-label="×">×</button>
+    </div>
+    <div id="noNamesNotice" class="notice" style="display:none">
+      <div class="notice-icon">👥</div>
+      <div class="notice-text"><b data-t="noNamesTitle"></b><br><span data-t="noNamesBody"></span></div>
+      <button class="btn btn-primary btn-sm" onclick="showScreen('names')" data-t="btnAddNames"></button>
+    </div>
+    <div id="resumeBar" class="resume-bar" style="display:none">
+      <div class="resume-text"><span id="resumeTitle"></span><small id="resumeSub"></small></div>
+      <button class="btn btn-success btn-sm" onclick="resumeRound()" data-t="btnResume"></button>
+    </div>
     <div class="welcome-text"><span data-t="homeWelcome1"></span> <span><span data-t="homeWelcome2"></span></span></div>
     <div class="welcome-sub" data-t="homeWelcomeSub"></div>
     <div class="section-label" data-t="labelThemes"></div>
@@ -401,6 +439,7 @@
     </div>
     <div class="results-actions">
       <button class="btn btn-primary btn-full" onclick="showScreen('votepicker')" id="continueVoteBtn" style="display:none" data-t="btnContinueVote"></button>
+      <button class="btn btn-secondary btn-full" onclick="shareCurrentRound()" data-t="btnShare"></button>
       <button class="btn btn-success btn-full" onclick="finalizeRound()" data-t="btnFinalize"></button>
       <button class="btn btn-secondary btn-full" onclick="showScreen('home')" data-t="btnNewRound"></button>
     </div>
@@ -415,6 +454,7 @@
     <div class="header-sub" id="hdSub"></div>
     <div class="header-actions">
       <button class="btn btn-secondary btn-sm" onclick="showScreen('home')" data-t="btnBack"></button>
+      <button class="btn btn-primary btn-sm" onclick="shareHistoryItem()" data-t="btnShare"></button>
       <button class="btn btn-danger btn-sm" onclick="deleteHistoryItem()" data-t="btnDelete"></button>
     </div>
   </div>
@@ -456,6 +496,21 @@
   </div>
 </div>
 
+<!-- MODAL: install on iPhone/iPad -->
+<div class="modal-overlay" id="iosInstallModal">
+  <div class="modal">
+    <div class="modal-title" data-t="iosTitle"></div>
+    <ol class="ios-steps">
+      <li data-t="iosStep1"></li>
+      <li data-t="iosStep2"></li>
+      <li data-t="iosStep3"></li>
+    </ol>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" onclick="closeModal('iosInstallModal')" data-t="btnOk"></button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -464,7 +519,17 @@
 // ═══════════════════════════════════════
 const LANGS = {
   nl: {
-    appTitle: 'Groepsbestelling', appSub: '4 families · 18 reizigers · Nepal 2026',
+    appTitle: 'Groepsbestelling', appSub: 'Groepsbestellingen in een paar tikken',
+    locale: 'nl-BE', guestBadge: 'gast',
+    installTitle: 'Installeer als app', installBody: 'Eigen icoon op je beginscherm, werkt ook zonder internet.', btnInstall: 'Installeer',
+    iosTitle: '📲 Op je beginscherm zetten', iosStep1: 'Tik onderaan in Safari op de Deel-knop (vierkantje met pijl ↑).',
+    iosStep2: 'Scroll en kies „Zet op beginscherm”.', iosStep3: 'Tik op „Voeg toe”. Open FoodsUp voortaan via het icoon.',
+    noNamesTitle: 'Nog geen deelnemers', noNamesBody: 'Voeg eerst de namen van je groep toe.', btnAddNames: '👥 Namen toevoegen',
+    btnResume: 'Hervat ▶', resumeTitle: (th) => `Lopende bestelling: ${th}`, resumeSub: (d,t) => `${d} van ${t} besteld`,
+    confirmNewRound: 'Lopende bestelling wissen?', confirmNewRoundBody: 'Er is nog een bestelling bezig die niet is opgeslagen. Een nieuwe starten wist die.',
+    btnShare: '📤 Delen', toastCopied: 'Gekopieerd naar klembord ✓', toastShareFailed: 'Delen lukte niet',
+    braveWarn: '⚠️ Brave blokkeert opslag voor lokale bestanden. Open FoodsUp via de website of in Chrome.',
+    loadError: '⚠️ Fout bij laden:',
     btnNames: '👥 Namen', btnAddTheme: '+ Thema', btnBack: '← Terug', btnSave: 'Opslaan ✓',
     btnStartOrder: 'Bestelling starten →', btnStartVoting: 'Stemmen starten →',
     btnVote: 'Stemmen →', btnReset: '⟳ Reset', btnDelete: '🗑 Verwijder',
@@ -515,7 +580,17 @@ const LANGS = {
     datePrefix: '📅 ',
   },
   en: {
-    appTitle: 'Group Order', appSub: '4 families · 18 travellers · Nepal 2026',
+    appTitle: 'Group Order', appSub: 'Group orders in a few taps',
+    locale: 'en-GB', guestBadge: 'guest',
+    installTitle: 'Install as app', installBody: 'Own icon on your home screen, works without internet.', btnInstall: 'Install',
+    iosTitle: '📲 Add to home screen', iosStep1: 'In Safari, tap the Share button at the bottom (square with arrow ↑).',
+    iosStep2: 'Scroll down and choose “Add to Home Screen”.', iosStep3: 'Tap “Add”. From now on, open FoodsUp via the icon.',
+    noNamesTitle: 'No participants yet', noNamesBody: 'First add the names of your group.', btnAddNames: '👥 Add names',
+    btnResume: 'Resume ▶', resumeTitle: (th) => `Order in progress: ${th}`, resumeSub: (d,t) => `${d} of ${t} ordered`,
+    confirmNewRound: 'Discard current order?', confirmNewRoundBody: 'An order is still in progress and not saved. Starting a new one discards it.',
+    btnShare: '📤 Share', toastCopied: 'Copied to clipboard ✓', toastShareFailed: 'Sharing failed',
+    braveWarn: '⚠️ Brave blocks storage for local files. Open FoodsUp via the website or in Chrome.',
+    loadError: '⚠️ Error while loading:',
     btnNames: '👥 Names', btnAddTheme: '+ Theme', btnBack: '← Back', btnSave: 'Save ✓',
     btnStartOrder: 'Start order →', btnStartVoting: 'Start voting →',
     btnVote: 'Vote →', btnReset: '⟳ Reset', btnDelete: '🗑 Delete',
@@ -566,7 +641,17 @@ const LANGS = {
     datePrefix: '📅 ',
   },
   ne: {
-    appTitle: 'समूह अर्डर', appSub: '४ परिवार · १८ यात्री · नेपाल २०२६',
+    appTitle: 'समूह अर्डर', appSub: 'केही ट्यापमै समूह अर्डर',
+    locale: 'ne-NP', guestBadge: 'पाहुना',
+    installTitle: 'एपको रूपमा इन्स्टल गर्नुस्', installBody: 'होम स्क्रिनमा आफ्नै आइकन, इन्टरनेट बिना पनि चल्छ।', btnInstall: 'इन्स्टल',
+    iosTitle: '📲 होम स्क्रिनमा राख्नुस्', iosStep1: 'Safari मा तल रहेको Share बटन (↑ भएको वर्ग) थिच्नुस्।',
+    iosStep2: '“Add to Home Screen” छान्नुस्।', iosStep3: '“Add” थिच्नुस्। अबदेखि आइकनबाट FoodsUp खोल्नुस्।',
+    noNamesTitle: 'अहिलेसम्म कुनै सहभागी छैन', noNamesBody: 'पहिले आफ्नो समूहका नामहरू थप्नुस्।', btnAddNames: '👥 नाम थप्नुस्',
+    btnResume: 'जारी ▶', resumeTitle: (th) => `चलिरहेको अर्डर: ${th}`, resumeSub: (d,t) => `${t} मध्ये ${d} ले अर्डर गरे`,
+    confirmNewRound: 'चलिरहेको अर्डर मेट्ने?', confirmNewRoundBody: 'एउटा अर्डर अझै सुरक्षित गरिएको छैन। नयाँ सुरु गर्दा त्यो मेटिन्छ।',
+    btnShare: '📤 सेयर', toastCopied: 'क्लिपबोर्डमा कपी भयो ✓', toastShareFailed: 'सेयर गर्न सकिएन',
+    braveWarn: '⚠️ Brave ले स्थानीय फाइलको भण्डारण रोक्छ। वेबसाइट वा Chrome बाट FoodsUp खोल्नुस्।',
+    loadError: '⚠️ लोड गर्दा त्रुटि:',
     btnNames: '👥 नाम', btnAddTheme: '+ विषय', btnBack: '← फिर्ता', btnSave: 'सुरक्षित ✓',
     btnStartOrder: 'अर्डर सुरु →', btnStartVoting: 'मतदान सुरु →',
     btnVote: 'मतदान →', btnReset: '⟳ रिसेट', btnDelete: '🗑 मेट्नुस्',
@@ -630,6 +715,7 @@ function setLang(lang) {
   save();
   // Update body font class
   document.body.className = lang === 'ne' ? 'lang-ne' : '';
+  document.documentElement.lang = lang;
   // Update all static data-t elements
   document.querySelectorAll('[data-t]').forEach(el => {
     el.textContent = t(el.dataset.t);
@@ -639,7 +725,7 @@ function setLang(lang) {
   });
   // Update lang button active state
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim() === (lang === 'nl' ? 'NL' : lang === 'en' ? 'EN' : 'नेपाली'));
+    btn.classList.toggle('active', btn.dataset.lang === lang);
   });
   // Re-render current screen
   const active = document.querySelector('.screen.active');
@@ -652,20 +738,33 @@ function setLang(lang) {
 }
 
 // ═══════════════════════════════════════
-//  DEFAULT THEMES  (trilingual options)
+//  DEFAULT THEMES  (options per language; picked once on first start)
 // ═══════════════════════════════════════
 const DEFAULT_THEMES = [
-  { id:'teatime', name:{nl:'Teatime',     en:'Tea time',          ne:'चियाको समय'},  emoji:'🍵',
-    options:['Thee / Tea / चिया','Koffie / Coffee / कफी','Chai / Chai / मसला चिया','Water / Water / पानी','Frisdrank / Soda / सफ्ट ड्रिंक'] },
-  { id:'lunch',   name:{nl:'Lunch',       en:'Lunch',             ne:'दिउँसोको खाना'}, emoji:'🥪',
-    options:['Sandwich','Soep / Soup / सूप','Salade / Salad / सलाद','Noodles / Noodles / म्यागी','Niets / Nothing / केही चाहिँदैन'] },
-  { id:'dinner',  name:{nl:'Avondeten',   en:'Dinner',            ne:'बेलुकीको खाना'}, emoji:'🍽️',
-    options:['Dal Bhat / Dal Bhat / दाल भात','Momo\'s / Momos / मोमो','Thukpa / Thukpa / थुकपा','Vegetarisch / Vegetarian / शाकाहारी','Niets / Nothing / केही चाहिँदैन'] },
-  { id:'drinks',  name:{nl:'Drankjes',    en:'Drinks',            ne:'पेयपदार्थ'},    emoji:'🥤',
-    options:['Bier / Beer / बियर','Wijn / Wine / रक्सी','Frisdrank / Soda / सफ्ट ड्रिंक','Water / Water / पानी','Sap / Juice / जुस'] },
-  { id:'snacks',  name:{nl:'Snacks',      en:'Snacks',            ne:'खाजा'},         emoji:'🍿',
-    options:['Chips','Noten / Nuts / बदाम','Fruit / Fruit / फलफूल','Koekjes / Biscuits / बिस्कुट','Niets / Nothing / केही चाहिँदैन'] },
+  { id:'teatime', name:{nl:'Koffie & thee', en:'Coffee & tea', ne:'चियाको समय'},  emoji:'☕',
+    options:{ nl:['Koffie','Thee','Cappuccino','Water','Frisdrank'],
+              en:['Coffee','Tea','Cappuccino','Water','Soda'],
+              ne:['चिया','कफी','मसला चिया','पानी','सफ्ट ड्रिंक'] } },
+  { id:'lunch',   name:{nl:'Lunch', en:'Lunch', ne:'दिउँसोको खाना'}, emoji:'🥪',
+    options:{ nl:['Broodje kaas','Broodje hesp','Soep','Salade','Niets'],
+              en:['Cheese sandwich','Ham sandwich','Soup','Salad','Nothing'],
+              ne:['स्यान्डविच','सूप','सलाद','म्यागी','केही चाहिँदैन'] } },
+  { id:'dinner',  name:{nl:'Avondeten', en:'Dinner', ne:'बेलुकीको खाना'}, emoji:'🍽️',
+    options:{ nl:['Vlees','Vis','Vegetarisch','Kindermenu','Niets'],
+              en:['Meat','Fish','Vegetarian','Kids menu','Nothing'],
+              ne:['दाल भात','मोमो','थुकपा','शाकाहारी','केही चाहिँदैन'] } },
+  { id:'drinks',  name:{nl:'Drankjes', en:'Drinks', ne:'पेयपदार्थ'}, emoji:'🥤',
+    options:{ nl:['Bier','Wijn','Frisdrank','Water','Sap'],
+              en:['Beer','Wine','Soda','Water','Juice'],
+              ne:['बियर','रक्सी','सफ्ट ड्रिंक','पानी','जुस'] } },
+  { id:'snacks',  name:{nl:'Snacks', en:'Snacks', ne:'खाजा'}, emoji:'🍿',
+    options:{ nl:['Chips','Noten','Fruit','Koekjes','Niets'],
+              en:['Crisps','Nuts','Fruit','Biscuits','Nothing'],
+              ne:['चिप्स','बदाम','फलफूल','बिस्कुट','केही चाहिँदैन'] } },
 ];
+function defaultThemes(lang) {
+  return DEFAULT_THEMES.map(th => ({ ...th, name:{...th.name}, options:[...(th.options[lang] || th.options.en)] }));
+}
 
 function themeName(t) {
   if (typeof t.name === 'object') return t.name[currentLang] || t.name.nl || t.name.en || '';
@@ -691,7 +790,8 @@ function buildChoice(label, subSelections) {
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
-let state = { themes:[], names:[], selectedThemeId:null, currentOptions:[], votes:{}, voterIndex:0, history:[], lang:'nl', guests:[], currentVoterKey:null, currentVoterName:null };
+// people = [{id, name}] — votes are keyed by person id (or guest id), never by name
+let state = { themes:[], people:[], selectedThemeId:null, currentOptions:[], votes:{}, voterIndex:0, history:[], lang:null, guests:[], currentVoterKey:null, currentVoterName:null, roundActive:false };
 let editingThemeId = null;
 let viewingHistIdx = null;
 
@@ -702,29 +802,45 @@ function save() {
   }
 }
 function load() {
+  let saved = {};
   try {
     const raw = (()=>{ try { return localStorage.getItem('gb6'); } catch(e){ return window._gbMemory||null; } })();
-    if (raw) state = {...state, ...JSON.parse(raw)};
+    if (raw) saved = JSON.parse(raw) || {};
   } catch(e) { try { localStorage.removeItem('gb6'); } catch(_){} }
-  if (!Array.isArray(state.themes) || !state.themes.length) state.themes = JSON.parse(JSON.stringify(DEFAULT_THEMES));
-  if (!Array.isArray(state.names)  || !state.names.length)  state.names = [
-    'Saskia','Hendrik','Noor','Dries',
-    'Sara','Tim','Juno','Mira','Sten',
-    'Tom','Winny','Myhra','Elyn','Yanti',
-    'Lieve','Maarten','Sara De Jonge','Tess'
-  ];
-  if (!Array.isArray(state.history)) state.history = [];
+  // Only take over what was actually saved, so old saves can be detected and migrated
+  state = { ...state, people: undefined, roundActive: undefined, ...saved };
+  if (!LANGS[state.lang]) state.lang = detectLang();
+  currentLang = state.lang;
+  if (!Array.isArray(state.themes) || !state.themes.length) state.themes = defaultThemes(currentLang);
   if (!state.votes || typeof state.votes !== 'object') state.votes = {};
+  // Migrate old format: names were plain strings and votes were keyed by name
+  if (!Array.isArray(state.people)) {
+    state.people = (Array.isArray(state.names) ? state.names : []).map(n => ({ id: newId('p'), name: String(n) }));
+    state.people.forEach(p => {
+      if (state.votes[p.name] && !state.votes[p.id]) { state.votes[p.id] = state.votes[p.name]; delete state.votes[p.name]; }
+    });
+  }
+  delete state.names;
+  if (!Array.isArray(state.history)) state.history = [];
   if (!Array.isArray(state.currentOptions)) state.currentOptions = [];
   if (typeof state.voterIndex !== 'number') state.voterIndex = 0;
   if (!Array.isArray(state.guests)) state.guests = [];
-  if (state.lang) currentLang = state.lang;
+  // A round with votes in it counts as active (old saves had no flag)
+  if (typeof state.roundActive !== 'boolean') state.roundActive = Object.keys(state.votes).length > 0;
+  if (!state.themes.some(x => x.id === state.selectedThemeId)) state.roundActive = false;
 }
+function detectLang() {
+  const nav = (navigator.languages || [navigator.language || 'en']).map(l => String(l).slice(0,2).toLowerCase());
+  return nav.find(l => LANGS[l]) || 'en';
+}
+let idSeq = 0;
+function newId(prefix) { return prefix + '_' + Date.now().toString(36) + (idSeq++).toString(36) + Math.random().toString(36).slice(2,6); }
 
 // ═══════════════════════════════════════
 //  NAVIGATION
 // ═══════════════════════════════════════
 function showScreen(id) {
+  if (id !== 'names' && document.getElementById('names').classList.contains('active')) { cleanPeople(); save(); }
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const renders = { home:renderHome, names:renderNames, order:renderOrder, vote:renderVote,
@@ -738,12 +854,25 @@ function showScreen(id) {
 // ═══════════════════════════════════════
 function renderHome() {
   document.getElementById('themeGrid').innerHTML = state.themes.map(th => `
-    <div class="theme-card ${state.selectedThemeId===th.id?'selected':''}" onclick="selectTheme('${th.id}')">
-      <div class="theme-emoji">${th.emoji}</div>
+    <div class="theme-card ${homeSelectedId()===th.id?'selected':''}" onclick="selectTheme('${escA(th.id)}')">
+      <div class="theme-emoji">${esc(th.emoji)}</div>
       <div class="theme-name">${esc(themeName(th))}</div>
       <div class="theme-count">${t('optionsCount', th.options.length)}</div>
-      <div class="theme-edit-btn" onclick="event.stopPropagation();openThemeEdit('${th.id}')">${t('btnEditShort')}</div>
+      <div class="theme-edit-btn" onclick="event.stopPropagation();openThemeEdit('${escA(th.id)}')">${t('btnEditShort')}</div>
     </div>`).join('');
+
+  document.getElementById('noNamesNotice').style.display = state.people.length ? 'none' : '';
+  const resume = document.getElementById('resumeBar');
+  const roundTheme = state.roundActive && state.themes.find(x => x.id === state.selectedThemeId);
+  if (roundTheme) {
+    const voters = allVoters();
+    resume.style.display = '';
+    document.getElementById('resumeTitle').textContent = t('resumeTitle', roundTheme.emoji + ' ' + themeName(roundTheme));
+    document.getElementById('resumeSub').textContent = t('resumeSub', votedCount(voters), voters.length);
+  } else {
+    resume.style.display = 'none';
+  }
+  updateInstallNotice();
 
   const hist = document.getElementById('historyList');
   const clearBtn = document.getElementById('clearHistBtn');
@@ -757,7 +886,7 @@ function renderHome() {
       const top = summarize(h.votes, h.options).filter(([,c])=>c>0).slice(0,3).map(([o,c])=>`${c}× ${o}`).join(', ');
       return `<div class="history-item" onclick="openHistDetail(${realIdx})">
         <div class="history-left">
-          <div class="history-title">${h.emoji} ${esc(h.theme)}</div>
+          <div class="history-title">${esc(h.emoji)} ${esc(h.theme)}</div>
           <div class="history-meta">${t('datePrefix')}${h.datetime}</div>
           <div class="history-summary">${esc(top||'—')}</div>
         </div>
@@ -767,31 +896,62 @@ function renderHome() {
   }
 }
 
-function selectTheme(id) { state.selectedThemeId = id; save(); renderHome(); }
+// While a round is active, selectedThemeId belongs to that round; the home
+// grid selection is kept separately until a new round actually starts.
+let pickedThemeId = null;
+function homeSelectedId() { return pickedThemeId || state.selectedThemeId; }
+function selectTheme(id) {
+  if (state.roundActive) pickedThemeId = id; else { state.selectedThemeId = id; save(); }
+  renderHome();
+}
 
 function startOrder() {
-  if (!state.selectedThemeId) { toast(t('toastNeedTheme')); return; }
-  const th = state.themes.find(x => x.id === state.selectedThemeId);
-  state.currentOptions = JSON.parse(JSON.stringify(th.options)); state.votes = {}; state.guests = []; state.voterIndex = 0;
-  console.log('[GB] currentOptions after startOrder:', JSON.stringify(state.currentOptions, null, 2));
-  showScreen('order');
+  const id = homeSelectedId();
+  if (!id || !state.themes.some(x => x.id === id)) { toast(t('toastNeedTheme')); return; }
+  const begin = () => {
+    const th = state.themes.find(x => x.id === id);
+    state.selectedThemeId = id; pickedThemeId = null;
+    state.currentOptions = JSON.parse(JSON.stringify(th.options)); state.votes = {}; state.guests = []; state.voterIndex = 0;
+    state.roundActive = false;
+    save();
+    showScreen('order');
+  };
+  if (state.roundActive && Object.keys(state.votes).length) confirm2(t('confirmNewRound'), t('confirmNewRoundBody'), begin);
+  else begin();
 }
+
+function resumeRound() { pickedThemeId = null; showScreen('votepicker'); }
 
 // ═══════════════════════════════════════
 //  NAMES
 // ═══════════════════════════════════════
 function renderNames() {
-  document.getElementById('namesList').innerHTML = state.names.map((n,i) => `
+  document.getElementById('namesList').innerHTML = state.people.map((p,i) => `
     <div class="name-item">
       <div class="name-num">${i+1}</div>
-      <input class="name-input" value="${esc(n)}" placeholder="${t('btnAddName')} ${i+1}" onchange="updateName(${i},this.value)">
+      <input class="name-input" value="${esc(p.name)}" placeholder="${esc(t('btnAddName'))}" oninput="updateName(${i},this.value)"
+        onkeydown="if(event.key==='Enter')addNameField()">
       <button class="btn btn-icon btn-secondary" onclick="removeName(${i})">×</button>
     </div>`).join('');
 }
-function updateName(i,v){ state.names[i]=v.trim()||`${i+1}`; save(); }
-function removeName(i){ if(state.names.length>1){state.names.splice(i,1);save();renderNames();} }
-function addNameField(){ state.names.push(`${state.names.length+1}`);save();renderNames(); }
-function saveNames(){ save(); toast(t('toastNamesSaved')); showScreen('home'); }
+function updateName(i,v){ state.people[i].name=v; save(); }
+function removeName(i){
+  const p=state.people[i];
+  delete state.votes[p.id];
+  state.people.splice(i,1); save(); renderNames();
+}
+function addNameField(){
+  state.people.push({ id:newId('p'), name:'' }); save(); renderNames();
+  const inputs=document.querySelectorAll('#namesList .name-input');
+  inputs[inputs.length-1].focus();
+}
+function cleanPeople(){
+  // Drop empty rows, but keep anyone who already has an order this round
+  state.people.forEach(p => { p.name = p.name.trim(); });
+  state.people = state.people.filter(p => p.name || state.votes[p.id]);
+  state.people.forEach((p,i) => { if (!p.name) p.name = String(i+1); });
+}
+function saveNames(){ cleanPeople(); save(); toast(t('toastNamesSaved')); showScreen('home'); }
 
 // ═══════════════════════════════════════
 //  THEME EDIT
@@ -901,7 +1061,8 @@ function confirmDeleteTheme(){
   const th=state.themes.find(x=>x.id===editingThemeId);
   confirm2(t('confirmDeleteTheme', themeName(th)), t('confirmDeleteThemeBody'), ()=>{
     state.themes=state.themes.filter(x=>x.id!==editingThemeId);
-    if(state.selectedThemeId===editingThemeId) state.selectedThemeId=null;
+    if(state.selectedThemeId===editingThemeId){ state.selectedThemeId=null; state.roundActive=false; }
+    if(pickedThemeId===editingThemeId) pickedThemeId=null;
     save(); toast(t('toastThemeDeleted')); showScreen('home');
   });
 }
@@ -911,6 +1072,7 @@ function confirmDeleteTheme(){
 // ═══════════════════════════════════════
 function renderOrder(){
   const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  if(!th){showScreen('home');return;}
   document.getElementById('orderThemeName').textContent=th.emoji+' '+themeName(th);
   document.getElementById('orderOptionCount').textContent=t('optionsCount', state.currentOptions.length);
   document.getElementById('optionList').innerHTML=state.currentOptions.map((o,i)=>`
@@ -950,26 +1112,31 @@ function saveCurrentToTheme(){
 
 function startVoting(){
   if(!state.currentOptions.length){toast(t('toastNeedOption'));return;}
-  state.votes={};
-  state.guests=[];
+  // Votes are only reset when a new round starts (startOrder), never here
+  state.roundActive=true;
+  save();
   showScreen('votepicker');
 }
 
 function allVoters(){
   // permanent names sorted alphabetically + temp guests at end
-  const perms = state.names.map(n=>({key:n, name:n, temp:false}))
+  const perms = state.people.map(p=>({key:p.id, name:p.name, temp:false}))
     .sort((a,b)=>a.name.localeCompare(b.name, undefined, {sensitivity:'base'}));
   const guests = (state.guests||[]).map(g=>({key:g.id, name:g.name, temp:true}));
   return [...perms, ...guests];
 }
+function voterName(key){
+  const v=allVoters().find(v=>v.key===key);
+  return v ? v.name : key;
+}
+function votedCount(voters){ return voters.filter(v=>state.votes[v.key]&&state.votes[v.key].length).length; }
 
 function renderVotePicker(){
   const th=state.themes.find(x=>x.id===state.selectedThemeId);
+  if(!th){showScreen('home');return;}
   const voters=allVoters();
-  const doneCount=Object.keys(state.votes).length;
   document.getElementById('pickerThemeName').textContent=th.emoji+' '+themeName(th);
-  const doneCount2=voters.filter(v=>state.votes[v.key]&&state.votes[v.key].length).length;
-  document.getElementById('pickerHeaderSub').textContent=t('votedCount',doneCount2,voters.length);
+  document.getElementById('pickerHeaderSub').textContent=t('votedCount',votedCount(voters),voters.length);
 
   document.getElementById('voterGrid').innerHTML=voters.map(v=>{
     const sels=state.votes[v.key]||[];
@@ -977,7 +1144,7 @@ function renderVotePicker(){
     const choiceStr=sels.join(' + ');
     const shortChoice=choiceStr.length>16?choiceStr.slice(0,15)+'…':choiceStr;
     return `<div class="voter-tile ${done?'done':''} ${v.temp?'guest':''}" onclick="openVoterVote('${escA(v.key)}','${escA(v.name)}',${v.temp})">
-      ${v.temp?`<div class="voter-tile-badge">gast</div>`:''}
+      ${v.temp?`<div class="voter-tile-badge">${esc(t('guestBadge'))}</div>`:''}
       <div class="voter-tile-name">${esc(v.name)}</div>
       ${done?`<div class="voter-tile-choice">${esc(shortChoice)}</div>`:''}
     </div>`;
@@ -988,8 +1155,9 @@ function addGuest(){
   const inp=document.getElementById('guestNameInput');
   const name=inp.value.trim(); if(!name) return;
   if(!state.guests) state.guests=[];
-  state.guests.push({id:'guest_'+Date.now(), name});
+  state.guests.push({id:newId('guest'), name});
   inp.value='';
+  save();
   renderVotePicker();
   toast('+ '+name);
 }
@@ -1030,10 +1198,10 @@ function getCompositeFor(key, lbl){
 function renderVote(){
   const th=state.themes.find(x=>x.id===state.selectedThemeId);
   const key=state.currentVoterKey, name=state.currentVoterName;
-  const voters=allVoters(), total=voters.length;
-  const doneCount=Object.keys(state.votes).length;
+  if(!th||!key){showScreen('home');return;}
+  const voters=allVoters();
   document.getElementById('voteThemeName').textContent=th.emoji+' '+themeName(th);
-  document.getElementById('voteHeaderSub').textContent=t('votedCount',doneCount,total);
+  document.getElementById('voteHeaderSub').textContent=t('votedCount',votedCount(voters),voters.length);
   document.getElementById('voterName').textContent=name;
 
   const sels = getSelections(key);
@@ -1181,13 +1349,14 @@ function confirmVote(){
 // ═══════════════════════════════════════
 function renderResults(){
   const th=state.themes.find(x=>x.id===state.selectedThemeId);
-  const voters=allVoters(), voted=Object.keys(state.votes), pending=voters.filter(v=>!(state.votes[v.key]&&state.votes[v.key].length));
+  if(!th){showScreen('home');return;}
+  const voters=allVoters(), pending=voters.filter(v=>!(state.votes[v.key]&&state.votes[v.key].length));
   document.getElementById('resultsThemeName').textContent=th.emoji+' '+themeName(th);
-  document.getElementById('resultsSub2').textContent=t('votedCount',voted.length,voters.length);
+  document.getElementById('resultsSub2').textContent=t('votedCount',votedCount(voters),voters.length);
   document.getElementById('resultSub').textContent=fmtDT(new Date());
   const sorted=summarize(state.votes,state.currentOptions), max=sorted.length?sorted[0][1]:1;
   document.getElementById('resultList').innerHTML=sorted.map(([o,c])=>{
-    const voters=Object.entries(state.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([n])=>n).join(', ');
+    const voters=Object.entries(state.votes).filter(([,arr])=>(Array.isArray(arr)?arr:[arr]).includes(o)).map(([k])=>voterName(k)).join(', ');
     return `<div class="result-item">
       <div class="result-count ${c===0?'zero':''}">${c}</div>
       <div class="result-info">
@@ -1205,23 +1374,62 @@ function renderResults(){
     document.getElementById('continueVoteBtn').style.display='none';
   }
 }
+// Votes of the current round keyed by display name; duplicate names get " (2)", " (3)"…
+function roundVotesByName(){
+  const out={};
+  allVoters().forEach(v=>{
+    const val=state.votes[v.key];
+    if(!val||!val.length) return;
+    let name=v.name, n=2;
+    while(out[name]) name=`${v.name} (${n++})`;
+    out[name]=val;
+  });
+  return out;
+}
+
+// ═══════════════════════════════════════
+//  SHARE
+// ═══════════════════════════════════════
+function buildShareText(title, datetime, votes, options){
+  const totals=summarize(votes,options).filter(([,c])=>c>0).map(([o,c])=>`${c}× ${o}`);
+  const per=Object.entries(votes).sort((a,b)=>a[0].localeCompare(b[0]))
+    .map(([n,arr])=>`${n}: ${(Array.isArray(arr)?arr:[arr]).join(' + ')}`);
+  return [title, datetime, '', ...totals, '', '---', ...per].join('\n');
+}
+async function shareText(title, text){
+  if(navigator.share){
+    try { await navigator.share({ title, text }); return; }
+    catch(e){ if(e && e.name==='AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(text); toast(t('toastCopied')); return; } catch(e){}
+  // Last resort for old browsers / file://
+  try {
+    const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); ta.remove();
+    toast(ok ? t('toastCopied') : t('toastShareFailed'));
+  } catch(e){ toast(t('toastShareFailed')); }
+}
+function shareCurrentRound(){
+  const th=state.themes.find(x=>x.id===state.selectedThemeId); if(!th) return;
+  const title=th.emoji+' '+themeName(th);
+  shareText(title, buildShareText(title, fmtDT(new Date()), roundVotesByName(), state.currentOptions));
+}
+function shareHistoryItem(){
+  const h=state.history[viewingHistIdx]; if(!h) return;
+  const title=h.emoji+' '+h.theme;
+  shareText(title, buildShareText(title, h.datetime, h.votes, h.options));
+}
+
 function continueVoting(){
   showScreen('votepicker');
 }
 function finalizeRound(){
   const th=state.themes.find(x=>x.id===state.selectedThemeId);
-  // Remap guest_xxx keys to readable names before storing
-  const namedVotes={};
-  const guestMap={};
-  (state.guests||[]).forEach(g=>{ guestMap[g.id]=g.name; });
-  Object.entries(state.votes).forEach(([key,val])=>{
-    const displayName = guestMap[key] || key;
-    namedVotes[displayName]=val;
-  });
+  const namedVotes=roundVotesByName();
   state.history.push({ id:Date.now(), themeId:th.id, theme:themeName(th), emoji:th.emoji,
     datetime:fmtDT(new Date()), options:[...state.currentOptions], votes:namedVotes,
     guests:(state.guests||[]).map(g=>g.name) });
-  state.votes={}; state.guests=[]; state.currentVoterKey=null; state.currentVoterName=null;
+  state.votes={}; state.guests=[]; state.currentVoterKey=null; state.currentVoterName=null; state.roundActive=false;
   save(); toast(t('toastRoundSaved')); showScreen('home');
 }
 
@@ -1307,11 +1515,13 @@ function summarize(votes,options){
   return Object.entries(c).sort((a,b)=>b[1]-a[1]);
 }
 function fmtDT(d){
-  return d.toLocaleDateString('nl-BE',{day:'2-digit',month:'2-digit',year:'numeric'})
-    +' · '+d.toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'});
+  const loc=t('locale');
+  return d.toLocaleDateString(loc,{day:'2-digit',month:'2-digit',year:'numeric'})
+    +' · '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});
 }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function escA(s){ return String(s).replace(/'/g,"\\'"); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+// For a JS string literal ('…') inside an HTML attribute: JS-escape first, then HTML-escape
+function escA(s){ return esc(String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,' ')); }
 
 let toastTimer;
 function toast(msg){
@@ -1330,23 +1540,24 @@ function confirmReset(){
 // ═══════════════════════════════════════
 // ── INIT ──────────────────────────────────────────────────────────────────
 function init() {
-  // Brave browser blocks localStorage on file:// — detect and warn
-  (async () => {
-    try {
-      const isBrave = (navigator.brave && await navigator.brave.isBrave()) || false;
-      if (isBrave) {
-        const warn = document.createElement('div');
-        warn.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#c4622d;color:#fff;padding:12px 16px;font-size:14px;font-weight:600;z-index:9999;text-align:center;';
-        warn.textContent = '⚠️ Brave browser: open dit bestand in Chrome voor beste werking.';
-        document.body.prepend(warn);
-      }
-    } catch(e){}
-  })();
   try {
     load();
   } catch(e) {
     console.error('load() failed:', e);
   }
+  // Brave blocks localStorage on file:// only — when served as a website it works fine
+  (async () => {
+    try {
+      const isBrave = (navigator.brave && await navigator.brave.isBrave()) || false;
+      if (isBrave && location.protocol === 'file:') {
+        const warn = document.createElement('div');
+        warn.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#c4622d;color:#fff;padding:12px 16px;font-size:14px;font-weight:600;z-index:9999;text-align:center;';
+        warn.textContent = t('braveWarn');
+        document.body.prepend(warn);
+      }
+    } catch(e){}
+  })();
+  setupPwa();
   try {
     setLang(currentLang);
   } catch(e) {
@@ -1357,8 +1568,58 @@ function init() {
   } catch(e) {
     console.error('renderHome() failed:', e);
     // Show visible error so user isn't staring at blank screen
-    document.body.innerHTML += '<div style="color:#e8a23a;padding:20px;font-size:16px">⚠️ Fout bij laden: ' + e.message + '<br><br>Probeer Chrome i.p.v. Brave.</div>';
+    const box = document.createElement('div');
+    box.style.cssText = 'color:#e8a23a;padding:20px;font-size:16px';
+    box.textContent = t('loadError') + ' ' + e.message;
+    document.body.appendChild(box);
   }
+}
+
+// ═══════════════════════════════════════
+//  PWA: offline cache + install
+// ═══════════════════════════════════════
+let deferredInstall = null;
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+}
+function isIos() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+function installDismissed() {
+  try { return localStorage.getItem('foodsup.installDismissed') === '1'; } catch(e) { return false; }
+}
+function updateInstallNotice() {
+  const el = document.getElementById('installNotice');
+  if (!el) return;
+  const canOffer = location.protocol !== 'file:' && !isStandalone() && !installDismissed() && (deferredInstall || isIos());
+  el.style.display = canOffer ? '' : 'none';
+}
+async function installApp() {
+  if (deferredInstall) {
+    deferredInstall.prompt();
+    try { await deferredInstall.userChoice; } catch(e) {}
+    deferredInstall = null;
+    updateInstallNotice();
+  } else if (isIos()) {
+    openModal('iosInstallModal');
+  }
+}
+function dismissInstall() {
+  try { localStorage.setItem('foodsup.installDismissed', '1'); } catch(e) {}
+  updateInstallNotice();
+}
+function setupPwa() {
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredInstall = e;
+    updateInstallNotice();
+  });
+  window.addEventListener('appinstalled', () => { deferredInstall = null; updateInstallNotice(); });
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
+  }
+  // Ask the browser not to evict our data (matters most on iOS)
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 }
 
 if (document.readyState === 'loading') {
